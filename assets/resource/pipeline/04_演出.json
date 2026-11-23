@@ -51,7 +51,7 @@
         "max_hit": 4
     },
     "演出_打开AUTO": {
-        "desc": "编成页底部 AUTO 开关。用「OFF 态」当模板。⚠️ 实测这个开关的点击**不可靠**：本轮一次成功（l07 拍到 ON）、之后在旋钮/中央/标签三个位置点+滑都不生效。所以这里最多试 2 次就交给「确认AUTO」的 on_error 兜底，宁可少点也不要把流程卡死。根源待查（可试：live 内暂停菜单开 AUTO，或游戏内オートライブ设置）",
+        "desc": "编成页底部 AUTO 开关 —— **拖拽开关，点击无效**。手动用 tools/device.py swipe 530 665 620 665 700（= adb input swipe）能稳定左右切换并验证过；但在 pipeline 里同样是 adb 命令却还没生效（怀疑时序/重复触发）。max_hit 1：只试一次，失败就交给「确认AUTO」的 on_error 兜底去开演，避免把整条链卡死。TODO：定位 in-pipeline 差异",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -61,14 +61,15 @@
             }
         },
         "action": {
-            "type": "Click",
+            "type": "Shell",
             "param": {
-                "target_offset": [22, 21, 0, 0]
+                "cmd": "input swipe 1060 1330 1240 1330 700"
             }
         },
         "timeout": 20000,
         "next": ["[JumpBack]公共_等待加载", "演出_打开AUTO", "演出_确认AUTO"],
-        "max_hit": 2
+        "max_hit": 1,
+        "rate_limit": 1500
     },
     "演出_开演": {
         "desc": "编成页右侧圆形播放按钮。点下去就开始演出（Live Bonus 由游戏按当前设置扣）。开演后由「等待结束」继续盯着：万一这一下被过渡动画吞了，那边还会把它当候选再点",
