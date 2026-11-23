@@ -195,6 +195,25 @@ MaaFramework 的 `next` 是**候选列表**：按顺序识别，命中第一个�
 **解法**：`node tools/probe.mjs <截图> <参数>` 一测就知道。加载锚点改成认
 右下角初音头像的模板。
 
+### 6.3.1 Google 登录弹窗：`ClickKey` 会直接**动作失败**
+
+那个「使用 Google 账号登录」的弹窗是 `com.google.android.gms` 的 `ConsentActivity` ——
+**独立系统 Activity、受保护窗口**。识别没问题（OCR 0.997），但 `ClickKey(BACK)`
+实测返回**动作失败**：注入的按键到不了那个窗口。动作失败且 `on_error` 为空时，
+框架不会回跳，于是整条启动链在 17 秒内"失败退出"。
+
+**解法**：改用 `Shell` 动作跑原始 adb：
+
+```json
+"action": { "type": "Shell", "param": { "cmd": "input keyevent 4" } }
+```
+
+### 6.3.2 验证型终止节点绝对不能写成 `[JumpBack]`
+
+`公共_主页锚点` 是"永远命中"的终止节点。一旦写成 `"[JumpBack]公共_主页锚点"`，
+它在父节点的 next 里就是：命中 → 执行 → 回跳 → 父节点重扫 → 又命中 → 无限空转，
+直到父节点超时失败。**终点节点只能直接引用。**
+
 ### 6.4 点击丢了会卡死整条链
 
 刚 `StartApp` 拉起游戏时，画面可能还是上一次的残像；这时候点标题页是点不动的，
@@ -207,6 +226,23 @@ MaaFramework 的 `next` 是**候选列表**：按顺序识别，命中第一个�
 
 `timeout` 是**本节点 next 列表**的识别窗口。想等某个画面出现，要加在**它的前一个节点**上；
 加在自己身上只会让自己更早失败。
+
+反过来说：**没有锚点的过渡画面只能靠父节点的 timeout 兜**。标题页点进去之后有
+「プロジェクトセカイによろこそ。」和 TIPS 两屏，目前都没做识别（不值得，一闪而过），
+所以 `标题_点击开始` 的 timeout 放到 180s，让它一直等到主页锚点出现。
+timeout 给太短的表现就是"偶尔启动失败、偶尔又好了"。
+
+### 6.5.1 开演前必须验证 AUTO 真的开了
+
+编成页的 AUTO 开关被点丢时，游戏照样开演 —— 结果是整场 0 分、LIVE 结算没有奖励。
+所以流程是「认 OFF 态 → 点击 → **认 ON 态确认** → 才允许点开演」：
+
+| 模板                | OFF 画面 | ON 画面          |
+| ------------------- | -------- | ---------------- |
+| `live/auto_off.png` | 1.000    | 不命中（0 结果） |
+| `live/auto_on.png`  | 0.354    | 1.000            |
+
+这就是"动作之后必须验证结果"的价值：光有"点了"不等于"成了"。
 
 ### 6.6 别用 PowerShell 批量改 JSON
 
@@ -244,8 +280,13 @@ MaaFramework 的 `next` 是**候选列表**：按顺序识别，命中第一个�
 ## 8. 提交前
 
 ```bash
-python tools/check_json.py      # JSON / 引用 / 占位 / 环无出口 / i18n
-npm run check:maa               # 真实 MaaFramework 加载
-npm run format:check            # prettier --check
+python tools/check_json.py        # JSON / 引用 / 占位 / 环无出口 / i18n
+node tools/check_interface.mjs    # 用真实 MaaFramework 加载 interface.json + 资源包（离线）
+npm run format:check              # prettier --check
 node tools/run.mjs <改动涉及的入口>   # 真机，必须"完成（已验证）"
 ```
+
+`check_interface.mjs` 和官方的 `maa-tools check` 检的是同一件事（把 interface.json 与资源包
+喂给 MaaFramework），区别是前者用 `node_modules/@maaxyz/maa-node` 里已经装好的那份
+MaaFramework、**不联网也不写工作目录外**；后者会把运行时下载到用户缓存目录。
+CI 里两个都跑，但 `maa-tools` 那条是 `continue-on-error`。

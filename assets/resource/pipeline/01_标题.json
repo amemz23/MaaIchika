@@ -1,6 +1,6 @@
 {
     "标题_点击开始": {
-        "desc": "标题页：认 «Project SEKAI / COLORFUL STAGE!» 彩色字标（不认 TAP TO START —— 那是半透明闪烁元素，抓不稳）。next 里带上自己：万一点击丢了（刚拉起游戏时画面还没接管），下一轮还能再点一次，而不是把整条链卡死",
+        "desc": "标题页：认 «Project SEKAI / COLORFUL STAGE!» 彩色字标。next 带自己：点击丢了下一轮再点。timeout 放到 180s —— 点进游戏后还有「プロジェクトセカイによろこそ」和 TIPS 两屏没有识别锚点，只能靠这里一直等主页出现",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -15,7 +15,7 @@
                 "target": [640, 620, 1, 1]
             }
         },
-        "timeout": 60000,
+        "timeout": 180000,
         "max_hit": 6,
         "next": ["[JumpBack]公共_等待加载", "[JumpBack]公共_关公告", "标题_点击开始", "公共_主页锚点"]
     }

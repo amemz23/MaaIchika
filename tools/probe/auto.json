@@ -1,0 +1,22 @@
+[
+    {
+        "label": "auto_ON",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["live/auto_on.png"],
+            "threshold": 0,
+            "roi": [480, 620, 220, 90],
+            "order_by": "Score"
+        }
+    },
+    {
+        "label": "auto_OFF",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["live/auto_off.png"],
+            "threshold": 0,
+            "roi": [480, 620, 220, 90],
+            "order_by": "Score"
+        }
+    }
+]

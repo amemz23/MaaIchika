@@ -33,7 +33,7 @@
         "max_hit": 3
     },
     "公共_Google登录": {
-        "desc": "Google Play 重新登录弹窗（系统级 sheet）。按 BACK 直接关掉，游戏会继续走自己的启动流程 —— 不需要真的登录",
+        "desc": "Google Play 重新登录弹窗（com.google.android.gms 的 ConsentActivity，独立系统 Activity、受保护窗口）。它收不到 Maa 注入的按键 —— ClickKey 实测**动作直接失败**，所以这里改用 Shell 动作跑原始 adb input keyevent 4（与手动按返回等效，实测能关掉）。max_hit 4 兜住偶发吞键",
         "recognition": {
             "type": "OCR",
             "param": {
@@ -42,13 +42,13 @@
             }
         },
         "action": {
-            "type": "ClickKey",
+            "type": "Shell",
             "param": {
-                "keycode": [4]
+                "cmd": "input keyevent 4"
             }
         },
         "rate_limit": 500,
-        "max_hit": 2
+        "max_hit": 4
     },
     "公共_回主页": {
         "desc": "点左上角返回箭头。next 留空 → 点完 [JumpBack] 回父节点；父节点重扫时如果箭头还在就再点一次。max_hit 8 防止在点不动的界面上死循环",
@@ -88,5 +88,24 @@
         "action": {
             "type": "StopTask"
         }
+    },
+    "公共_领登录奖励": {
+        "desc": "登录奖励 / 活动登录奖励的领取画面（「報酬を獲得しました。」+ GET! 卡片，OCR 实测 1.000，主页 MISS）。点一下继续 —— 可能连着好几页，所以 next 留空靠父节点重扫：[JumpBack] 引用它就会一页一页点完再回主流程",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["報酬を獲得しました", "報酬を受け取りました"],
+                "roi": [100, 380, 900, 120]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [640, 250, 1, 1]
+            }
+        },
+        "timeout": 15000,
+        "max_hit": 12,
+        "next": []
     }
 }

@@ -34,5 +34,9 @@ jobs:
       - name: 格式检查
         run: npx prettier --check "**/*.{json,md,yml,yaml}"
 
-      - name: MaaFramework 真实加载校验
+      - name: MaaFramework 真实加载校验（interface + 资源包）
+        run: node tools/check_interface.mjs
+
+      - name: maa-tools 官方校验（可选，需要联网下载 MaaFramework）
         run: npx maa-tools check
+        continue-on-error: true

@@ -189,6 +189,7 @@
         "story_main_card": ["story_top"],
         "story_continue_box": ["voice_dialog"],
         "home_nav_story": ["home"],
-        "story_dots": ["story_play"]
+        "story_dots": ["story_play"],
+        "deck_auto_on": ["deck_auto_on"]
     }
 }

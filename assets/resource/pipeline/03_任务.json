@@ -7,10 +7,11 @@
                 "package": "com.sega.pjsekai"
             }
         },
-        "timeout": 120000,
+        "timeout": 300000,
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "标题_点击开始",
             "公共_主页锚点"
@@ -22,10 +23,11 @@
         "action": {
             "type": "DoNothing"
         },
-        "timeout": 90000,
+        "timeout": 180000,
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "主页_进礼物箱",
             "标题_点击开始"
@@ -38,7 +40,13 @@
             "type": "DoNothing"
         },
         "timeout": 60000,
-        "next": ["[JumpBack]公共_等待加载", "[JumpBack]公共_关公告", "[JumpBack]公共_回主页", "公共_主页锚点"],
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_领登录奖励",
+            "[JumpBack]公共_关公告",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ],
         "on_error": ["公共_失败"]
     },
     "任务_演出一场": {
@@ -46,10 +54,11 @@
         "action": {
             "type": "DoNothing"
         },
-        "timeout": 180000,
+        "timeout": 420000,
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
             "标题_点击开始",
@@ -72,10 +81,11 @@
         "action": {
             "type": "DoNothing"
         },
-        "timeout": 180000,
+        "timeout": 300000,
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
             "标题_点击开始",
@@ -88,9 +98,10 @@
         "action": {
             "type": "DoNothing"
         },
-        "timeout": 180000,
+        "timeout": 240000,
         "next": [
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
             "标题_点击开始",

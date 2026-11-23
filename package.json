@@ -8,12 +8,14 @@
         "format": "prettier --write \"**/*.{json,md,yml,yaml}\"",
         "format:check": "prettier --check \"**/*.{json,md,yml,yaml}\"",
         "check:json": "python tools/check_json.py",
-        "check:maa": "maa-tools check",
+        "check:maa": "node tools/check_interface.mjs",
         "run": "node tools/run.mjs",
         "list": "node tools/run.mjs --list",
         "score": "node tools/score.mjs --dir scratch/shots",
         "analyze": "python tools/analyze_scores.py",
-        "shot": "python tools/device.py shot"
+        "shot": "python tools/device.py shot",
+        "check:maa-tools": "maa-tools check",
+        "check:all": "npm run check:json && npm run check:maa && npm run format:check"
     },
     "devDependencies": {
         "@maaxyz/maa-node": "5.16.1",

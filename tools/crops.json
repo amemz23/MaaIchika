@@ -127,6 +127,14 @@
             "out": "home/nav_story.png",
             "note": "主页底部导航「ストーリー」图标",
             "roi": [740, 590, 180, 130]
+        },
+        {
+            "name": "deck_auto_on",
+            "src": "scratch/l07.png",
+            "box": [522, 642, 122, 42],
+            "out": "live/auto_on.png",
+            "note": "编成页 AUTO 开关的 ON 态（粉底白钮 + ON），用来**验证**开关真的打开了",
+            "roi": [480, 620, 220, 90]
         }
     ]
 }

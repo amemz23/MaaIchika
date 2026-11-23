@@ -47,11 +47,11 @@
             "type": "Click"
         },
         "timeout": 40000,
-        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认", "演出_打开AUTO", "演出_开演"],
+        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认", "演出_打开AUTO", "演出_确认AUTO"],
         "max_hit": 4
     },
     "演出_打开AUTO": {
-        "desc": "编成页底部 AUTO 开关。用「OFF 态」当模板：勾上以后不再匹配，天然只点一次",
+        "desc": "编成页底部 AUTO 开关。用「OFF 态」当模板。⚠️ 实测这个开关的点击**不可靠**：本轮一次成功（l07 拍到 ON）、之后在旋钮/中央/标签三个位置点+滑都不生效。所以这里最多试 2 次就交给「确认AUTO」的 on_error 兜底，宁可少点也不要把流程卡死。根源待查（可试：live 内暂停菜单开 AUTO，或游戏内オートライブ设置）",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -61,11 +61,14 @@
             }
         },
         "action": {
-            "type": "Click"
+            "type": "Click",
+            "param": {
+                "target_offset": [22, 21, 0, 0]
+            }
         },
         "timeout": 20000,
-        "next": ["[JumpBack]公共_等待加载", "演出_打开AUTO", "演出_开演"],
-        "max_hit": 4
+        "next": ["[JumpBack]公共_等待加载", "演出_打开AUTO", "演出_确认AUTO"],
+        "max_hit": 2
     },
     "演出_开演": {
         "desc": "编成页右侧圆形播放按钮。点下去就开始演出（Live Bonus 由游戏按当前设置扣）。开演后由「等待结束」继续盯着：万一这一下被过渡动画吞了，那边还会把它当候选再点",
@@ -91,7 +94,14 @@
         },
         "rate_limit": 900,
         "timeout": 420000,
-        "next": ["演出_结算开场", "演出_结算", "演出_开演", "演出_打开AUTO", "[JumpBack]公共_主页锚点"],
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "演出_结算开场",
+            "演出_结算",
+            "演出_开演",
+            "演出_打开AUTO",
+            "公共_主页锚点"
+        ],
         "on_error": ["演出_点屏幕", "公共_失败"]
     },
     "演出_结算开场": {
@@ -140,6 +150,23 @@
         "rate_limit": 600,
         "timeout": 20000,
         "max_hit": 30,
-        "next": ["[JumpBack]公共_等待加载", "演出_结算", "[JumpBack]公共_回主页", "[JumpBack]公共_主页锚点"]
+        "next": ["[JumpBack]公共_等待加载", "演出_结算", "[JumpBack]公共_回主页", "公共_主页锚点"]
+    },
+    "演出_确认AUTO": {
+        "desc": "验证 AUTO 真的打开了：认 ON 态（粉底白钮 + ON，实测 0.354/1.000 分离）。确认了才允许点开演 —— 宁可多一步，也不要打一场 0 分的live",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["live/auto_on.png"],
+                "roi": [480, 620, 220, 90],
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "timeout": 8000,
+        "next": ["演出_开演", "演出_打开AUTO"],
+        "on_error": ["演出_开演"]
     }
 }
