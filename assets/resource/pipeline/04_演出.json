@@ -47,11 +47,11 @@
             "type": "Click"
         },
         "timeout": 40000,
-        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认", "演出_打开AUTO", "演出_确认AUTO"],
+        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认", "演出_开自动设置", "演出_打开AUTO", "演出_确认AUTO"],
         "max_hit": 4
     },
     "演出_打开AUTO": {
-        "desc": "编成页底部 AUTO 开关 —— **拖拽开关，点击无效**。手动用 tools/device.py swipe 530 665 620 665 700（= adb input swipe）能稳定左右切换并验证过；但在 pipeline 里同样是 adb 命令却还没生效（怀疑时序/重复触发）。max_hit 1：只试一次，失败就交给「确认AUTO」的 on_error 兜底去开演，避免把整条链卡死。TODO：定位 in-pipeline 差异",
+        "desc": "编成页底部 AUTO 开关 —— **拖拽开关，点击无效**。实测 Maa 的 Swipe/TouchDown-Move-Up 都不触发，只有 adb 的 input swipe 有效；而 Shell 动作默认 shell_timeout 可能太短（把 700ms 的滑动掐断），这里显式给 8000ms。⚠️ 命令里的设备像素坐标对应 1440x2560@420 预设（720 坐标 ×2），换预设要同步改",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -61,15 +61,17 @@
             }
         },
         "action": {
-            "type": "Shell",
+            "type": "TouchDown",
             "param": {
-                "cmd": "input swipe 1060 1330 1240 1330 700"
+                "target": [530, 665, 1, 1],
+                "contact": 0,
+                "pressure": 100
             }
         },
         "timeout": 20000,
-        "next": ["[JumpBack]公共_等待加载", "演出_打开AUTO", "演出_确认AUTO"],
+        "next": ["演出_拖到ON"],
         "max_hit": 1,
-        "rate_limit": 1500
+        "rate_limit": 600
     },
     "演出_开演": {
         "desc": "编成页右侧圆形播放按钮。点下去就开始演出（Live Bonus 由游戏按当前设置扣）。开演后由「等待结束」继续盯着：万一这一下被过渡动画吞了，那边还会把它当候选再点",
@@ -169,5 +171,66 @@
         "timeout": 8000,
         "next": ["演出_开演", "演出_打开AUTO"],
         "on_error": ["演出_开演"]
+    },
+    "演出_拖到ON": {
+        "desc": "把 AUTO 旋钮从左侧拖到右侧（中间步骤）",
+        "action": {
+            "type": "TouchMove",
+            "param": {
+                "target": [620, 665, 1, 1],
+                "contact": 0,
+                "pressure": 100
+            }
+        },
+        "next": ["演出_松手"]
+    },
+    "演出_松手": {
+        "desc": "抬起触点，完成拖拽",
+        "action": {
+            "type": "TouchUp",
+            "param": {
+                "contact": 0
+            }
+        },
+        "next": ["[JumpBack]公共_等待加载", "演出_确认AUTO"]
+    },
+    "演出_开自动设置": {
+        "desc": "编成页底部齿轮（AUTO 开关右侧），打开「オートライブ回数」对话框。这条路全是 Click（可靠通道）：齿轮 1 次有效、对话框決定 1 次有效，但**游戏是否因此把 AUTO 打开还不稳定**（同一操作一次 ON 一次没变），所以后面还要「确认AUTO」验证，失败了再退到拖拽路径",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["live/auto_off.png"],
+                "roi": [480, 620, 220, 90],
+                "threshold": 0.83
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [655, 665, 1, 1]
+            }
+        },
+        "timeout": 15000,
+        "max_hit": 2,
+        "next": ["[JumpBack]公共_等待加载", "演出_自动设置决定"]
+    },
+    "演出_自动设置决定": {
+        "desc": "「オートライブ回数」对话框 —— 用里面的两个单选项文案识别（标题「オートライブ回数」OCR 读不出来，实测 MISS；「ライブボーナスがなくなるまで」0.982 命中）。点右下「決定」= 保持「体力用完为止」+ 不勾任何消费道具，游戏会自动把 AUTO 打开",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["ライブボーナスがなくなるまで", "回数を指定"],
+                "roi": [100, 60, 760, 120]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [726, 638, 1, 1]
+            }
+        },
+        "timeout": 15000,
+        "max_hit": 2,
+        "next": ["[JumpBack]公共_等待加载", "演出_确认AUTO"]
     }
 }
