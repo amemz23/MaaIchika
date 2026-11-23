@@ -1,0 +1,229 @@
+# 开发手册
+
+环境搭建、工具链、架构约定。硬性规范见仓库根目录 [AGENTS.md](../../../AGENTS.md)，
+每个模板实测出来的分数基线见 [识别基线](./recognition-baseline.md)。
+
+## 1. 技术栈
+
+纯 Pipeline JSON 项目，没有自定义 agent。
+
+| 项         | 取值                                                          |
+| ---------- | ------------------------------------------------------------- |
+| 运行时     | [MaaFramework](https://github.com/MaaXYZ/MaaFramework) v5.16+ |
+| 接口协议   | Project Interface **V2**（`interface_version: 2`）            |
+| 控制器     | `Adb`，`display_short_side: 720`                              |
+| 坐标基准   | **1280×720**                                                  |
+| 无头运行   | `@maaxyz/maa-node` 5.16.x（`tools/run.mjs`）                  |
+| 图形客户端 | [MXU](https://github.com/MistEO/MXU)（可选，给人用）          |
+
+## 2. 环境
+
+### 2.1 依赖
+
+```bash
+# Python：截图/裁剪/校验/打包脚本用（需要 Pillow）
+pip install pillow
+
+# Node 依赖：maa-node（无头运行）、maa-tools（加载校验）、prettier
+npm install          # 或 pnpm install
+
+# OCR 模型（约 30MB，不入库）
+python tools/fetch_ocr.py
+```
+
+> **OCR 模型没装时，OCR 节点会静默不命中** —— 表现是"任务跑完了但什么都没做"，
+> 和节点写错极难区分。第一次跑之前务必确认 `assets/resource/model/ocr/` 里三个文件都在。
+
+### 2.2 设备
+
+设备必须是 **16:9**。MaaFramework 只按 `display_short_side` 等比缩放，不补偿宽高比：
+2560×1440 会缩成 1280×720（正好是坐标基准），而 2400×3392 的平板会缩成 1018×720，
+坐标和模板一起失效。
+
+```bash
+python tools/device.py info     # 看当前分辨率/宽高比
+python tools/device.py fix      # 刷成 16:9（竖屏原生平板 → 1440x2560@420）
+python tools/device.py check    # 跑任务前自检：比例 / 画布 / 方向
+python tools/device.py reset    # 用完还原物理分辨率
+```
+
+`wm size` 是临时覆盖，重启设备即失效。**竖屏原生设备要写竖着的宽高**（`1440x2560`），
+写反了横屏游戏会被强制竖屏 —— 这一点 `device.py fix` 会自动判断并交换，手填时要小心。
+
+### 2.3 两种跑法
+
+**A. 无头运行（开发用，推荐）**
+
+```bash
+node tools/run.mjs 任务_启动              # 跑一个任务入口
+node tools/run.mjs 任务_领礼包 任务_演出一场   # 一次连接跑多个
+node tools/run.mjs --list                 # 列出所有节点
+```
+
+它会打印每个节点的识别结果（命中/未命中、box、score、OCR 文本），并把识别可视化图
+落到 `debug/`。判定标准是三种：
+
+| 结果           | 含义                                                       |
+| -------------- | ---------------------------------------------------------- |
+| 完成（已验证） | 节点链落在 `公共_主页锚点` / `完成_*` 上                   |
+| 结束但未验证   | 流程走完了，但没到验证型终点 —— **等于没做成，要当失败看** |
+| 失败           | Maa 报失败                                                 |
+
+**B. MXU（给别人用）**
+
+```bash
+python tools/pack.py                 # assets -> install/
+# 把 mxu.exe 放进 install/，MaaFramework 的 bin/*.dll 与 share/MaaAgentBinary 放进 install/maafw/
+# 以管理员身份运行 install/mxu.exe
+```
+
+MXU 是单实例程序，已经在托盘里时再双击会直接退出（看起来像"闪一下没了"）。
+改了 pipeline 后要**完全退出 MXU 再重开**，点"重新加载"不清模板缓存。
+
+## 3. 目录结构
+
+```text
+assets/
+├── interface.json              控制器 / 资源包 / 任务入口 / 多语言
+├── resource/
+│   ├── default_pipeline.json   全局默认：rate_limit=300, pre/post_delay=0, timeout=15s
+│   ├── pipeline/               一界面一文件（00_公共 / 01_标题 / 02_礼物 / 03_任务 / 04_演出）
+│   ├── image/<界面>/            模板图，1280×720 基准
+│   └── model/ocr/              PPOCR 模型（不入库）
+└── locales/interface/          中英文案（扁平点号键）
+tools/
+├── device.py     设备：分辨率/截图/点击（坐标按 720 传入，内部换算）
+├── crop.py       按 tools/crops.json 裁模板 + 出对照图
+├── score.mjs     用 MaaFramework 给"模板 × 截图"打分
+├── analyze_scores.py  按标签统计正负样本，给建议阈值（--apply 写回 pipeline）
+├── probe.mjs     单点探针：一张图 + 一份识别参数，问框架看到了什么
+├── run.mjs       无头运行器
+├── check_json.py 结构自检
+├── pack.py       assets -> install
+└── fetch_ocr.py  拉 OCR 模型
+```
+
+## 4. 架构：状态机 + 验证型终止
+
+### 4.1 为什么不是"一条直线"
+
+MaaFramework 的 `next` 是**候选列表**：按顺序识别，命中第一个就执行它，然后走它自己的
+`next`。于是有两种典型坏味道：
+
+1. 把辅助节点（等加载、关弹窗）直接写进 `next` → 命中后走完它的 `next` 就结束，
+   主流程被吞掉。
+2. 每步都是"点一下 → 下一步"，只要有一次点击丢了，整条链就在"等一个不会出现的画面"
+   中耗到超时，最后**静默成功**结束。
+
+本项目用三条约定解决：
+
+- **辅助节点一律 `[JumpBack]` 引用 + `max_hit`**：做完回父节点重新判断。
+- **导航节点把自己放进 `next`**：点击丢了下一轮重点，点成功了画面就变了、自然不再命中。
+- **终点必须是验证型节点**（`公共_主页锚点`）：用"主页底部导航真的出现了"来证明任务做成。
+
+### 4.2 节点分工
+
+| 前缀     | 作用                                  | 例                                                             |
+| -------- | ------------------------------------- | -------------------------------------------------------------- |
+| `公共_`  | 任意界面可复用的辅助/状态             | `公共_等待加载`、`公共_关公告`、`公共_回主页`、`公共_主页锚点` |
+| `任务_`  | 任务入口，`interface.json` 的 `entry` | `任务_启动`、`任务_领礼包`、`任务_演出一场`                    |
+| 界面动作 | 具体界面的一个动作                    | `主页_进礼物箱`、`演出_开演`                                   |
+
+### 4.3 公共节点
+
+| 节点              | 识别                                | 动作          | 说明                                           |
+| ----------------- | ----------------------------------- | ------------- | ---------------------------------------------- |
+| `公共_等待加载`   | 右下角初音头像（模板）              | DoNothing     | `[JumpBack]` 回父节点轮询，等它消失            |
+| `公共_关公告`     | 面板右上角 X（模板 0.72）           | Click         | 同一 X 在不同面板上分数不同，阈值实测 0.787 起 |
+| `公共_Google登录` | OCR「使用 Google 账号登录」         | ClickKey BACK | 系统级 sheet，按返回键就过                     |
+| `公共_回主页`     | 左上角返回箭头**字形**（模板 0.80） | Click         | 自循环 + `max_hit 8`                           |
+| `公共_主页锚点`   | 底部导航「ガチャ」                  | DoNothing     | 验证型终止节点                                 |
+| `公共_失败`       | DirectHit                           | StopTask      | 让失败在日志里看得见                           |
+
+### 4.4 任务链
+
+| 任务            | 链                                                                             |
+| --------------- | ------------------------------------------------------------------------------ |
+| `任务_启动`     | StartApp → 标题页点击 → 主页锚点                                               |
+| `任务_领礼包`   | 主页 → 礼物箱 →（空：直接返回 / 有：一键领取 → 结算 OK 循环）→ 返回 → 主页锚点 |
+| `任务_回主页`   | 清弹窗/等加载 → 连点返回箭头 → 主页锚点                                        |
+| `任务_演出一场` | 主页 → LIVE → 单人 → 决定 → 打开 AUTO → 开演 → 等结束 → 逐页结算 → 主页锚点    |
+
+## 5. 写节点的流程
+
+1. **截图**：`python tools/device.py shot scratch/home.png`（同时存一份 raw）
+2. **裁模板**：在 `tools/crops.json` 里登记 `{name, src, box, out, note}`，
+   跑 `python tools/crop.py --sheet`，看 `scratch/sheet.png` 确认裁得对
+3. **写节点**：先填 `threshold: 0.8`
+4. **量阈值**：
+    ```bash
+    node tools/score.mjs --dir scratch/shots      # 给所有截图打分
+    python tools/analyze_scores.py                # 按 tools/labels.json 的标签算正负样本
+    python tools/analyze_scores.py --apply        # 把建议阈值写回 pipeline
+    ```
+    `gap = 正样本最低分 - 负样本最高分`，**gap < 0.1 就该换模板或换识别方式**，
+    而不是硬压阈值。
+5. **真机跑**：`node tools/run.mjs 任务_xxx`，看识别分数和节点链
+6. **自检**：`python tools/check_json.py` + `npm run check:maa` + `npm run format:check`
+
+## 6. 踩过的坑（都是真机撞出来的）
+
+### 6.1 主页左上角那个圆形按钮不是返回键
+
+左上角有个白色圆形的「世界/区域」按钮，形状和返回箭头几乎一样。用带圆底的截图当模板，
+在主页上会拿到 0.959 —— 于是"回主页"把区域菜单点开了。
+
+**解法**：模板只裁**箭头字形**，不带白色圆底。改完主页上是 0.515、真箭头上是 1.000。
+
+### 6.2 半透明/带特效的锚点会骗人
+
+「演出中」想用右下角 `AUTO LIVE` 胶囊当锚点，结果演出特效会盖住它 —— 实测最低只有 0.41，
+会在半场就误判"打完了"。
+
+**解法**：不认"进行中"，只认"结束信号"（LIVE CLEAR 的 OCR / 结算按钮的 OCR），
+中间整段用 `DirectHit + DoNothing` 空转等待。
+
+### 6.3 从旧项目抄来的 HSV 色带会永远命中
+
+旧项目的加载页是"中间一条深紫横带"，`ColorMatch(HSV, count: 120000)` 很好用。
+但换到现版本，同一套数值在标题页和主页上都能满命中 —— 于是"等待加载"变成永远成立，
+整条链卡在等待里。
+
+**解法**：`node tools/probe.mjs <截图> <参数>` 一测就知道。加载锚点改成认
+右下角初音头像的模板。
+
+### 6.4 点击丢了会卡死整条链
+
+刚 `StartApp` 拉起游戏时，画面可能还是上一次的残像；这时候点标题页是点不动的，
+而"标题页还在 → 是不是要点一下"这种判断不会自动重来。
+
+**解法**：导航节点的 `next` 里放上**它自己**。点成功了画面变，它自然不再命中；
+点丢了下一轮继续点。配 `max_hit` 当出口。
+
+### 6.5 `timeout` 挂错地方
+
+`timeout` 是**本节点 next 列表**的识别窗口。想等某个画面出现，要加在**它的前一个节点**上；
+加在自己身上只会让自己更早失败。
+
+### 6.6 别用 PowerShell 批量改 JSON
+
+`Set-Content -Encoding UTF8` 会把中文和引号写坏。批量改文件一律用 Python 读写 UTF-8。
+
+## 7. 调试
+
+| 想知道                   | 怎么查                                                          |
+| ------------------------ | --------------------------------------------------------------- |
+| 某个模板在这张图上得几分 | `node tools/probe.mjs <图> tools/probe/<参数>.json`             |
+| OCR 能不能读出这段字     | `node tools/probe.mjs --ocr <图> "[x,y,w,h]" "文本"`            |
+| 任务为什么卡住           | `node tools/run.mjs <入口>`，看最后一个 `next <-` 列表          |
+| 框架自己怎么看           | `debug/vision/*.jpg`（每轮每个候选都有一张）、`debug/maafw.log` |
+| 阈值靠不靠谱             | `python tools/analyze_scores.py` 的 gap 列                      |
+
+## 8. 提交前
+
+```bash
+python tools/check_json.py      # JSON / 引用 / 占位 / 环无出口 / i18n
+npm run check:maa               # 真实 MaaFramework 加载
+npm run format:check            # prettier --check
+node tools/run.mjs <改动涉及的入口>   # 真机，必须"完成（已验证）"
+```

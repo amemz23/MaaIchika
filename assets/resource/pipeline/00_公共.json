@@ -1,0 +1,92 @@
+{
+    "公共_等待加载": {
+        "desc": "加载中。锚点是右下角「初音头像 + 三个点」。next 故意留空：Maa 只在该节点 next 为空时才 [JumpBack] 回父节点，父节点重扫时会再命中它 —— 轮询就是这么来的。max_hit 300 × ~600ms 足够覆盖两分钟加载",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["common/loading_miku.png"],
+                "roi": [1100, 560, 180, 160],
+                "threshold": 0.71
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "rate_limit": 400,
+        "max_hit": 300,
+        "next": []
+    },
+    "公共_关公告": {
+        "desc": "公告 / 通知面板右上角的 X。直接点识别框中心，不写死坐标。阈值 0.72 是实测出来的：同一个 X 在「通知列表」面板上只有 0.787（另一面板 1.000），而别的画面的天花板是 0.604",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["common/notice_close.png"],
+                "roi": [1040, 0, 240, 130],
+                "threshold": 0.72
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "rate_limit": 400,
+        "max_hit": 3
+    },
+    "公共_Google登录": {
+        "desc": "Google Play 重新登录弹窗（系统级 sheet）。按 BACK 直接关掉，游戏会继续走自己的启动流程 —— 不需要真的登录",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["使用 Google 账号登录", "Google アカウントでログイン", "Sign in with Google"],
+                "roi": [260, 20, 760, 80]
+            }
+        },
+        "action": {
+            "type": "ClickKey",
+            "param": {
+                "keycode": [4]
+            }
+        },
+        "rate_limit": 500,
+        "max_hit": 2
+    },
+    "公共_回主页": {
+        "desc": "点左上角返回箭头。next 留空 → 点完 [JumpBack] 回父节点；父节点重扫时如果箭头还在就再点一次。max_hit 8 防止在点不动的界面上死循环",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["common/back_arrow.png"],
+                "roi": [0, 0, 140, 110],
+                "threshold": 0.8
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "rate_limit": 500,
+        "timeout": 2500,
+        "max_hit": 8,
+        "next": []
+    },
+    "公共_主页锚点": {
+        "desc": "主页锚点：底部导航「ガチャ」图标。这是所有任务的**成功终止节点** —— 只在这个元素真的出现时才结束，不用\"next 跑空=成功\"这种假象",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["home/nav_gacha.png"],
+                "roi": [300, 580, 260, 140],
+                "threshold": 0.69
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "next": []
+    },
+    "公共_失败": {
+        "desc": "兜底失败：明确杀掉任务，让前端和日志里看得见\"失败\"，而不是静默结束",
+        "action": {
+            "type": "StopTask"
+        }
+    }
+}

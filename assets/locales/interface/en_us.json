@@ -1,0 +1,21 @@
+{
+    "project.label": "MaaIchika",
+    "project.description": "Project SEKAI daily automation: claim rewards, read stories, spend live bonus",
+    "controller.Android.label": "Android device (USB debugging)",
+    "resource.Default.label": "Default resources",
+    "group.daily.label": "Daily",
+    "group.story.label": "Story",
+    "group.live.label": "Live",
+    "task.launch.label": "Launch game",
+    "task.launch.description": "Start the game, handle Google sign-in, notices and loading, land on home",
+    "task.gift.label": "Claim gifts",
+    "task.gift.description": "Home -> present box -> claim all -> confirm pages -> back to home; returns directly when empty",
+    "task.home.label": "Back to home",
+    "task.home.description": "Tap back repeatedly from any screen until the home bottom navigation shows up",
+    "task.live.label": "Play one live",
+    "task.live.description": "Home -> LIVE -> solo live -> enable AUTO -> start -> wait for the end -> clear result pages -> back home",
+    "task.settle.label": "Finish live result",
+    "task.settle.description": "Clear the result screens of a live that already ended: tap LIVE CLEAR, confirm each page, back home",
+    "task.enterlive.label": "Open live deck",
+    "task.enterlive.description": "Home -> LIVE -> solo -> decide, stop at the deck screen (no play, no live bonus spent)"
+}

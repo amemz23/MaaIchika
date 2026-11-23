@@ -1,0 +1,23 @@
+{
+    "name": "MaaIchika",
+    "version": "0.2.0",
+    "private": true,
+    "type": "module",
+    "description": "基于 MaaFramework 的 Project SEKAI 自动化项目",
+    "scripts": {
+        "format": "prettier --write \"**/*.{json,md,yml,yaml}\"",
+        "format:check": "prettier --check \"**/*.{json,md,yml,yaml}\"",
+        "check:json": "python tools/check_json.py",
+        "check:maa": "maa-tools check",
+        "run": "node tools/run.mjs",
+        "list": "node tools/run.mjs --list",
+        "score": "node tools/score.mjs --dir scratch/shots",
+        "analyze": "python tools/analyze_scores.py",
+        "shot": "python tools/device.py shot"
+    },
+    "devDependencies": {
+        "@maaxyz/maa-node": "5.16.1",
+        "@nekosu/maa-tools": "^1.4.0",
+        "prettier": "3.8.3"
+    }
+}

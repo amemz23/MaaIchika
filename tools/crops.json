@@ -1,0 +1,88 @@
+{
+    "crops": [
+        {
+            "name": "home_nav_live",
+            "src": "scratch/s10.png",
+            "box": [1100, 628, 100, 62],
+            "out": "home/nav_live.png",
+            "note": "主页底部导航「ライブ」图标，进演出链的起点"
+        },
+        {
+            "name": "back_arrow",
+            "src": "scratch/g01.png",
+            "box": [30, 32, 44, 24],
+            "out": "common/back_arrow.png",
+            "note": "子页面左上角返回箭头**字形**（刻意不带白圆底：主页左上角有个同样的白圆「世界」按钮，带底会误判 0.959）"
+        },
+        {
+            "name": "title_wordmark",
+            "src": "scratch/s04.png",
+            "box": [420, 435, 500, 55],
+            "out": "title/wordmark.png",
+            "note": "标题页 COLORFUL STAGE! 抄字（下方 TAP TO START 之上）"
+        },
+        {
+            "name": "loading_miku",
+            "src": "scratch/l08.png",
+            "box": [1165, 600, 95, 105],
+            "out": "common/loading_miku.png",
+            "note": "加载页右下角初音头像 + 三个点"
+        },
+        {
+            "name": "notice_close",
+            "src": "scratch/s08.png",
+            "box": [1128, 18, 42, 52],
+            "out": "common/notice_close.png",
+            "note": "公告/通知面板右上角 X"
+        },
+        {
+            "name": "home_nav_gacha",
+            "src": "scratch/s10.png",
+            "box": [333, 628, 116, 62],
+            "out": "home/nav_gacha.png",
+            "note": "主页底部导航「ガチャ」图标 + GACHA 字样，主页锚点"
+        },
+        {
+            "name": "home_gift",
+            "src": "scratch/s10.png",
+            "box": [1218, 116, 62, 64],
+            "out": "home/gift_icon.png",
+            "note": "主页右上角礼物盒"
+        },
+        {
+            "name": "live_solo_card",
+            "src": "scratch/l02.png",
+            "box": [628, 150, 180, 180],
+            "out": "live/solo_card.png",
+            "note": "LIVE 菜单「ひとりでライブ」卡片图标区域"
+        },
+        {
+            "name": "live_challenge_card",
+            "src": "scratch/l02.png",
+            "box": [612, 352, 210, 70],
+            "out": "live/challenge_card.png",
+            "note": "LIVE 菜单「チャレンジライブ」卡片上的图标 + 文字"
+        },
+        {
+            "name": "song_decide_btn",
+            "src": "scratch/l04.png",
+            "box": [930, 565, 208, 52],
+            "out": "live/decide_btn.png",
+            "note": "选曲页右下「決定」按钮（青色描边）"
+        },
+        {
+            "name": "deck_auto_off",
+            "src": "scratch/l06.png",
+            "box": [522, 642, 122, 42],
+            "out": "live/auto_off.png",
+            "note": "编成页底部 AUTO 开关（OFF 态），勾上后不再匹配"
+        },
+        {
+            "name": "deck_play_btn",
+            "src": "scratch/l06.png",
+            "box": [958, 498, 145, 140],
+            "out": "live/play_btn.png",
+            "note": "编成页右侧圆形播放按钮"
+        }
+    ]
+}

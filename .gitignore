@@ -1,0 +1,41 @@
+# ---- 运行时产物 ----
+# MaaFramework / MXU 运行日志与截图
+debug/
+logs/
+*.log
+
+# 本地打包安装目录（由 tools/pack.py 生成，不入库）
+install/
+dist/
+
+# ---- 依赖 ----
+node_modules/
+.npm-cache/
+.home/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ---- 开发暂存 ----
+# 临时截图、标注草稿
+scratch/
+tmp/
+*.tmp
+
+# ---- 大文件 / 外部二进制 ----
+# OCR 模型（约 30MB），用 python tools/fetch_ocr.py 拉
+assets/resource/model/
+# MaaFramework 自带的 maatouch / minitouch agent，从发行包 share/ 复制过来
+assets/resource/MaaAgentBinary/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# pnpm 的本地内容寻址存储（会在项目里留一份）
+.pnpm-store/
+

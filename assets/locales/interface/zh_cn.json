@@ -1,0 +1,21 @@
+{
+    "project.label": "MaaIchika",
+    "project.description": "Project SEKAI（世界计划）日常自动化：领奖励、读剧情、清体力",
+    "controller.Android.label": "安卓设备（USB 调试）",
+    "resource.Default.label": "默认资源",
+    "group.daily.label": "日常",
+    "group.story.label": "剧情",
+    "group.live.label": "演出",
+    "task.launch.label": "启动游戏",
+    "task.launch.description": "拉起游戏，处理 Google 登录弹窗、公告与加载，走到主页",
+    "task.gift.label": "领礼包",
+    "task.gift.description": "主页 → 礼物箱 → 一键领取 → 逐页确认 → 回主页；没有礼物时直接返回",
+    "task.home.label": "回主页",
+    "task.home.description": "从任意界面连点返回，直到看见主页底部导航",
+    "task.live.label": "演出一场",
+    "task.live.description": "主页 → LIVE → 单人演出 → 打开 AUTO → 开演 → 等打完 → 逐页结算 → 回主页",
+    "task.settle.label": "收尾结算",
+    "task.settle.description": "把停在结算界面的演出收尾：点掉 LIVE CLEAR、逐页确认、回到主页",
+    "task.enterlive.label": "进演出页",
+    "task.enterlive.description": "主页 → LIVE → 单人 → 决定，停在编成页（不点开演，不消耗 Live Bonus）"
+}

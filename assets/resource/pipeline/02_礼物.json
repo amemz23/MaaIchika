@@ -1,0 +1,79 @@
+{
+    "主页_进礼物箱": {
+        "desc": "主页右上角礼物盒。next 里带自己：点击丢了就下一轮重点，点进礼物页后图标被覆盖，自然不再匹配",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["home/gift_icon.png"],
+                "roi": [1170, 80, 110, 120],
+                "threshold": 0.77
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 30000,
+        "next": ["[JumpBack]公共_等待加载", "主页_进礼物箱", "礼物_空", "礼物_一键领取"],
+        "max_hit": 4
+    },
+    "礼物_空": {
+        "desc": "礼物箱为空：左下计数显示 0件，此时「一括受け取り」是灰的点不动。先判空再判领取，避免对灰色按钮空点",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["0件", "0 件"],
+                "roi": [860, 630, 200, 60]
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "next": ["礼物_返回"]
+    },
+    "礼物_一键领取": {
+        "desc": "礼物箱右下角「一括受け取り」。点识别框中心；max_hit 3 防止在按钮点不动时无限重试",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["一括受け取り", "一括受取", "Receive All"],
+                "roi": [990, 620, 260, 80]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "max_hit": 3,
+        "next": ["[JumpBack]公共_等待加载", "礼物_领取结果", "礼物_空", "礼物_一键领取", "礼物_返回"]
+    },
+    "礼物_领取结果": {
+        "desc": "领取结算弹窗（可能多页）。认 OK / 受け取る 后点掉，然后回到一键领取去处理下一页",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["OK", "受け取る", "確定", "確認"],
+                "roi": [400, 540, 480, 180]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "max_hit": 12,
+        "next": ["[JumpBack]公共_等待加载", "礼物_领取结果", "礼物_一键领取", "礼物_空", "礼物_返回"]
+    },
+    "礼物_返回": {
+        "desc": "礼物箱左上角返回箭头，回主页",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["common/back_arrow.png"],
+                "roi": [0, 0, 140, 110],
+                "threshold": 0.8
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": ["[JumpBack]公共_等待加载", "礼物_返回", "公共_主页锚点"],
+        "max_hit": 3
+    }
+}

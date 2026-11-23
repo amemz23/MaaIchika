@@ -1,0 +1,89 @@
+{
+    "interface_version": 2,
+    "name": "MaaIchika",
+    "label": "$project.label",
+    "version": "0.2.0",
+    "description": "$project.description",
+    "github": "https://github.com/your-name/MaaIchika",
+    "license": "misc/LICENSE.md",
+    "languages": {
+        "zh_cn": "locales/interface/zh_cn.json",
+        "en_us": "locales/interface/en_us.json"
+    },
+    "controller": [
+        {
+            "name": "Android",
+            "label": "$controller.Android.label",
+            "type": "Adb",
+            "display_short_side": 720
+        }
+    ],
+    "resource": [
+        {
+            "name": "Default",
+            "label": "$resource.Default.label",
+            "path": ["./resource"]
+        }
+    ],
+    "group": [
+        {
+            "name": "daily",
+            "label": "$group.daily.label",
+            "default_expand": true
+        },
+        {
+            "name": "story",
+            "label": "$group.story.label",
+            "default_expand": true
+        },
+        {
+            "name": "live",
+            "label": "$group.live.label",
+            "default_expand": true
+        }
+    ],
+    "task": [
+        {
+            "name": "启动",
+            "label": "$task.launch.label",
+            "entry": "任务_启动",
+            "description": "$task.launch.description",
+            "group": ["daily"]
+        },
+        {
+            "name": "领礼包",
+            "label": "$task.gift.label",
+            "entry": "任务_领礼包",
+            "description": "$task.gift.description",
+            "group": ["daily"]
+        },
+        {
+            "name": "回主页",
+            "label": "$task.home.label",
+            "entry": "任务_回主页",
+            "description": "$task.home.description",
+            "group": ["daily"]
+        },
+        {
+            "name": "演出一场",
+            "label": "$task.live.label",
+            "entry": "任务_演出一场",
+            "description": "$task.live.description",
+            "group": ["live"]
+        },
+        {
+            "name": "收尾结算",
+            "label": "\\.settle.label",
+            "entry": "任务_收尾结算",
+            "description": "\\.settle.description",
+            "group": ["live"]
+        },
+        {
+            "name": "进演出",
+            "label": "\\.enterlive.label",
+            "entry": "任务_进演出",
+            "description": "\\.enterlive.description",
+            "group": ["live"]
+        }
+    ]
+}

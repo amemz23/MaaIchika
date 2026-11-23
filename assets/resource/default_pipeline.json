@@ -1,0 +1,21 @@
+{
+    "Default": {
+        "rate_limit": 600,
+        "timeout": 15000,
+        "pre_delay": 0,
+        "post_delay": 0
+    },
+    "TemplateMatch": {
+        "recognition": "TemplateMatch",
+        "threshold": 0.8,
+        "method": 5
+    },
+    "ColorMatch": {
+        "recognition": "ColorMatch",
+        "method": 40
+    },
+    "OCR": {
+        "recognition": "OCR",
+        "threshold": 0.3
+    }
+}
