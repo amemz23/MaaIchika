@@ -6,7 +6,7 @@
             "param": {
                 "template": ["home/nav_live.png"],
                 "roi": [1060, 590, 200, 130],
-                "threshold": 0.8
+                "threshold": 0.72
             }
         },
         "action": {
@@ -23,7 +23,7 @@
             "param": {
                 "template": ["live/solo_card.png"],
                 "roi": [600, 120, 260, 240],
-                "threshold": 0.69
+                "threshold": 0.64
             }
         },
         "action": {
@@ -40,7 +40,7 @@
             "param": {
                 "template": ["live/decide_btn.png"],
                 "roi": [900, 540, 300, 120],
-                "threshold": 0.69
+                "threshold": 0.67
             }
         },
         "action": {
@@ -57,7 +57,7 @@
             "param": {
                 "template": ["live/auto_off.png"],
                 "roi": [480, 620, 220, 90],
-                "threshold": 0.83
+                "threshold": 0.78
             }
         },
         "action": {
@@ -74,7 +74,7 @@
             "param": {
                 "template": ["live/play_btn.png"],
                 "roi": [920, 460, 220, 200],
-                "threshold": 0.81
+                "threshold": 0.78
             }
         },
         "action": {

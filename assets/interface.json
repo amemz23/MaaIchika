@@ -84,6 +84,13 @@
             "entry": "任务_进演出",
             "description": "\\.enterlive.description",
             "group": ["live"]
+        },
+        {
+            "name": "过剧情",
+            "label": "\\.story.label",
+            "entry": "任务_过剧情",
+            "description": "\\.story.description",
+            "group": ["story"]
         }
     ]
 }

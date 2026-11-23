@@ -35,7 +35,13 @@ const args = parseArgs(process.argv.slice(2))
 // 从 crops.json 拿到模板清单（名字 -> 资源包内相对路径）
 function loadTemplates() {
     const spec = JSON.parse(readFileSync(path.join(ROOT, 'tools', 'crops.json'), 'utf8'))
-    return spec.crops.map((c) => ({ name: c.name, file: c.out.replaceAll('\\', '/'), note: c.note ?? '' }))
+    // roi 可选：给了就按节点实际的 ROI 打分，这样量出来的负样本天花板才是运行时的真实情况
+    return spec.crops.map((c) => ({
+        name: c.name,
+        file: c.out.replaceAll('\\', '/'),
+        note: c.note ?? '',
+        roi: c.roi ?? [0, 0, 1280, 720],
+    }))
 }
 
 function listImages() {
@@ -69,7 +75,7 @@ async function main() {
         for (const t of templates) {
             const job = tasker.post_recognition(
                 'TemplateMatch',
-                { template: [t.file], threshold: 0, roi: [0, 0, 1280, 720], order_by: 'Score' },
+                { template: [t.file], threshold: 0, roi: t.roi, order_by: 'Score' },
                 ab,
             )
             const status = await job.wait()

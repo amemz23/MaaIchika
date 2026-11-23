@@ -17,5 +17,7 @@
     "task.settle.label": "Finish live result",
     "task.settle.description": "Clear the result screens of a live that already ended: tap LIVE CLEAR, confirm each page, back home",
     "task.enterlive.label": "Open live deck",
-    "task.enterlive.description": "Home -> LIVE -> solo -> decide, stop at the deck screen (no play, no live bonus spent)"
+    "task.enterlive.description": "Home -> LIVE -> solo -> decide, stop at the deck screen (no play, no live bonus spent)",
+    "task.story.label": "Read stories",
+    "task.story.description": "Auto-read main/event stories: no skip, no fast-forward, plain tap-through until no unread chapters remain"
 }

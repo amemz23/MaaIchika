@@ -1,0 +1,15 @@
+[
+    {
+        "label": "未读角标 ColorMatch",
+        "type": "ColorMatch",
+        "param": {
+            "method": 40,
+            "lower": [158, 130, 170],
+            "upper": [179, 255, 255],
+            "roi": [640, 40, 640, 640],
+            "count": 60,
+            "connected": true,
+            "order_by": "Vertical"
+        }
+    }
+]

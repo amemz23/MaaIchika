@@ -6,7 +6,7 @@
             "param": {
                 "template": ["common/loading_miku.png"],
                 "roi": [1100, 560, 180, 160],
-                "threshold": 0.71
+                "threshold": 0.68
             }
         },
         "action": {
@@ -75,7 +75,7 @@
             "param": {
                 "template": ["home/nav_gacha.png"],
                 "roi": [300, 580, 260, 140],
-                "threshold": 0.69
+                "threshold": 0.66
             }
         },
         "action": {

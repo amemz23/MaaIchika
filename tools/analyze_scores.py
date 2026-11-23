@@ -88,23 +88,25 @@ def main():
         rel = path_of.get(name)
         if not rel:
             continue
+        if gap < 0.10:
+            # 判别力不足时**不要**动阈值：拿 max_neg + 0.03 会写出 >1.0 的阈值（永远不命中），
+            # 或者写出贴着负样本的值（到处误判）。这种情况该换模板，不是调数字。
+            print(f"[skip] {name}: gap={gap:.3f} 太小，先换模板/缩小 roi，不动阈值")
+            continue
+        # 取值：在正样本最低分下方留 0.05 余量，同时不超过正负中点
+        recommended = min(min_pos - MARGIN, (min_pos + max_neg) / 2)
+        recommended = max(0.50, min(0.95, recommended))
         for file in PIPELINE.glob("*.json"):
             text = file.read_text(encoding="utf-8")
             if f'"template": ["{rel}"]' not in text:
                 continue
-            node_suggested = suggested if gap >= 0.10 else round(max_neg + 0.03, 2)
             pattern = re.compile(
                 r'("template": \["' + re.escape(rel) + r'"\],\s*\n\s*"roi": \[[^\]]*\],\s*\n\s*"threshold": )([0-9.]+)'
             )
-            new_text, n = pattern.subn(lambda m: m.group(1) + f"{node_suggested:.2f}", text)
-            new_text = re.sub(
-                r'("template": "' + re.escape(rel) + r'",\s*\n\s*"roi": \[[^\]]*\],\s*\n\s*"threshold": )([0-9.]+)',
-                lambda m: m.group(1) + f"{node_suggested:.2f}",
-                new_text,
-            )
+            new_text, n = pattern.subn(lambda m: m.group(1) + f"{recommended:.2f}", text)
             if n and new_text != text:
                 file.write_text(new_text, encoding="utf-8", newline="\n")
-                print(f"[apply] {file.name}: {name} threshold -> {node_suggested:.2f}")
+                print(f"[apply] {file.name}: {name} threshold -> {recommended:.2f}")
                 applied += 1
     print(f"[apply] 共更新 {applied} 处")
 

@@ -1,0 +1,22 @@
+[
+    {
+        "label": "nav_story on c00",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["home/nav_story.png"],
+            "threshold": 0,
+            "roi": [740, 590, 180, 130],
+            "order_by": "Score"
+        }
+    },
+    {
+        "label": "nav_gacha on c00",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["home/nav_gacha.png"],
+            "threshold": 0,
+            "roi": [300, 580, 260, 140],
+            "order_by": "Score"
+        }
+    }
+]

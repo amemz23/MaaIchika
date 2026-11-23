@@ -62,7 +62,8 @@ async function main() {
         const best = obj?.best ?? null
         const box = Array.isArray(best?.box) ? best.box.join(',') : '-'
         console.log(
-            `${job.label} @ ${path.basename(job.image)}: ${status.succeeded ? 'HIT' : 'MISS'} ` +
+            // 注意：OCR / ColorMatch 的 status 成功**不等于**命中 —— 要看有没有被选中的结果
+            `${job.label} @ ${path.basename(job.image)}: ${best ? 'HIT' : 'MISS'} ` +
                 `box=[${box}]` +
                 (best?.count !== undefined ? ` count=${best.count}` : '') +
                 (best?.score !== undefined ? ` score=${best.score.toFixed(3)}` : '') +

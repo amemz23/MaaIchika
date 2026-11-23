@@ -1,0 +1,14 @@
+[
+    {
+        "label": "letterbox",
+        "type": "ColorMatch",
+        "param": {
+            "method": 6,
+            "lower": [0],
+            "upper": [16],
+            "roi": [120, 20, 1040, 100],
+            "count": 60000,
+            "connected": true
+        }
+    }
+]

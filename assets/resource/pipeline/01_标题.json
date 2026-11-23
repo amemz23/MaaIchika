@@ -6,7 +6,7 @@
             "param": {
                 "template": ["title/wordmark.png"],
                 "roi": [380, 400, 540, 140],
-                "threshold": 0.85
+                "threshold": 0.65
             }
         },
         "action": {

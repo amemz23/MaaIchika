@@ -6,7 +6,7 @@
             "param": {
                 "template": ["home/gift_icon.png"],
                 "roi": [1170, 80, 110, 120],
-                "threshold": 0.77
+                "threshold": 0.68
             }
         },
         "action": {
