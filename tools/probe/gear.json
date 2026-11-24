@@ -1,0 +1,12 @@
+[
+    {
+        "label": "gear-solo",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["live/deck_gear.png"],
+            "threshold": 0,
+            "roi": [600, 600, 240, 110],
+            "order_by": "Score"
+        }
+    }
+]
