@@ -84,6 +84,24 @@ def main():
                     if tbody.get("max_hit") is None:
                         problems.append(f"[回跳无上限] {where}.{field}: [JumpBack]{target} 没有 max_hit")
 
+        # 2b. 引用「next 为空的处理器」却没写 [JumpBack] —— 这会直接把整条链掐断。
+        #     这一条是本项目踩过三次的坑（演出_阶段面板 / 公共_点一下 / 公共_点一下排序），
+        #     对应 MaaEnd 的原则：辅助节点一律 [JumpBack]，例外（验证型终止节点）必须显式豁免。
+        for field in ("next", "on_error"):
+            for ref in body.get(field) or []:
+                if not isinstance(ref, str) or ref.startswith("[JumpBack]") or ref.startswith("[Anchor]"):
+                    continue
+                target = strip_attr(ref)
+                if target not in nodes:
+                    continue
+                if target in TERMINALS or target.startswith(TERMINAL_PREFIXES):
+                    continue  # 终止节点本来就必须普通引用
+                if not (nodes[target][1].get("next") or []):
+                    problems.append(
+                        f"[漏写 JumpBack] {where}.{field}: {ref} 的 next 为空（它是个处理器），"
+                        f"普通引用会让整条链在这里结束；应该写成 [JumpBack]{target}"
+                    )
+
         # 3. 候选全 miss 且无 on_error
         if nxt and not errs:
             reco_types = {
@@ -96,7 +114,16 @@ def main():
                 for r in reco_types.values()
             ) and not (set(nxt) & TERMINALS)
             flow_critical = name.startswith(("任务_", "故事_"))
-            if all_soft and flow_critical and len(nxt) <= 3:
+            # 只要被任何父节点用 [JumpBack] 引用过，它就是「处理器」：做完会回父节点，不会让链静默结束
+            # （它自己的 next 里常带自重试，所以不能要求"全部引用都是 JumpBack"）
+            only_jumpback = any(
+                r.startswith("[JumpBack]")
+                for pbody in (nodes[p][1] for p in parents.get(name, ()))
+                for field in ("next", "on_error")
+                for r in (pbody.get(field) or [])
+                if isinstance(r, str) and strip_attr(r) == name
+            )
+            if all_soft and flow_critical and len(nxt) <= 3 and not only_jumpback:
                 problems.append(
                     f"[可能断链] {where}: next 只有 {len(nxt)} 个候选且都没有兜底（全 miss 时链会静默结束、没有 on_error）"
                 )
