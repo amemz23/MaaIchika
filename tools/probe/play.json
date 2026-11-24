@@ -1,0 +1,12 @@
+[
+    {
+        "label": "play_btn",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["live/play_btn.png"],
+            "threshold": 0,
+            "roi": [920, 460, 220, 200],
+            "order_by": "Score"
+        }
+    }
+]
