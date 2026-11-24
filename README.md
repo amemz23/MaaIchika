@@ -246,4 +246,5 @@ install/                 打包产物（不入库）
 - [MaaFramework](https://github.com/MaaXYZ/MaaFramework) —— 识别与动作框架
 - [MaaEnd](https://github.com/MaaEnd/MaaEnd) —— 同框架项目，pipeline 写法参考
 - [MXU](https://github.com/MistEO/MXU) —— 图形客户端
+- [从 MaaEnd 抄来的约定](docs/zh_cn/developers/maaend-conventions.md)：节点写法对齐了哪些、哪些故意不抄
 - [开发手册](docs/zh_cn/developers/development.md) / [识别基线](docs/zh_cn/developers/recognition-baseline.md)
