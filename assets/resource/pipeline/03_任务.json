@@ -117,6 +117,7 @@
         },
         "timeout": 240000,
         "next": [
+            "故事_本集结束",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
             "[JumpBack]公共_追加数据",
