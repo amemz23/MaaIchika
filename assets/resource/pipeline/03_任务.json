@@ -9,6 +9,7 @@
         },
         "timeout": 900000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
@@ -28,6 +29,7 @@
         },
         "timeout": 180000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
@@ -46,6 +48,7 @@
         },
         "timeout": 60000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
             "[JumpBack]公共_追加数据",
@@ -63,6 +66,7 @@
         },
         "timeout": 420000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
@@ -82,6 +86,7 @@
         },
         "timeout": 120000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]演出_阶段面板",
             "演出_结算开场",
             "演出_结算",
@@ -98,6 +103,7 @@
         },
         "timeout": 300000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
@@ -117,6 +123,7 @@
         },
         "timeout": 240000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "故事_本集结束",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",
@@ -136,6 +143,7 @@
         },
         "timeout": 900000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "挑战_今日已结束",
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
@@ -156,6 +164,7 @@
         },
         "timeout": 5400000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
             "[JumpBack]公共_下载中",

@@ -48,6 +48,7 @@
         },
         "timeout": 40000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "公共_体力为0",
             "演出_选曲确认",
@@ -106,6 +107,7 @@
         "rate_limit": 900,
         "timeout": 420000,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "演出_结算开场",
             "[JumpBack]演出_阶段面板",
@@ -163,6 +165,7 @@
         "timeout": 12000,
         "max_hit": 30,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "[JumpBack]演出_阶段面板",
             "演出_结算",
