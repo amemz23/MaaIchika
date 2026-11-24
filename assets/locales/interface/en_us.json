@@ -31,5 +31,7 @@
     "task.restore.label": "Restore resolution",
     "task.restore.description": "Undo the 16:9 wm size/density override (cleanup; run device.py fix before other tasks)",
     "task.setres.label": "Set resolution",
-    "task.setres.description": "Force 16:9 (1440x2560@420) and close the game; then run Launch to start at the new size"
+    "task.setres.description": "Force 16:9 (1440x2560@420) and close the game; then run Launch to start at the new size",
+    "task.farmloop.label": "Farm all stamina",
+    "task.farmloop.description": "Play lives until no live bonus remains, then go home"
 }

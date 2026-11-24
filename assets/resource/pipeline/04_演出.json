@@ -4,8 +4,15 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["home/nav_live.png"],
-                "roi": [1060, 590, 200, 130],
+                "template": [
+                    "home/nav_live.png"
+                ],
+                "roi": [
+                    1060,
+                    590,
+                    200,
+                    130
+                ],
                 "threshold": 0.72
             }
         },
@@ -13,7 +20,11 @@
             "type": "Click"
         },
         "timeout": 30000,
-        "next": ["[JumpBack]公共_等待加载", "主页_进演出", "演出_进单人"],
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "主页_进演出",
+            "演出_进单人"
+        ],
         "max_hit": 4
     },
     "演出_进单人": {
@@ -21,8 +32,15 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/solo_card.png"],
-                "roi": [600, 120, 260, 240],
+                "template": [
+                    "live/solo_card.png"
+                ],
+                "roi": [
+                    600,
+                    120,
+                    260,
+                    240
+                ],
                 "threshold": 0.64
             }
         },
@@ -30,7 +48,11 @@
             "type": "Click"
         },
         "timeout": 30000,
-        "next": ["[JumpBack]公共_等待加载", "演出_进单人", "演出_选曲确认"],
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "演出_进单人",
+            "演出_选曲确认"
+        ],
         "max_hit": 4
     },
     "演出_选曲确认": {
@@ -38,8 +60,15 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/decide_btn.png"],
-                "roi": [900, 540, 300, 120],
+                "template": [
+                    "live/decide_btn.png"
+                ],
+                "roi": [
+                    900,
+                    540,
+                    300,
+                    120
+                ],
                 "threshold": 0.67
             }
         },
@@ -63,32 +92,56 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/auto_off.png"],
-                "roi": [480, 620, 220, 90],
+                "template": [
+                    "live/auto_off.png"
+                ],
+                "roi": [
+                    480,
+                    620,
+                    220,
+                    90
+                ],
                 "threshold": 0.78
             }
         },
         "action": {
             "type": "TouchDown",
             "param": {
-                "target": [530, 665, 1, 1],
+                "target": [
+                    530,
+                    665,
+                    1,
+                    1
+                ],
                 "contact": 0,
                 "pressure": 100
             }
         },
         "timeout": 20000,
-        "next": ["公共_体力为0", "演出_拖到ON"],
+        "next": [
+            "公共_体力为0",
+            "演出_拖到ON"
+        ],
         "max_hit": 6,
         "rate_limit": 600,
-        "on_error": ["演出_开演"]
+        "on_error": [
+            "演出_开演"
+        ]
     },
     "演出_开演": {
         "desc": "编成页右侧圆形播放按钮。**阈值 0.90 是有意的**：亮着的按钮实测 0.939~1.000，而体力为 0 时按钮是灰的、只有 0.614 —— 0.90 只匹配「点得动」的状态，不会对着灰按钮空点。next 带自己（点击被动画吞时重试）与 体力为0（没体力就优雅结束）",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/play_btn.png"],
-                "roi": [920, 460, 220, 200],
+                "template": [
+                    "live/play_btn.png"
+                ],
+                "roi": [
+                    920,
+                    460,
+                    220,
+                    200
+                ],
                 "threshold": 0.9
             }
         },
@@ -96,7 +149,13 @@
             "type": "Click"
         },
         "timeout": 30000,
-        "next": ["挑战_今日已结束", "公共_体力为0", "[JumpBack]公共_等待加载", "演出_开演", "演出_等待结束"],
+        "next": [
+            "挑战_今日已结束",
+            "公共_体力为0",
+            "[JumpBack]公共_等待加载",
+            "演出_开演",
+            "演出_等待结束"
+        ],
         "max_hit": 8
     },
     "演出_等待结束": {
@@ -116,25 +175,47 @@
             "演出_打开AUTO",
             "公共_主页锚点"
         ],
-        "on_error": ["演出_点屏幕", "公共_失败"]
+        "on_error": [
+            "演出_点屏幕",
+            "公共_失败"
+        ]
     },
     "演出_结算开场": {
         "desc": "演出结束画面。两种都要认：正常结束是「LIVE CLEAR!」，中途放弃/未通过是「LIVE FAILED...」（实测两者都盖在 RESULT 上、都是点一下继续）。之前只认 CLEAR，遇到 FAILED 链路就断在这里。roi 必须盖住这行大字（y≈250-410）",
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["LIVE CLEAR", "LIVE FAILED", "LIVEクリア", "LIVE クリア"],
-                "roi": [60, 180, 1000, 340]
+                "expected": [
+                    "LIVE CLEAR",
+                    "LIVE FAILED",
+                    "LIVEクリア",
+                    "LIVE クリア"
+                ],
+                "roi": [
+                    60,
+                    180,
+                    1000,
+                    340
+                ]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [640, 400, 1, 1]
+                "target": [
+                    640,
+                    400,
+                    1,
+                    1
+                ]
             }
         },
         "timeout": 45000,
-        "next": ["[JumpBack]公共_等待加载", "演出_结算开场", "演出_结算"],
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "演出_结算开场",
+            "演出_结算"
+        ],
         "max_hit": 16,
         "rate_limit": 1000
     },
@@ -143,19 +224,36 @@
         "action": {
             "type": "Click",
             "param": {
-                "target": [640, 400, 1, 1]
+                "target": [
+                    640,
+                    400,
+                    1,
+                    1
+                ]
             }
         },
         "max_hit": 6,
-        "next": ["演出_结算", "演出_结算开场"]
+        "next": [
+            "演出_结算",
+            "演出_结算开场"
+        ]
     },
     "演出_结算": {
         "desc": "结算多页：底部「次へ」/「OK」/「画面を閉じる」逐页点掉。只认这几个文案 —— 绝不点「通信開始」（上传成绩）。on_error 落到「演出_点屏幕」兜底：万一冒出一块没被枚举到的「点一下继续」浮层，点中间也能过，不会整条任务失败",
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["次へ", "OK", "画面を閉じる"],
-                "roi": [0, 600, 1280, 120]
+                "expected": [
+                    "次へ",
+                    "OK",
+                    "画面を閉じる"
+                ],
+                "roi": [
+                    0,
+                    600,
+                    1280,
+                    120
+                ]
             }
         },
         "action": {
@@ -173,15 +271,25 @@
             "[JumpBack]公共_回主页",
             "公共_主页锚点"
         ],
-        "on_error": ["演出_点屏幕", "公共_失败"]
+        "on_error": [
+            "演出_点屏幕",
+            "公共_失败"
+        ]
     },
     "演出_确认AUTO": {
         "desc": "验证 AUTO 真的打开了：认 ON 态模板（粉底白钮 + ON，实测 OFF 态只有 0.354、ON 态 1.000）。next 只有「确认之后才走的 演出_开演」；on_error 走「没确认成功就去补救的 演出_打开AUTO（拖拽）」——这样 AUTO 没开就不会开演（之前 next 里直接放着开演，验证形同虚设）。",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/auto_on.png"],
-                "roi": [480, 620, 220, 90],
+                "template": [
+                    "live/auto_on.png"
+                ],
+                "roi": [
+                    480,
+                    620,
+                    220,
+                    90
+                ],
                 "threshold": 0.85
             }
         },
@@ -189,20 +297,33 @@
             "type": "DoNothing"
         },
         "timeout": 8000,
-        "next": ["挑战_今日已结束", "公共_体力为0", "演出_开演"],
-        "on_error": ["演出_打开AUTO"]
+        "next": [
+            "挑战_今日已结束",
+            "公共_体力为0",
+            "演出_开演"
+        ],
+        "on_error": [
+            "演出_打开AUTO"
+        ]
     },
     "演出_拖到ON": {
         "desc": "AUTO 拖拽的中间步骤（TouchMove 到右侧）。【允许盲点】理由：它是「TouchDown → TouchMove → TouchUp」手势链的一部分，起点由 演出_打开AUTO 的 OFF 态识别保证，终点固定，本身不需要再识别；整条拖拽是否成功由 演出_确认AUTO 认 ON 态验证。",
         "action": {
             "type": "TouchMove",
             "param": {
-                "target": [620, 665, 1, 1],
+                "target": [
+                    620,
+                    665,
+                    1,
+                    1
+                ],
                 "contact": 0,
                 "pressure": 100
             }
         },
-        "next": ["演出_松手"]
+        "next": [
+            "演出_松手"
+        ]
     },
     "演出_松手": {
         "desc": "AUTO 拖拽的最后一步（TouchUp）。【允许盲点】理由：同 演出_拖到ON —— 手指已经按下，必须抬起，没有识别与否的余地；结果由 演出_确认AUTO 验证。",
@@ -212,35 +333,64 @@
                 "contact": 0
             }
         },
-        "next": ["[JumpBack]公共_等待加载", "演出_确认AUTO"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "演出_确认AUTO"
+        ]
     },
     "演出_开自动设置": {
         "desc": "编成页点 AUTO 开关右下方那个齿轮/设置区（单人场实测 (655,665) 能打开「オートライブ回数」对话框），按「決定」后游戏会把 AUTO 打开。注意：**不要用齿轮模板定位** —— 挑战场的齿轮模板在单人场上会在 (659,622) 误命中（0.929）但那位置点不动；挑战场改走拖拽路径。 next 末尾放 演出_开演 当兜底：只要回到编成页就一定能推进到开演（可能 0 分，但不会卡死）。",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/auto_off.png"],
-                "roi": [480, 620, 220, 90],
+                "template": [
+                    "live/auto_off.png"
+                ],
+                "roi": [
+                    480,
+                    620,
+                    220,
+                    90
+                ],
                 "threshold": 0.83
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [655, 665, 1, 1]
+                "target": [
+                    655,
+                    665,
+                    1,
+                    1
+                ]
             }
         },
         "timeout": 15000,
         "max_hit": 6,
-        "next": ["公共_体力为0", "[JumpBack]公共_等待加载", "演出_自动设置决定", "演出_确认AUTO", "演出_开演"]
+        "next": [
+            "公共_体力为0",
+            "[JumpBack]公共_等待加载",
+            "演出_自动设置决定",
+            "演出_确认AUTO",
+            "演出_开演"
+        ]
     },
     "演出_自动设置决定": {
         "desc": "「オートライブ回数」对话框右下「決定」（默认「ライブボーナスがなくなるまで」、消费道具全不勾 —— 不碰水晶和饮料）。**用 OCR 文案定位而不是写死坐标**：OCR 实测「決定」0.930 在 (726,639)，点识别框中心比固定坐标稳。 next 带自己（点击被动画吞时重试）+ 确认AUTO + 开演兜底",
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["決定", "决定"],
-                "roi": [560, 580, 440, 130]
+                "expected": [
+                    "決定",
+                    "决定"
+                ],
+                "roi": [
+                    560,
+                    580,
+                    440,
+                    130
+                ]
             }
         },
         "action": {
@@ -248,15 +398,28 @@
         },
         "timeout": 15000,
         "max_hit": 4,
-        "next": ["公共_体力为0", "[JumpBack]公共_等待加载", "演出_自动设置决定", "演出_确认AUTO", "演出_开演"]
+        "next": [
+            "公共_体力为0",
+            "[JumpBack]公共_等待加载",
+            "演出_自动设置决定",
+            "演出_确认AUTO",
+            "演出_开演"
+        ]
     },
     "演出_进挑战": {
         "desc": "LIVE 菜单「チャレンジライブ」卡片（每日一次、不消耗 Live Bonus）",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/challenge_card.png"],
-                "roi": [600, 330, 260, 110],
+                "template": [
+                    "live/challenge_card.png"
+                ],
+                "roi": [
+                    600,
+                    330,
+                    260,
+                    110
+                ],
                 "threshold": 0.8
             }
         },
@@ -265,53 +428,94 @@
         },
         "timeout": 30000,
         "max_hit": 4,
-        "next": ["[JumpBack]公共_等待加载", "演出_进挑战", "挑战_选人"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "演出_进挑战",
+            "挑战_选人"
+        ]
     },
     "挑战_选人": {
         "desc": "挑战页「キャラクターを選択してください」。每个单位页里**只有一个角色可选**（其余的锁图标 = 不可选）。这里先切到 Leo/need 单位页（本账号可用的角色天馬咲希在这一页）",
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["キャラクターを選択"],
-                "roi": [300, 620, 700, 90]
+                "expected": [
+                    "キャラクターを選択"
+                ],
+                "roi": [
+                    300,
+                    620,
+                    700,
+                    90
+                ]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [75, 215, 1, 1]
+                "target": [
+                    75,
+                    215,
+                    1,
+                    1
+                ]
             }
         },
         "timeout": 20000,
         "max_hit": 3,
-        "next": ["[JumpBack]公共_等待加载", "挑战_选角"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "挑战_选角"
+        ]
     },
     "挑战_选角": {
         "desc": "点可用的那个角色（本账号：Leo/need 的天馬咲希，位置实测 640,300）。**这一条是账号相关的**：换账号或换周要重新确认哪个角色没上锁、在哪个位置。点完会进选曲页，后续完全复用单人演出的链",
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["キャラクターを選択"],
-                "roi": [300, 620, 700, 90]
+                "expected": [
+                    "キャラクターを選択"
+                ],
+                "roi": [
+                    300,
+                    620,
+                    700,
+                    90
+                ]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [640, 300, 1, 1]
+                "target": [
+                    640,
+                    300,
+                    1,
+                    1
+                ]
             }
         },
         "timeout": 20000,
         "max_hit": 3,
-        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "演出_选曲确认"
+        ]
     },
     "主页_进演出挑战": {
         "desc": "主页底部导航「ライブ」，专供每日挑战用（和 主页_进演出 识别相同，但 next 只走向挑战卡片，避免被单人卡片抢走）",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["home/nav_live.png"],
-                "roi": [1060, 590, 200, 130],
+                "template": [
+                    "home/nav_live.png"
+                ],
+                "roi": [
+                    1060,
+                    590,
+                    200,
+                    130
+                ],
                 "threshold": 0.72
             }
         },
@@ -320,7 +524,11 @@
         },
         "timeout": 30000,
         "max_hit": 4,
-        "next": ["[JumpBack]公共_等待加载", "主页_进演出挑战", "演出_进挑战"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "主页_进演出挑战",
+            "演出_进挑战"
+        ]
     },
     "演出_阶段面板": {
         "desc": "演出结算里那些「点一下继续」的浮层：今週のチャレンジスタンプ / チャレンジステージランクUP / プレイヤーランクUP / イベントストーリー解放。共同点是盖在 RESULT 上、没有次へ/OK 按钮、点屏幕中间就推进。next 留空 + [JumpBack] 引用，父节点重扫时会被依次点掉",
@@ -332,8 +540,15 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": ["チャレンジスタンプ"],
-                                "roi": [200, 150, 900, 150]
+                                "expected": [
+                                    "チャレンジスタンプ"
+                                ],
+                                "roi": [
+                                    200,
+                                    150,
+                                    900,
+                                    150
+                                ]
                             }
                         }
                     },
@@ -341,8 +556,16 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": ["チャレンジステージランクUP", "チャレンジステージランク"],
-                                "roi": [100, 180, 1100, 150]
+                                "expected": [
+                                    "チャレンジステージランクUP",
+                                    "チャレンジステージランク"
+                                ],
+                                "roi": [
+                                    100,
+                                    180,
+                                    1100,
+                                    150
+                                ]
                             }
                         }
                     },
@@ -350,8 +573,16 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": ["プレイヤーランクUP", "プレイヤーランク"],
-                                "roi": [100, 150, 1100, 150]
+                                "expected": [
+                                    "プレイヤーランクUP",
+                                    "プレイヤーランク"
+                                ],
+                                "roi": [
+                                    100,
+                                    150,
+                                    1100,
+                                    150
+                                ]
                             }
                         }
                     },
@@ -359,8 +590,15 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": ["解放されました"],
-                                "roi": [100, 300, 1100, 200]
+                                "expected": [
+                                    "解放されました"
+                                ],
+                                "roi": [
+                                    100,
+                                    300,
+                                    1100,
+                                    200
+                                ]
                             }
                         }
                     }
@@ -370,7 +608,12 @@
         "action": {
             "type": "Click",
             "param": {
-                "target": [640, 400, 1, 1]
+                "target": [
+                    640,
+                    400,
+                    1,
+                    1
+                ]
             }
         },
         "timeout": 15000,
@@ -382,8 +625,15 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["home/nav_live.png"],
-                "roi": [1060, 590, 200, 130],
+                "template": [
+                    "home/nav_live.png"
+                ],
+                "roi": [
+                    1060,
+                    590,
+                    200,
+                    130
+                ],
                 "threshold": 0.72
             }
         },
@@ -392,15 +642,26 @@
         },
         "timeout": 30000,
         "max_hit": 4,
-        "next": ["[JumpBack]公共_等待加载", "主页_进演出_清火", "清火_进单人"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "主页_进演出_清火",
+            "清火_进单人"
+        ]
     },
     "清火_进单人": {
         "desc": "LIVE 菜单「ひとりでライブ」（清火分支）",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/solo_card.png"],
-                "roi": [600, 120, 260, 240],
+                "template": [
+                    "live/solo_card.png"
+                ],
+                "roi": [
+                    600,
+                    120,
+                    260,
+                    240
+                ],
                 "threshold": 0.69
             }
         },
@@ -409,15 +670,26 @@
         },
         "timeout": 30000,
         "max_hit": 4,
-        "next": ["[JumpBack]公共_等待加载", "清火_进单人", "清火_选曲"]
+        "next": [
+            "[JumpBack]公共_等待加载",
+            "清火_进单人",
+            "清火_选曲"
+        ]
     },
     "清火_选曲": {
-        "desc": "选曲页「決定」（清火分支）。之后：体力为 0 → 优雅结束；AUTO 已开 → 直接开演；AUTO 关着 → 齿轮+決定打开。候选顺序和 演出_选曲确认 一致 —— 少写一个就会在「AUTO 已经开着」的情况下断链（实测踩过）。",
+        "desc": "选曲页「決定」（清火分支）。之后：体力为 0 → 优雅结束；AUTO 已开 → 直接开演；AUTO 关着 → 齿轮+決定打开。候选顺序和 演出_选曲确认 一致 —— 少写一个就会在「AUTO 已经开着」的情况下断链（实测踩过）。 循环版：确认AUTO/开演都指向 `清火_循环*` 那一套。",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": ["live/decide_btn.png"],
-                "roi": [900, 540, 300, 120],
+                "template": [
+                    "live/decide_btn.png"
+                ],
+                "roi": [
+                    900,
+                    540,
+                    300,
+                    120
+                ],
                 "threshold": 0.69
             }
         },
@@ -427,12 +699,13 @@
         "timeout": 40000,
         "max_hit": 4,
         "next": [
+            "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "公共_体力为0",
             "清火_选曲",
             "演出_开自动设置",
-            "演出_确认AUTO",
-            "演出_开演"
+            "清火_循环确认AUTO",
+            "清火_循环开演"
         ]
     },
     "挑战_今日已结束": {
@@ -440,14 +713,190 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["本日分は終了", "本日分は終わり"],
-                "roi": [850, 480, 400, 90]
+                "expected": [
+                    "本日分は終了",
+                    "本日分は終わり"
+                ],
+                "roi": [
+                    850,
+                    480,
+                    400,
+                    90
+                ]
             }
         },
         "action": {
             "type": "DoNothing"
         },
         "timeout": 15000,
-        "next": ["[JumpBack]公共_回主页", "公共_主页锚点"]
+        "next": [
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ]
+    },
+    "清火_循环确认AUTO": {
+        "desc": "循环版：验证 AUTO 已开。next 只放「确认之后才走的开演」；on_error 走拖拽补救（演出_打开AUTO）。",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "live/auto_on.png"
+                ],
+                "roi": [
+                    480,
+                    620,
+                    220,
+                    90
+                ],
+                "threshold": 0.85
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "timeout": 8000,
+        "next": [
+            "清火_循环开演"
+        ],
+        "on_error": [
+            "演出_打开AUTO"
+        ],
+        "max_hit": 40
+    },
+    "清火_循环开演": {
+        "desc": "循环版：编成页右侧圆形播放按钮（阈值 0.90 只认「点得动」的亮按钮）。点完进等待；体力为 0 时按钮是灰的（模板 0.614）不会命中，由 公共_体力为0 收尾。",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "live/play_btn.png"
+                ],
+                "roi": [
+                    920,
+                    460,
+                    220,
+                    200
+                ],
+                "threshold": 0.9
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 30000,
+        "next": [
+            "公共_体力为0",
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "清火_循环开演",
+            "清火_循环等待"
+        ],
+        "max_hit": 40
+    },
+    "清火_循环等待": {
+        "desc": "循环版：演出期间的等待（DirectHit 什么也不做，只看 next 有没有结束信号）。可以看到 LIVE CLEAR / LIVE FAILED / 结算按钮 / 两块挑战面板 / 体力为 0。",
+        "action": {
+            "type": "DoNothing"
+        },
+        "rate_limit": 900,
+        "timeout": 420000,
+        "next": [
+            "公共_体力为0",
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "清火_循环结算开场",
+            "演出_阶段面板",
+            "清火_循环结算",
+            "清火_循环开演",
+            "公共_主页锚点"
+        ],
+        "on_error": [
+            "演出_点屏幕",
+            "公共_失败"
+        ],
+        "max_hit": 400
+    },
+    "清火_循环结算开场": {
+        "desc": "循环版：演出结束画面（LIVE CLEAR / LIVE FAILED 都认，OCR 实测 1.000）。点一下继续 → 逐页结算。",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "LIVE CLEAR",
+                    "LIVE FAILED",
+                    "LIVEクリア",
+                    "LIVE クリア"
+                ],
+                "roi": [
+                    60,
+                    180,
+                    1000,
+                    340
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    640,
+                    400,
+                    1,
+                    1
+                ]
+            }
+        },
+        "timeout": 45000,
+        "next": [
+            "公共_体力为0",
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "演出_阶段面板",
+            "公共_点一下",
+            "清火_循环结算开场",
+            "清火_循环结算"
+        ],
+        "max_hit": 40,
+        "rate_limit": 1000
+    },
+    "清火_循环结算": {
+        "desc": "循环版：结算逐页点掉（次へ / OK / 画面を閉じる）。点完回到编成页 → `清火_循环开演` 再打一场；如果体力已经为 0（顶部 0/25），`公共_体力为0` 会先命中并回主页收工。",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": [
+                    "次へ",
+                    "OK",
+                    "画面を閉じる"
+                ],
+                "roi": [
+                    0,
+                    600,
+                    1280,
+                    120
+                ]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "rate_limit": 600,
+        "timeout": 12000,
+        "max_hit": 40,
+        "next": [
+            "公共_体力为0",
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "演出_阶段面板",
+            "公共_点一下",
+            "清火_循环结算",
+            "清火_循环开演",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ],
+        "on_error": [
+            "演出_点屏幕",
+            "公共_失败"
+        ]
     }
 }

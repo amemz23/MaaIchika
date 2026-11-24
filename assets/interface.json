@@ -162,6 +162,21 @@
             "group": [
                 "daily"
             ]
+        },
+        {
+            "name": "清火循环",
+            "label": "$task.farmloop.label",
+            "entry": "任务_清火循环",
+            "description": "$task.farmloop.description",
+            "group": [
+                "live"
+            ]
         }
-    ]
+    ],
+    "agent": {
+        "child_exec": "node/node.exe",
+        "child_args": [
+            "agent/main.mjs"
+        ]
+    }
 }

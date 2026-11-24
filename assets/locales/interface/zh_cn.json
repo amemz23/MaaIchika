@@ -31,5 +31,7 @@
     "task.restore.label": "恢复分辨率",
     "task.restore.description": "撤销 16:9 的 wm size/density 覆盖，回到物理分辨率（收尾用；之后要跑别的任务需先 device.py fix）",
     "task.setres.label": "设置分辨率",
-    "task.setres.description": "把设备设成 16:9（1440x2560@420）并关掉游戏；之后跑「启动游戏」即按新分辨率运行。画布不是 1280×720 时先跑这个"
+    "task.setres.description": "把设备设成 16:9（1440x2560@420）并关掉游戏；之后跑「启动游戏」即按新分辨率运行。画布不是 1280×720 时先跑这个",
+    "task.farmloop.label": "清火循环",
+    "task.farmloop.description": "一条任务把体力打光：反复开演+结算，直到体力 0/25 才回主页"
 }
