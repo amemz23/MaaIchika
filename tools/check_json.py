@@ -16,6 +16,7 @@
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -265,6 +266,32 @@ def check_locales(interface, errors):
     return len(per_lang)
 
 
+def check_mangled_refs(interface, errors):
+    """抓「看起来是 i18n 引用、但没被当前缀 $」的字符串。
+
+    真实踩过的坑：用 PowerShell 的 `\\$task.settle.label` 拼字符串时，`\\$t` 被当成 `\\t`（制表符），
+    `$task.settle.label` 变成 `\\<TAB>ask.settle.label`，在界面上显示成 `\\.settle.label`。
+    这种值不以 `$` 开头，`collect_i18n_keys` 收不到，所以旧检查会静默通过 —— MXU 就把键名画在按钮上。
+    """
+    dotted = re.compile(r"^[\\\s]*\.?[\w.]*\.(label|description)$")
+
+    def walk(value, path):
+        if isinstance(value, str):
+            if "\t" in value or dotted.match(value.strip()):
+                errors.append(
+                    f"interface.json{path}: 值 {value!r} 像是被转义吃坏的 i18n 引用"
+                    f"（正确写法是 $task.xxx.label）；检查是不是用 shell 拼字符串写进来的"
+                )
+        elif isinstance(value, dict):
+            for k, v in value.items():
+                walk(v, f"{path}.{k}")
+        elif isinstance(value, list):
+            for i, v in enumerate(value):
+                walk(v, f"{path}[{i}]")
+
+    walk(interface, "")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--quiet", action="store_true")
@@ -291,6 +318,7 @@ def main():
         check_blind_actions(nodes, errors, warnings)
         check_loops(nodes, errors, warnings)
         languages = check_locales(interface, errors)
+        check_mangled_refs(interface, errors)
     else:
         errors.append(f"未找到 {INTERFACE.relative_to(ROOT)}")
 

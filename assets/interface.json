@@ -73,37 +73,37 @@
         },
         {
             "name": "收尾结算",
-            "label": "\\.settle.label",
+            "label": "$task.settle.label",
             "entry": "任务_收尾结算",
-            "description": "\\.settle.description",
+            "description": "$task.settle.description",
             "group": ["live"]
         },
         {
             "name": "进演出",
-            "label": "\\.enterlive.label",
+            "label": "$task.enterlive.label",
             "entry": "任务_进演出",
-            "description": "\\.enterlive.description",
+            "description": "$task.enterlive.description",
             "group": ["live"]
         },
         {
             "name": "过剧情",
-            "label": "\\.story.label",
+            "label": "$task.story.label",
             "entry": "任务_过剧情",
-            "description": "\\.story.description",
+            "description": "$task.story.description",
             "group": ["story"]
         },
         {
             "name": "每日挑战",
-            "label": "\\.challenge.label",
+            "label": "$task.challenge.label",
             "entry": "任务_每日挑战",
-            "description": "\\.challenge.description",
+            "description": "$task.challenge.description",
             "group": ["live"]
         },
         {
             "name": "清火",
-            "label": "\\.farm.label",
+            "label": "$task.farm.label",
             "entry": "任务_清火",
-            "description": "\\.farm.description",
+            "description": "$task.farm.description",
             "group": ["live"]
         }
     ]
