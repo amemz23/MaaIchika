@@ -120,6 +120,13 @@
             "entry": "任务_任务奖励",
             "description": "$task.mission.description",
             "group": ["daily"]
+        },
+        {
+            "name": "恢复分辨率",
+            "label": "$task.restore.label",
+            "entry": "任务_恢复分辨率",
+            "description": "$task.restore.description",
+            "group": ["daily"]
         }
     ]
 }

@@ -27,5 +27,7 @@
     "task.sidestory.label": "Read side stories (WIP)",
     "task.sidestory.description": "Side stories: reaches the character select, but the list is a 前編/後編 card grid with level locks — picking an unlocked card is not implemented",
     "task.mission.label": "Claim missions",
-    "task.mission.description": "Home -> mission icon -> claim all -> confirm -> home"
+    "task.mission.description": "Home -> mission icon -> claim all -> confirm -> home",
+    "task.restore.label": "Restore resolution",
+    "task.restore.description": "Undo the 16:9 wm size/density override (cleanup; run device.py fix before other tasks)"
 }

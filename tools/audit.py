@@ -29,6 +29,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PIPE = ROOT / "assets" / "resource" / "pipeline"
 TERMINALS = {"公共_主页锚点", "公共_失败"}
+# `tools/run.mjs` 也把「完成_*」当验证型终止节点（用于不落在主页上的收尾，比如恢复分辨率），审计口径保持一致
+TERMINAL_PREFIXES = ("完成_",)
 # 每轮循环都会重复使用的"工具型"节点：max_hit 必须够大
 LOOPY_HINTS = ("勾连读", "选语音", "选未读", "点一下", "关公告", "等待加载", "回主页", "通信错误", "盲点推进")
 
@@ -106,7 +108,7 @@ def main():
             for f in ("next", "on_error")
             for r in (body2[1].get(f) or [])
         )
-        if not nxt and name not in TERMINALS and not is_jumpback_helper:
+        if not nxt and name not in TERMINALS and not name.startswith(TERMINAL_PREFIXES) and not is_jumpback_helper:
             action = (body.get("action") or {}).get("type")
             if action not in ("StopTask",):
                 problems.append(f"[空 next] {where}: next 为空且不是验证型终止节点（{action}）")

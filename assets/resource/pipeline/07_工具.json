@@ -1,0 +1,31 @@
+{
+    "工具_恢复分辨率_尺寸": {
+        "desc": "撤销 `wm size` 的覆盖（`tools/device.py fix` 设的 16:9）。用 Shell 动作直接跑 adb 命令，和 `公共_Google登录` 用 `input keyevent 4` 是同一套机制。DirectHit 是有意的：这一步不看画面。**注意：跑完分辨率就变了，之后要再做别的任务得先 `python tools/device.py fix` 回到 16:9。**",
+        "action": {
+            "type": "Shell",
+            "param": {
+                "cmd": "wm size reset"
+            }
+        },
+        "timeout": 20000,
+        "next": ["工具_恢复分辨率_密度"]
+    },
+    "工具_恢复分辨率_密度": {
+        "desc": "撤销 `wm density` 的覆盖。和上一步一样是 DirectHit，纯执行命令。",
+        "action": {
+            "type": "Shell",
+            "param": {
+                "cmd": "wm density reset"
+            }
+        },
+        "timeout": 20000,
+        "next": ["完成_分辨率已恢复"]
+    },
+    "完成_分辨率已恢复": {
+        "desc": "验证型终止节点：分辨率已经还原成物理分辨率（用 `python tools/device.py check` 可复核）。",
+        "action": {
+            "type": "DoNothing"
+        },
+        "next": []
+    }
+}

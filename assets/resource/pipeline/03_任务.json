@@ -195,5 +195,13 @@
         "timeout": 300000,
         "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_等待加载", "主页_进任务"],
         "on_error": ["[JumpBack]公共_回主页", "公共_失败"]
+    },
+    "任务_恢复分辨率": {
+        "desc": "入口：把设备分辨率还原成物理分辨率（撤销 `wm size` / `wm density` 覆盖）。这是**收尾用**的任务 —— 跑完之后游戏画布不再是 1280×720 基准，其他任务都会失准，要恢复项目运行得先 `python tools/device.py fix`。",
+        "action": {
+            "type": "DoNothing"
+        },
+        "timeout": 120000,
+        "next": ["工具_恢复分辨率_尺寸"]
     }
 }
