@@ -102,6 +102,10 @@ python tools/audit.py
 node tools/check_interface.mjs
 npx maa-tools check                     # 需要联网下运行时
 python tools/pack.py                    # assets -> install
+
+# 发 Release（给最终用户的整包）
+python tools/fetch_licenses.py          # 一次性：LGPL/GPL/AGPL/Node/MaaAssets 许可证全文 -> licenses/
+python tools/package_release.py         # -> dist/MaaIchika-v<版本>-win-x64.zip + dist/RELEASE-NOTES.md
 ```
 
 - Python：本机 DSH 运行时自带的那个（有 PIL/numpy、**没有 cv2**）；装过 Pillow 的普通 Python 也行

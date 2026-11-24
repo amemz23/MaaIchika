@@ -106,6 +106,22 @@ node tools/run.mjs --list              # 看所有节点
 
 改了 pipeline 之后要**完全退出 MXU 再重开**（点"重新加载"不清模板缓存）。
 
+### 三、发 Release 给别人（一键包）
+
+```bash
+python tools/fetch_licenses.py       # 一次性：把 LGPL/GPL/AGPL/Node/MaaAssets 许可证全文抓到 licenses/
+python tools/pack.py                 # assets -> install
+python tools/bundle_runtime.py       # node + agent -> install
+python tools/package_release.py      # -> dist/MaaIchika-v<版本>-win-x64.zip（约 110MB）
+```
+
+包里带了 MaaFramework（LGPL-3.0）、MaaAgentBinary 与 MXU（AGPL-3.0）、Node（MIT+第三方）、
+PPOCR 模型（MIT），所以 `package_release.py` 会自动做三件合规的事：把 `licenses/` 全量塞进去、
+生成 `SOURCE-OFFER.md`（每个组件版本 + 源码地址 + "未修改、可直接替换"）、生成贴 GitHub 用的
+`dist/RELEASE-NOTES.md`。**`install/cache`、`config`、`debug` 这些 MXU 跑出来的用户数据不会被打包。**
+
+不想背 MXU 那份 AGPL 就用 `python tools/package_release.py --no-mxu`。
+
 ## 为什么要先把设备刷成 16:9
 
 MaaFramework 只按短边等比缩放，**不补偿宽高比**：

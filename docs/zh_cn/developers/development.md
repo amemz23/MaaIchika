@@ -106,6 +106,9 @@ tools/
 ├── run.mjs       无头运行器
 ├── check_json.py 结构自检
 ├── pack.py       assets -> install
+├── bundle_runtime.py  把 node 运行时 + agent 依赖塞进 install/（用户不用自己装 Node）
+├── fetch_licenses.py  抓 LGPL/GPL/AGPL/Node/MaaAssets 许可证全文到 licenses/
+├── package_release.py 打合规 Release 包（白名单挑文件 + licenses/ + SOURCE-OFFER.md + RELEASE-NOTES）
 └── fetch_ocr.py  拉 OCR 模型
 ```
 

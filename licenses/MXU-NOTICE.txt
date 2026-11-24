@@ -1,0 +1,12 @@
+MXU 声明
+=========
+
+本发布包内附带的 `mxu.exe` 来自 MaaXYZ/MXU，授权为 **AGPL-3.0**（全文见同目录
+`AGPL-3.0.txt`）。
+
+- 上游：https://github.com/MaaXYZ/MXU
+- 本项目**未修改** MXU，只是原样打包，方便用户开箱使用。
+- 你可以用自己编译/下载的 mxu.exe 直接替换它。
+- MXU 的源码由上游提供：https://github.com/MaaXYZ/MXU （tag / 发行版见其 Releases）。
+
+MaaIchika 只提供 `interface.json` 与 `resource/` 资源包，MXU 只是图形外壳。

@@ -18,8 +18,17 @@
 | `@nekosu/maa-tools`                                                                | 未声明授权   | 开发期可选的官方校验（CI 里 `continue-on-error`）；不随任何产物分发              |
 
 > ⚠️ `tools/pack.py` + `tools/bundle_runtime.py` 产出的 `install/` 目录里**会包含** MaaFramework 的
-> DLL 和 Node 运行时。**如果把这个目录打成 Release 发布**，就得同时提供这些项目的许可证文本与
-> 源码获取方式（LGPL §4 要求允许使用者替换该库）。最省事的做法是 Release 只发 `assets/` 与本仓库代码。
+> DLL、MaaAgentBinary、MXU 与 Node 运行时。**把这个目录打成 Release 发布是完全可以的**，前提是
+> 随包带上许可证全文与源码获取方式 —— 这件事已经做成脚本：
+>
+> ```bash
+> python tools/fetch_licenses.py       # 许可证全文 -> licenses/（LGPL-3.0 / GPL-3.0 / AGPL-3.0 / Node / MaaAssets）
+> python tools/package_release.py      # -> dist/MaaIchika-v<版本>-win-x64.zip（自带 licenses/ + SOURCE-OFFER.md）
+> ```
+>
+> `SOURCE-OFFER.md` 会写清每个第三方组件的**版本、授权、源码地址、以及"未修改、可直接替换"**——
+> 这就是 LGPL §4 / AGPL §6 要的那份声明。想完全避开 copyleft 义务可以用 `--no-mxu`，
+> 或者干脆只发 `assets/` 与本仓库代码（用户自己下运行时）。
 
 ## 游戏素材（版权不属于本项目）
 

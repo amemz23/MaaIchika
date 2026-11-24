@@ -12,6 +12,7 @@ MXU 只认「它自己所在目录」下的 interface.json + resource/ + locales
 import argparse
 import filecmp
 import shutil
+import stat
 import sys
 from pathlib import Path
 
@@ -76,6 +77,9 @@ def main():
         dst = DST / item
         if src.is_file():
             try:
+                # 目标带只读属性时 copy2 会 PermissionError（install/icon.png 从素材导出时就带）
+                if dst.exists():
+                    dst.chmod(stat.S_IWRITE)
                 shutil.copy2(src, dst)
             except PermissionError:
                 # MXU 正开着并把文件占用住（实测 icon.png 会被它周期性读锁），
