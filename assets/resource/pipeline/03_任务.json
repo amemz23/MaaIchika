@@ -7,10 +7,12 @@
                 "package": "com.sega.pjsekai"
             }
         },
-        "timeout": 300000,
+        "timeout": 900000,
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
             "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
@@ -28,6 +30,8 @@
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
             "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "主页_进礼物箱",
@@ -43,6 +47,8 @@
         "timeout": 60000,
         "next": [
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
             "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
@@ -59,6 +65,8 @@
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
             "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
@@ -74,7 +82,14 @@
             "type": "DoNothing"
         },
         "timeout": 120000,
-        "next": ["演出_结算开场", "演出_结算", "[JumpBack]公共_回主页", "公共_主页锚点"],
+        "next": [
+            "演出_结算开场",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
+            "演出_结算",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ],
         "on_error": ["公共_失败"]
     },
     "任务_进演出": {
@@ -86,6 +101,8 @@
         "next": [
             "[JumpBack]公共_Google登录",
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
             "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",
@@ -102,6 +119,8 @@
         "timeout": 240000,
         "next": [
             "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
             "[JumpBack]公共_领登录奖励",
             "[JumpBack]公共_关公告",
             "[JumpBack]公共_回主页",

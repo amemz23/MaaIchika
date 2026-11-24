@@ -1,6 +1,6 @@
 {
     "标题_点击开始": {
-        "desc": "标题页：认 «Project SEKAI / COLORFUL STAGE!» 彩色字标。next 带自己：点击丢了下一轮再点。timeout 放到 180s —— 点进游戏后还有「プロジェクトセカイによろこそ」和 TIPS 两屏没有识别锚点，只能靠这里一直等主页出现",
+        "desc": "标题页：认 «Project SEKAI / COLORFUL STAGE!» 彩色字标。next 带自己：点击丢了下一轮再点。点进游戏后会出现「欢迎/TIPS/追加数据下载/登录奖励/公告」这些过渡与弹窗，这里全部列进 next，靠 timeout 一直等到主页锚点出现",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -15,8 +15,17 @@
                 "target": [640, 620, 1, 1]
             }
         },
-        "timeout": 180000,
+        "timeout": 600000,
         "max_hit": 6,
-        "next": ["[JumpBack]公共_等待加载", "[JumpBack]公共_关公告", "标题_点击开始", "公共_主页锚点"]
+        "next": [
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_Google登录",
+            "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_追加数据",
+            "[JumpBack]公共_关公告",
+            "[JumpBack]公共_领登录奖励",
+            "标题_点击开始",
+            "公共_主页锚点"
+        ]
     }
 }

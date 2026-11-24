@@ -33,12 +33,12 @@
         "max_hit": 3
     },
     "公共_Google登录": {
-        "desc": "Google Play 重新登录弹窗（com.google.android.gms 的 ConsentActivity，独立系统 Activity、受保护窗口）。它收不到 Maa 注入的按键 —— ClickKey 实测**动作直接失败**，所以这里改用 Shell 动作跑原始 adb input keyevent 4（与手动按返回等效，实测能关掉）。max_hit 4 兜住偶发吞键",
+        "desc": "Google Play 重新登录弹窗（com.google.android.gms 的 ConsentActivity，独立系统 Activity、受保护窗口）。**它会在启动过程中第二次出现**，而且垂直位置会上下偏（实测同一弹窗的标题在 y≈57 和 y≈114 都出现过），所以 ROI 放宽到 [180,16,920,240]。收不到注入按键 → 用 Shell 跑 adb input keyevent 4",
         "recognition": {
             "type": "OCR",
             "param": {
                 "expected": ["使用 Google 账号登录", "Google アカウントでログイン", "Sign in with Google"],
-                "roi": [260, 20, 760, 80]
+                "roi": [180, 16, 920, 240]
             }
         },
         "action": {
@@ -106,6 +106,41 @@
         },
         "timeout": 15000,
         "max_hit": 12,
+        "next": []
+    },
+    "公共_追加数据": {
+        "desc": "新一天/更新后启动会问「追加データ264MBをダウンロードしますか？」。**必须点「ダウンロード」** —— 实测点「キャンセル」会让游戏退回标题页，形成「标题点击 → 追加数据 → Google 登录 → 标题」的死循环，永远进不去。下载的只是追加素材（MV/语音等），不影响账号与货币",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["追加データ", "ダウンロードします"],
+                "roi": [200, 250, 900, 140]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [759, 539, 1, 1]
+            }
+        },
+        "timeout": 30000,
+        "max_hit": 2,
+        "next": []
+    },
+    "公共_下载中": {
+        "desc": "追加数据下载进度页（「データダウンロード中 12.61%」）。命中就什么也不做，[JumpBack] 回父节点轮询 —— 等的是它消失。max_hit 600 × ~1.5s ≈ 15 分钟上限",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["データダウンロード中"],
+                "roi": [0, 600, 700, 80]
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "rate_limit": 1500,
+        "max_hit": 600,
         "next": []
     }
 }
