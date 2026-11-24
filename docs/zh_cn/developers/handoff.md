@@ -1,11 +1,12 @@
 # 上下文衔接（给下一个会话）
 
-> 写于 2026-11-24。接手时先读 `AGENTS.md`（硬规矩）和开发手册，本文只写**当前进度 + 下一步 + 容易再踩的坑**。
+> 写于 2026-11-24（同日更新：接上了 agent 的 `ScreenFrozen`）。接手时先读 `AGENTS.md`（硬规矩）和开发手册，本文只写**当前进度 + 下一步 + 容易再踩的坑**。
 
 ## 一句话状态
 
 日服 PJSK 的 MaaFramework 自动化，**15 个任务入口、14 个已验证**（真机 `run.mjs` 报「完成（已验证）」）。
 所有静态检查全绿：`check_json` / `check_params` / `audit` / `check_interface` / `maa-tools check` / prettier。
+**唯一的 Custom 识别 `ScreenFrozen`（画面卡死检测）已上线并通过真机验证**，只差 MXU 侧验一次 agent 子进程。
 
 ## 已做通的任务（真机验证过的链路）
 
@@ -24,9 +25,14 @@
 
 ## 下一步（按优先级）
 
-1. **接上 agent 的 `ScreenFrozen`** —— node 运行时 + agent 已经 bundle 进 `install/`（`node/node.exe`、`agent/main.mjs`、`agent/node_modules/@maaxyz/maa-node`，共约 89MB），`interface.json` 有 `agent` 字段，`ScreenFrozen`（连续 N 次截图字节相同 → 命中）已实现。**但还没有任何节点引用它**。
-    - 待做：给 `标题_点击开始`、`演出_等待结束` 的 `on_error` 加一个 `Custom` 识别节点；在 MXU 里验证 agent 子进程能被拉起（runner 只能验进程内注册）。
-    - 细节见 `docs/zh_cn/developers/agent-plan.md`（含 d.ts 里查到的 API 事实）。
+1. **MXU 里验一次 agent 子进程**（唯一剩下的收尾）—— 代码侧已经做完了：`agent/custom.mjs`
+   是唯一实现，`agent/main.mjs` 和 `tools/run.mjs`（进程内注册）共用它；`标题_画面卡死` /
+   `演出_画面卡死` / `清火_循环画面卡死` 已挂到对应等待节点的 `on_error`，命中后走
+   `公共_卡死_重启游戏` → `公共_卡死_启动游戏` 冷启动恢复。**真机已经验过**：静态画面 3 帧命中、
+   动态画面 12 轮不误命中、`on_error` 轮询窗口够用、恢复链 62 秒跑到主页锚点。
+   待做：`python tools/bundle_runtime.py && python tools/pack.py` 之后用 `install/mxu.exe` 跑一次，
+   确认 agent 子进程能被拉起（runner 只能验进程内注册这条路）。机制与坑见
+   `docs/zh_cn/developers/agent-plan.md`。
 
 2. **通用按钮库**（MaaEnd 的第二层，收益最大）—— 现在每个弹窗都手写 OCR（`次へ`/`OK`/`受け取る`/`確定`/`確認`/`はい`/`閉じる`）。要做的是收 5~6 个**视觉类型**模板（白底/黄底确认、圆环/对号、X 关闭），每个都必须做正负样本打分（阈值 gap ≥ 0.1），然后先替换 `演出_结算` 和 `任务_奖励_确认` 验证。**需要人工看图裁模板。**
 
@@ -49,6 +55,9 @@
 - **语音弹窗两种版式**，新版「ボイスなし」在左半边（ROI `[340,460,600,150]`）。
 - **结算浮层**：`チャレンジスタンプ` / `チャレンジステージランクUP` / `プレイヤーランクUP` / 「本日分は終了しました。」共用一个 `演出_阶段面板`（点画面中间）。
 - **`wm size` 覆盖会被 OPPO 清掉**，清掉后画布变 1018×720、所有 ROI 错位（表现为"卡在标题页点不动"）。先跑 `python tools/device.py check`，错了就跑 `任务_设置分辨率`。
+- **`on_error` 不是"只识别一次"**：框架用**父节点的 `timeout` + `rate_limit`** 反复轮询 `on_error` 候选。
+  实测 4s/800ms 的父节点下，`on_error` 里的 Custom 识别被调了 3 次（第 3 次命中 `times: 3`）。
+  → 但同一轮里 DirectHit 会先命中，所以 Custom 想攒帧就**必须**是 `on_error` 里唯一候选。
 
 ## 框架层面的坑（每个都踩过）
 
@@ -91,12 +100,16 @@ python tools/pack.py                    # assets -> install
 ## 交付物布局
 
 ```
-assets/          interface.json（含 icon / agent 字段）、pipeline/（36 个 JSON / 93 节点）、image/、locales/
-agent/main.mjs   ScreenFrozen / ScreenMoved（maa.Server，用 @maaxyz/maa-node/server 入口）
+assets/          interface.json（含 icon / agent 字段）、pipeline/（36 个 JSON / 98 节点）、image/、locales/
+agent/custom.mjs ScreenFrozen / ScreenMoved 的**唯一实现**（run.mjs 进程内注册也用这一份）
+agent/main.mjs   agent 子进程入口（maa.Server + socket id，用 @maaxyz/maa-node/server 入口）
 install/         打包产物（不入库）：interface.json + icon.png + resource + locales + node/ + agent/
 tools/           device / crop / score / analyze_scores / probe / run / report / check_json / check_params / audit / pack / bundle_runtime / mxu_add_daily_config
 docs/zh_cn/developers/   开发手册、识别基线、maaend-conventions.md、agent-plan.md、本文
 ```
+
+`check_json.py` 里新增了一条永久检查：pipeline 里写的 `custom_recognition` / `custom_action` 名字
+必须在 `agent/*.mjs` 里注册过 —— 名字写错时 Maa 加载期不报错，运行期就是永远 MISS。
 
 MXU 侧配置：`python tools/mxu_add_daily_config.py` 会写入一个「清日常」队列
 （设置分辨率 → 启动 → 领礼包 → 任务奖励 → 每日挑战 → 清火）。**MXU 退出时会写回配置，所以要先关 MXU 再跑**。

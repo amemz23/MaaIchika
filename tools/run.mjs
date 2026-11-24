@@ -11,11 +11,19 @@
  *   node tools/run.mjs --list                   只加载资源并列出节点
  *   node tools/run.mjs 启动 --address 127.0.0.1:16384
  *   node tools/run.mjs 启动 --no-draw           不落可视化图（快一点）
+ *
+ * 它会在本进程内注册 `agent/custom.mjs` 的自定义识别/动作（ScreenFrozen 等），
+ * 所以 Custom 节点在这里也能命中、也能被真机验证 —— 但**验不到**「agent 子进程能不能被拉起」
+ * 这件事，那条路只有 MXU 能验（interface.json 的 agent 字段）。
  */
 
 import maaModule from '@maaxyz/maa-node'
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
+
+// agent 的自定义识别/动作在**本进程内**注册，这样 Custom 节点无头也能跑，
+// 不用起 agent 子进程（MXU 走的是 interface.json 的 agent 字段，实现同一份）。
+import { registerCustoms } from '../agent/custom.mjs'
 
 const maa = maaModule ?? globalThis.maa
 const ROOT = process.cwd()
@@ -80,6 +88,8 @@ function describeReco(reco) {
             if (best.text !== undefined) parts.push(`"${best.text}"`)
             if (best.score !== undefined) parts.push(`score=${best.score.toFixed(3)}`)
             if (best.count !== undefined) parts.push(`count=${best.count}`)
+            // Custom 识别的说明文字（例如 ScreenFrozen 的「画面连续 3 帧完全相同」）
+            if (typeof best.detail === 'string' && best.detail) parts.push(best.detail)
         }
     }
     return parts.join(' ')
@@ -123,9 +133,15 @@ async function main() {
     console.log('[connect] ok')
 
     const res = new maa.Resource()
+    // 必须在 post_bundle 之前注册：资源加载后 pipeline 里的 Custom 节点按名字查回调
+    registerCustoms(res)
     const bundleDir = path.join(ROOT, 'assets', 'resource')
     const load = await res.post_bundle(bundleDir).wait()
     if (!load.succeeded) throw new Error('资源加载失败（看上面的 Maa 日志）')
+
+    const customRecos = res.custom_recognition_list ?? []
+    const customActs = res.custom_action_list ?? []
+    console.log(`[custom] 识别: ${customRecos.join(', ') || '(无)'} 动作: ${customActs.join(', ') || '(无)'}`)
 
     const nodes = res.node_list ?? []
     console.log(`[resource] ${nodes.length} 个节点`)
@@ -204,6 +220,12 @@ async function main() {
         const verdict = !status.succeeded ? '失败' : verified ? '完成（已验证）' : '结束但未验证'
         console.log(`----- ${entry}: ${verdict} ${(ms / 1000).toFixed(1)}s`)
         console.log(`      节点链: ${nodeChain.join(' -> ') || '(空)'}`)
+        // 卡死恢复链意味着"这条链原来的目标没达成"（演出丢了 / 界面丢了）。
+        // 链尾照样可能落在主页锚点上（设备恢复了，算"已验证"），所以这里必须单独喊一声，
+        // 不然报告里看起来跟正常完成没区别。
+        if (nodeChain.some((n) => n.startsWith('公共_卡死_') || n.endsWith('_卡死'))) {
+            console.log('      [warn] 本次运行检测到画面卡死并走过冷启动恢复（原目标可能未达成，看节点链）')
+        }
         if (verdict !== '完成（已验证）') failures++
         writeFileSync(
             path.join(debugDir, `run_${entry.replace(/[\\/:*?"<>|]/g, '_')}.json`),

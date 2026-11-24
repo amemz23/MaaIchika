@@ -210,6 +210,45 @@ def check_loops(nodes, errors, warnings):
                 stack.append((nxt, path + [nxt]))
 
 
+def collect_custom_names():
+    """扫描 `agent/*.mjs`，收集 register_custom_recognition / register_custom_action 注册过的名字。
+
+    为什么要在静态检查里做这件事：pipeline 里写 `"custom_recognition": "ScreenFrozen"` 时，
+    MaaFramework **加载期不报错**，运行期名字对不上就是永远 MISS —— 和「OCR 模型没装」一样
+    属于"任务跑完了但什么都没做"的静默失效。这里提前在离线检查里拦住。
+    """
+    names = set()
+    pattern = re.compile(r"register_custom_(?:recognition|action)\(\s*['\"]([^'\"]+)['\"]")
+    for path in sorted((ROOT / "agent").glob("*.mjs")):
+        names.update(pattern.findall(path.read_text(encoding="utf-8")))
+    return names
+
+
+def iter_custom_refs(obj):
+    """递归挖出节点里所有 custom_recognition / custom_action 的值（含 Or/And 内联子识别）。"""
+    if isinstance(obj, dict):
+        for key, val in obj.items():
+            if key in ("custom_recognition", "custom_action") and isinstance(val, str):
+                yield key, val
+            else:
+                yield from iter_custom_refs(val)
+    elif isinstance(obj, list):
+        for val in obj:
+            yield from iter_custom_refs(val)
+
+
+def check_custom_names(nodes, errors):
+    registered = collect_custom_names()
+    for name, (file, body) in nodes.items():
+        for key, value in iter_custom_refs(body):
+            if value not in registered:
+                where = "agent/*.mjs" if not registered else "、".join(sorted(registered))
+                errors.append(
+                    f"{file.name}: 节点 {name} 的 {key}={value} 没有在 agent/ 里注册（已注册：{where}）"
+                    " —— 运行期会是永远 MISS，不会报错"
+                )
+
+
 def collect_i18n_keys(interface):
     keys = set()
 
@@ -316,6 +355,7 @@ def main():
         check_dup_routes(nodes, errors)
         check_placeholders(nodes, errors)
         check_blind_actions(nodes, errors, warnings)
+        check_custom_names(nodes, errors)
         check_loops(nodes, errors, warnings)
         languages = check_locales(interface, errors)
         check_mangled_refs(interface, errors)

@@ -49,6 +49,27 @@
         "post_wait_freezes": {
             "time": 300,
             "target": [0, 0, 0, 0]
-        }
+        },
+        "on_error": ["标题_画面卡死"]
+    },
+    "标题_画面卡死": {
+        "desc": "标题页卡死的兜底（Custom 识别 ScreenFrozen：同一个节点连续 times 次截图的**字节完全相同** → 命中，实现在 agent/custom.mjs）。点不动的典型表现就是「点了几十下画面纹丝不动」：注入的点击落在残像上、或者游戏进程半死。**只能挂在 on_error 里**，不能进 next —— 启动过程中「プロジェクトセカイによろこばせ。」和 TIPS 两屏本来就是静态画面，挂 next 里会被误判成卡死、把正常启动重启掉。命中后 公共_卡死_重启游戏 冷启动重来；没命中（画面确实在动）就 公共_失败，不再纠缠。",
+        "recognition": {
+            "type": "Custom",
+            "param": {
+                "custom_recognition": "ScreenFrozen",
+                "custom_recognition_param": {
+                    "times": 3
+                }
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "rate_limit": 700,
+        "timeout": 30000,
+        "max_hit": 3,
+        "next": ["公共_卡死_重启游戏"],
+        "on_error": ["公共_失败"]
     }
 }

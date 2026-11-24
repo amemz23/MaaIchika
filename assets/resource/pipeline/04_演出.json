@@ -119,6 +119,26 @@
             "演出_打开AUTO",
             "公共_主页锚点"
         ],
+        "on_error": ["演出_画面卡死"]
+    },
+    "演出_画面卡死": {
+        "desc": "演出卡死的兜底（Custom 识别 ScreenFrozen：同一个节点连续 times 次截图的**字节完全相同** → 命中，实现在 agent/custom.mjs）。420 秒都没等到结束信号、画面又纹丝不动 = 游戏卡住了，这时候「点一下屏幕」是白点。命中后 公共_卡死_重启游戏 冷启动重来 —— ⚠️ 代价是这场演出丢了（本来也已经丢了）；节点链里出现 公共_卡死_* 就说明这次运行发生过卡死。画面还在动（真在演出、只是我们没认出结束信号）就别重启：timeout 30 秒后落到老的 演出_点屏幕 盲点兜底。",
+        "recognition": {
+            "type": "Custom",
+            "param": {
+                "custom_recognition": "ScreenFrozen",
+                "custom_recognition_param": {
+                    "times": 3
+                }
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "rate_limit": 700,
+        "timeout": 30000,
+        "max_hit": 3,
+        "next": ["公共_卡死_重启游戏"],
         "on_error": ["演出_点屏幕", "公共_失败"]
     },
     "演出_结算开场": {
@@ -519,8 +539,28 @@
             "清火_循环开演",
             "公共_主页锚点"
         ],
-        "on_error": ["演出_点屏幕", "公共_失败"],
+        "on_error": ["清火_循环画面卡死"],
         "max_hit": 400
+    },
+    "清火_循环画面卡死": {
+        "desc": "循环版：演出卡死的兜底（同 演出_画面卡死，Custom 识别 ScreenFrozen）。420 秒没结束信号 + 连续 3 帧完全相同 = 卡死，冷启动重来；画面还在动就走老的 演出_点屏幕 盲点兜底。⚠️ 冷启动恢复后这次「清火循环」只保证回到主页，**体力不一定打光** —— 节点链里看到 公共_卡死_* 就得人工看一眼。",
+        "recognition": {
+            "type": "Custom",
+            "param": {
+                "custom_recognition": "ScreenFrozen",
+                "custom_recognition_param": {
+                    "times": 3
+                }
+            }
+        },
+        "action": {
+            "type": "DoNothing"
+        },
+        "rate_limit": 700,
+        "timeout": 30000,
+        "max_hit": 3,
+        "next": ["公共_卡死_重启游戏"],
+        "on_error": ["演出_点屏幕", "公共_失败"]
     },
     "清火_循环结算开场": {
         "desc": "循环版：演出结束画面（LIVE CLEAR / LIVE FAILED 都认，OCR 实测 1.000）。点一下继续 → 逐页结算。",

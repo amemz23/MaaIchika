@@ -44,8 +44,8 @@ def main():
     missing = []
     if not node_exe:
         missing.append("node.exe（找不到；可用 --node 指定）")
-    if not (AGENT_SRC / "main.mjs").is_file():
-        missing.append("agent/main.mjs")
+    if not (AGENT_SRC / "main.mjs").is_file() or not (AGENT_SRC / "custom.mjs").is_file():
+        missing.append("agent/main.mjs + agent/custom.mjs")
     if not PKG_SRC.is_dir():
         missing.append("node_modules/@maaxyz/maa-node")
     if missing:
@@ -63,12 +63,13 @@ def main():
     (INSTALL / "node").mkdir(parents=True, exist_ok=True)
     shutil.copy2(node_exe, INSTALL / "node" / "node.exe")
 
-    # 2) agent 本体
+    # 2) agent 本体（agent/ 下的 *.mjs 全部带上：main.mjs 会 import ./custom.mjs）
     dst_agent = INSTALL / "agent"
     if dst_agent.exists():
         shutil.rmtree(dst_agent)
     dst_agent.mkdir(parents=True)
-    shutil.copy2(AGENT_SRC / "main.mjs", dst_agent / "main.mjs")
+    for src in sorted(AGENT_SRC.glob("*.mjs")):
+        shutil.copy2(src, dst_agent / src.name)
 
     # 3) agent 依赖（只带 maa-node，别把整个 node_modules 搬过去）
     dst_pkg = dst_agent / "node_modules" / "@maaxyz" / "maa-node"
@@ -76,10 +77,16 @@ def main():
     shutil.copytree(PKG_SRC, dst_pkg)
 
     # 4) interface.json 的 agent 字段
+    #    只在真的不一样时才写：json.dumps 的排版和 prettier 不同，
+    #    无条件重写会让 `npm run format:check` 每次都要再跑一次 prettier（这里踩过）。
     iface_path = ROOT / "assets" / "interface.json"
     iface = json.loads(iface_path.read_text(encoding="utf-8"))
-    iface["agent"] = AGENT_FIELD
-    iface_path.write_text(json.dumps(iface, ensure_ascii=False, indent=4) + "\n", encoding="utf-8", newline="\n")
+    if iface.get("agent") != AGENT_FIELD:
+        iface["agent"] = AGENT_FIELD
+        iface_path.write_text(json.dumps(iface, ensure_ascii=False, indent=4) + "\n", encoding="utf-8", newline="\n")
+        print("[warn] 改写了 interface.json 的 agent 字段；跑一下 npx prettier --write assets/interface.json")
+    else:
+        print("[ok] interface.json 的 agent 字段已是最新（未改写）")
 
     size = sum(p.stat().st_size for p in (INSTALL / "node").rglob("*") if p.is_file())
     size += sum(p.stat().st_size for p in dst_agent.rglob("*") if p.is_file())
