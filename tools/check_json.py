@@ -110,6 +110,32 @@ def refs_of(body):
     return out
 
 
+def check_dup_routes(nodes, errors):
+    """「重复路由」——MaaFramework 加载期会报错的那种。
+
+    两种都算：
+    1. 同一个列表里同一个节点出现两次
+    2. 同一个节点同时出现在 next 与 on_error 里
+    官方 `maa-tools check` 能抓到，但那个要联网下运行时；这里做成离线快检。
+    """
+    for name, (file, body) in nodes.items():
+        lists = {}
+        for field in REF_FIELDS:
+            value = body.get(field) or []
+            if isinstance(value, (str, dict)):
+                value = [value]
+            plain = [strip_attr(t.get("name", "") if isinstance(t, dict) else t) for t in value]
+            lists[field] = plain
+            seen = set()
+            for item in plain:
+                if item in seen:
+                    errors.append(f"{file.name}: 节点 {name} 的 {field} 里重复引用了 {item}（重复路由）")
+                seen.add(item)
+        both = set(lists.get("next", [])) & set(lists.get("on_error", []))
+        for item in sorted(both):
+            errors.append(f"{file.name}: 节点 {name} 同时把 {item} 放在 next 和 on_error 里（重复路由）")
+
+
 def check_refs(nodes, errors, warnings):
     for name, (file, body) in nodes.items():
         for field, target in refs_of(body):
@@ -260,6 +286,7 @@ def main():
         nodes = collect_nodes(interface, errors)
         check_interface(interface, nodes, errors)
         check_refs(nodes, errors, warnings)
+        check_dup_routes(nodes, errors)
         check_placeholders(nodes, errors)
         check_blind_actions(nodes, errors, warnings)
         check_loops(nodes, errors, warnings)

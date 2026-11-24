@@ -172,7 +172,7 @@
         "on_error": ["演出_点屏幕", "公共_失败"]
     },
     "演出_确认AUTO": {
-        "desc": "验证 AUTO 真的打开了：认 ON 态（粉底白钮 + ON，实测 0.354/1.000 分离）。确认了才允许点开演 —— 宁可多一步，也不要打一场 0 分的live",
+        "desc": "验证 AUTO 真的打开了：认 ON 态模板（粉底白钮 + ON，实测 OFF 态只有 0.354、ON 态 1.000）。next 只有「确认之后才走的 演出_开演」；on_error 走「没确认成功就去补救的 演出_打开AUTO（拖拽）」——这样 AUTO 没开就不会开演（之前 next 里直接放着开演，验证形同虚设）。",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -185,8 +185,8 @@
             "type": "DoNothing"
         },
         "timeout": 8000,
-        "next": ["演出_开演", "演出_打开AUTO"],
-        "on_error": ["演出_开演"]
+        "next": ["演出_开演"],
+        "on_error": ["演出_打开AUTO"]
     },
     "演出_拖到ON": {
         "desc": "AUTO 拖拽的中间步骤（TouchMove 到右侧）。【允许盲点】理由：它是「TouchDown → TouchMove → TouchUp」手势链的一部分，起点由 演出_打开AUTO 的 OFF 态识别保证，终点固定，本身不需要再识别；整条拖拽是否成功由 演出_确认AUTO 认 ON 态验证。",
