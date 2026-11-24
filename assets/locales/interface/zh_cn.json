@@ -29,5 +29,7 @@
     "task.mission.label": "任务奖励",
     "task.mission.description": "主页 → 右上角任务图标 → 一括受け取り → 确认 → 回主页",
     "task.restore.label": "恢复分辨率",
-    "task.restore.description": "撤销 16:9 的 wm size/density 覆盖，回到物理分辨率（收尾用；之后要跑别的任务需先 device.py fix）"
+    "task.restore.description": "撤销 16:9 的 wm size/density 覆盖，回到物理分辨率（收尾用；之后要跑别的任务需先 device.py fix）",
+    "task.setres.label": "设置分辨率",
+    "task.setres.description": "把设备设成 16:9（1440x2560@420）并关掉游戏；之后跑「启动游戏」即按新分辨率运行。画布不是 1280×720 时先跑这个"
 }

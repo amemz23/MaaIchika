@@ -23,7 +23,9 @@
         {
             "name": "Default",
             "label": "$resource.Default.label",
-            "path": ["./resource"]
+            "path": [
+                "./resource"
+            ]
         }
     ],
     "group": [
@@ -49,84 +51,117 @@
             "label": "$task.launch.label",
             "entry": "任务_启动",
             "description": "$task.launch.description",
-            "group": ["daily"]
+            "group": [
+                "daily"
+            ]
         },
         {
             "name": "领礼包",
             "label": "$task.gift.label",
             "entry": "任务_领礼包",
             "description": "$task.gift.description",
-            "group": ["daily"]
+            "group": [
+                "daily"
+            ]
         },
         {
             "name": "回主页",
             "label": "$task.home.label",
             "entry": "任务_回主页",
             "description": "$task.home.description",
-            "group": ["daily"]
+            "group": [
+                "daily"
+            ]
         },
         {
             "name": "演出一场",
             "label": "$task.live.label",
             "entry": "任务_演出一场",
             "description": "$task.live.description",
-            "group": ["live"]
+            "group": [
+                "live"
+            ]
         },
         {
             "name": "收尾结算",
             "label": "$task.settle.label",
             "entry": "任务_收尾结算",
             "description": "$task.settle.description",
-            "group": ["live"]
+            "group": [
+                "live"
+            ]
         },
         {
             "name": "进演出",
             "label": "$task.enterlive.label",
             "entry": "任务_进演出",
             "description": "$task.enterlive.description",
-            "group": ["live"]
+            "group": [
+                "live"
+            ]
         },
         {
             "name": "过剧情",
             "label": "$task.story.label",
             "entry": "任务_过剧情",
             "description": "$task.story.description",
-            "group": ["story"]
+            "group": [
+                "story"
+            ]
         },
         {
             "name": "每日挑战",
             "label": "$task.challenge.label",
             "entry": "任务_每日挑战",
             "description": "$task.challenge.description",
-            "group": ["live"]
+            "group": [
+                "live"
+            ]
         },
         {
             "name": "清火",
             "label": "$task.farm.label",
             "entry": "任务_清火",
             "description": "$task.farm.description",
-            "group": ["live"]
+            "group": [
+                "live"
+            ]
         },
         {
             "name": "读支线",
             "label": "$task.sidestory.label",
             "entry": "任务_读支线",
             "description": "$task.sidestory.description",
-            "group": ["story"]
+            "group": [
+                "story"
+            ]
         },
         {
             "name": "任务奖励",
             "label": "$task.mission.label",
             "entry": "任务_任务奖励",
             "description": "$task.mission.description",
-            "group": ["daily"]
+            "group": [
+                "daily"
+            ]
         },
         {
             "name": "恢复分辨率",
             "label": "$task.restore.label",
             "entry": "任务_恢复分辨率",
             "description": "$task.restore.description",
-            "group": ["daily"]
+            "group": [
+                "daily"
+            ]
+        },
+        {
+            "name": "设置分辨率",
+            "label": "$task.setres.label",
+            "entry": "任务_设置分辨率",
+            "description": "$task.setres.description",
+            "group": [
+                "daily"
+            ]
         }
     ]
 }

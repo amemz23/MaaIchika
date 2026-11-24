@@ -1,22 +1,61 @@
 {
     "标题_点击开始": {
-        "desc": "标题页：认 «Project SEKAI / COLORFUL STAGE!» 彩色字标。next 带自己：点击丢了下一轮再点。点进游戏后会出现「欢迎/TIPS/追加数据下载/登录奖励/公告」这些过渡与弹窗，这里全部列进 next，靠 timeout 一直等到主页锚点出现",
+        "desc": "标题页：点画面下方让游戏进入主界面。**两个锚点**：COLORFUL STAGE 抄字（模板）或「TAP TO START」（OCR 实测 0.993 @ [545,603,187,27]）—— 抄字在某些阶段会变暗/位移，单靠模板会漏掉。把标题页做成「点一下 → 重扫 → 再点」的快节奏自循环（timeout 15s / max_hit 200 / rate_limit 800ms），而不是靠一个 10 分钟的长 timeout 硬等（上一版就是这样，模板一漏就白等 10 分钟）。期间 下载中 / Google 弹窗 / 等待加载 / 追加数据 / 关公告 / 登录奖励 都挂在 next 里，谁出现先处理谁。",
         "recognition": {
-            "type": "TemplateMatch",
+            "type": "Or",
             "param": {
-                "template": ["title/wordmark.png"],
-                "roi": [380, 400, 540, 140],
-                "threshold": 0.65
+                "any_of": [
+                    {
+                        "recognition": {
+                            "type": "TemplateMatch",
+                            "param": {
+                                "template": [
+                                    "title/wordmark.png"
+                                ],
+                                "roi": [
+                                    380,
+                                    400,
+                                    540,
+                                    140
+                                ],
+                                "threshold": 0.65
+                            }
+                        }
+                    },
+                    {
+                        "recognition": {
+                            "type": "OCR",
+                            "param": {
+                                "expected": [
+                                    "TAP TO START",
+                                    "TO START",
+                                    "タップして"
+                                ],
+                                "roi": [
+                                    280,
+                                    510,
+                                    720,
+                                    200
+                                ]
+                            }
+                        }
+                    }
+                ]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [640, 620, 1, 1]
+                "target": [
+                    640,
+                    620,
+                    1,
+                    1
+                ]
             }
         },
-        "timeout": 600000,
-        "max_hit": 6,
+        "timeout": 15000,
+        "max_hit": 200,
         "next": [
             "[JumpBack]公共_下载中",
             "[JumpBack]公共_Google登录",
@@ -26,6 +65,7 @@
             "[JumpBack]公共_领登录奖励",
             "标题_点击开始",
             "公共_主页锚点"
-        ]
+        ],
+        "rate_limit": 800
     }
 }
