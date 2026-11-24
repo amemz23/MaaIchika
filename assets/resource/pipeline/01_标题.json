@@ -9,15 +9,8 @@
                         "recognition": {
                             "type": "TemplateMatch",
                             "param": {
-                                "template": [
-                                    "title/wordmark.png"
-                                ],
-                                "roi": [
-                                    380,
-                                    400,
-                                    540,
-                                    140
-                                ],
+                                "template": ["title/wordmark.png"],
+                                "roi": [380, 400, 540, 140],
                                 "threshold": 0.65
                             }
                         }
@@ -26,17 +19,8 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": [
-                                    "TAP TO START",
-                                    "TO START",
-                                    "タップして"
-                                ],
-                                "roi": [
-                                    280,
-                                    510,
-                                    720,
-                                    200
-                                ]
+                                "expected": ["TAP TO START", "TO START", "タップして"],
+                                "roi": [280, 510, 720, 200]
                             }
                         }
                     }
@@ -46,12 +30,7 @@
         "action": {
             "type": "Click",
             "param": {
-                "target": [
-                    640,
-                    620,
-                    1,
-                    1
-                ]
+                "target": [640, 620, 1, 1]
             }
         },
         "timeout": 15000,
@@ -69,12 +48,7 @@
         "rate_limit": 800,
         "post_wait_freezes": {
             "time": 300,
-            "target": [
-                0,
-                0,
-                0,
-                0
-            ]
+            "target": [0, 0, 0, 0]
         }
     }
 }

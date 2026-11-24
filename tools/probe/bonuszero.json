@@ -1,0 +1,12 @@
+[
+    {
+        "label": "zero",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["common/bonus_zero.png"],
+            "threshold": 0,
+            "roi": [1000, 15, 240, 60],
+            "order_by": "Score"
+        }
+    }
+]

@@ -3,16 +3,9 @@
         "label": "enabled",
         "type": "TemplateMatch",
         "param": {
-            "template": [
-                "scratch/claim_enabled.png"
-            ],
+            "template": ["scratch/claim_enabled.png"],
             "threshold": 0,
-            "roi": [
-                1000,
-                600,
-                280,
-                120
-            ],
+            "roi": [1000, 600, 280, 120],
             "order_by": "Score"
         }
     },
@@ -20,16 +13,9 @@
         "label": "disabled",
         "type": "TemplateMatch",
         "param": {
-            "template": [
-                "scratch/claim_disabled.png"
-            ],
+            "template": ["scratch/claim_disabled.png"],
             "threshold": 0,
-            "roi": [
-                1000,
-                600,
-                280,
-                120
-            ],
+            "roi": [1000, 600, 280, 120],
             "order_by": "Score"
         }
     }

@@ -1,0 +1,12 @@
+[
+    {
+        "label": "first",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["scratch/zero_first.png"],
+            "roi": [1030, 20, 110, 45],
+            "threshold": 0,
+            "order_by": "Score"
+        }
+    }
+]

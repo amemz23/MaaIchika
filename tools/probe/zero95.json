@@ -1,0 +1,11 @@
+[
+    {
+        "label": "zero-t95",
+        "type": "OCR",
+        "param": {
+            "expected": ["0/25"],
+            "roi": [1000, 15, 240, 60],
+            "threshold": 0.95
+        }
+    }
+]

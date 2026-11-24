@@ -1,0 +1,12 @@
+[
+    {
+        "label": "wide",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["scratch/zero_wide.png"],
+            "roi": [980, 10, 280, 70],
+            "threshold": 0,
+            "order_by": "Score"
+        }
+    }
+]

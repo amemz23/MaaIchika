@@ -2,13 +2,13 @@
 
 ## 已经确认的事实（从 `@maaxyz/maa-node` 的 d.ts 读出来的，不是猜的）
 
-| API | 位置 | 说明 |
-| --- | --- | --- |
-| `resource.register_custom_recognition(name, func)` | `dist/resource.d.ts:27` | **可以进程内注册**，不用起独立 agent 进程 |
-| `resource.register_custom_action(name, func)` | `dist/resource.d.ts:30` | 同上 |
-| `maa.Server.register_custom_recognition/action` + `start_up(identifier)` | `dist/server.d.ts` | 标准 agent 协议（独立进程），MXU 走这条 |
-| `context.get_hit_count(node_name)` | `dist/context.d.ts:49` | 只能**读**命中次数 |
-| CustomRecognition 回调返回值 | `dist/types.d.ts` | `[out_box, out_detail] \| null`（返回 null = 未命中） |
+| API                                                                      | 位置                    | 说明                                                  |
+| ------------------------------------------------------------------------ | ----------------------- | ----------------------------------------------------- |
+| `resource.register_custom_recognition(name, func)`                       | `dist/resource.d.ts:27` | **可以进程内注册**，不用起独立 agent 进程             |
+| `resource.register_custom_action(name, func)`                            | `dist/resource.d.ts:30` | 同上                                                  |
+| `maa.Server.register_custom_recognition/action` + `start_up(identifier)` | `dist/server.d.ts`      | 标准 agent 协议（独立进程），MXU 走这条               |
+| `context.get_hit_count(node_name)`                                       | `dist/context.d.ts:49`  | 只能**读**命中次数                                    |
+| CustomRecognition 回调返回值                                             | `dist/types.d.ts`       | `[out_box, out_detail] \| null`（返回 null = 未命中） |
 
 **关键结论：没有找到"重置命中次数"的 API**（`get_hit_count` 只能读）。所以 `ClearHit` 这个想法目前做不了 —— 循环只能继续靠 `max_hit` 给足额度。
 
