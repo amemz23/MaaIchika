@@ -1,0 +1,12 @@
+[
+    {
+        "label": "notice_close",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["common/notice_close.png"],
+            "threshold": 0,
+            "roi": [1100, 0, 180, 90],
+            "order_by": "Score"
+        }
+    }
+]
