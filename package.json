@@ -16,7 +16,8 @@
         "shot": "python tools/device.py shot",
         "check:maa-tools": "maa-tools check",
         "check:all": "npm run check:json && npm run check:params && npm run check:maa && npm run format:check",
-        "check:params": "python tools/check_params.py"
+        "check:params": "python tools/check_params.py",
+        "report": "python tools/report.py"
     },
     "devDependencies": {
         "@maaxyz/maa-node": "5.16.1",

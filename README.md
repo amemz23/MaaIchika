@@ -215,7 +215,10 @@ tools/
 ├── analyze_scores.py 正负样本分析 → 建议阈值（--apply 写回）
 ├── probe.mjs         单点探针：一张图 + 一份识别参数
 ├── run.mjs           无头运行器（带"完成（已验证）"判定）
-├── check_json.py     结构自检（引用 / 占位 / 环无出口 / i18n）
+├── report.py         把 debug/run_*.json 汇总成"各任务上次跑成什么样"
+├── check_json.py     结构自检（引用 / 占位 / 盲点动作 / 环无出口 / i18n）
+├── check_params.py   参数自检（ROI 越界 / 模板存在 / 阈值范围 / ColorMatch 通道）
+├── check_interface.mjs  用真实 MaaFramework 加载 interface + 资源包（离线）
 ├── pack.py           assets -> install
 └── fetch_ocr.py      拉 OCR 模型
 
