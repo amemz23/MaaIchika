@@ -97,6 +97,58 @@ def iter_thresholds(node):
     return out
 
 
+def iter_color_matches(node):
+    """递归挖出所有 ColorMatch 的参数（含 Or/And 内联子识别里的）。
+
+    以前只查节点自己 `recognition` 上的那一层，于是 `Or(ColorMatch, OCR)` /
+    `And(ColorMatch, OCR)` 里的颜色参数完全没被检查过 —— 而这里写错一个通道数或
+    lower > upper，运行时就是**静默永远不命中**，和模板路径不存在一样难查。
+    """
+    out = []
+
+    def walk(obj, path):
+        if isinstance(obj, dict):
+            if obj.get("type") == "ColorMatch" and isinstance(obj.get("param"), dict):
+                out.append((path, obj["param"]))
+            for key, val in obj.items():
+                walk(val, f"{path}/{key}")
+        elif isinstance(obj, list):
+            for i, val in enumerate(obj):
+                walk(val, f"{path}[{i}]")
+
+    walk(node, "")
+    return out
+
+
+def check_color_match(where, path, param, errors):
+    method = param.get("method", 4)
+    want = CHANNELS.get(method)
+    lower, upper = param.get("lower"), param.get("upper")
+    if not (want and isinstance(lower, list) and isinstance(upper, list)):
+        return
+
+    def depth_of(value):
+        return 1 + (depth_of(value[0]) if isinstance(value[0], list) else 0)
+
+    if depth_of(lower) != depth_of(upper):
+        errors.append(f"{where}{path}: ColorMatch lower/upper 嵌套层数不一致")
+        return
+    # 支持两种写法：单区间 [r,g,b] / 多区间 [[r,g,b], ...]
+    lows = lower if isinstance(lower[0], list) else [lower]
+    ups = upper if isinstance(upper[0], list) else [upper]
+    if len(lows) != len(ups):
+        errors.append(f"{where}{path}: ColorMatch lower/upper 区间个数不一致")
+        return
+    for lo, up in zip(lows, ups):
+        if len(lo) != want or len(up) != want:
+            errors.append(
+                f"{where}{path}: ColorMatch method={method} 需要 {want} 通道，lower/upper 长度是 {len(lo)}/{len(up)}"
+            )
+            continue
+        if any(a > b for a, b in zip(lo, up)):
+            errors.append(f"{where}{path}: ColorMatch lower 有分量大于 upper: {lo} vs {up}")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--quiet", action="store_true")
@@ -150,14 +202,12 @@ def main():
                 reco = body.get("recognition")
                 param = reco.get("param") if isinstance(reco, dict) else None
                 if isinstance(param, dict) and reco.get("type") == "ColorMatch":
-                    method = param.get("method", 4)
-                    want = CHANNELS.get(method)
-                    lower, upper = param.get("lower"), param.get("upper")
-                    if want and isinstance(lower, list) and isinstance(upper, list):
-                        if len(lower) != want or len(upper) != want:
-                            errors.append(f"{where}: ColorMatch method={method} 需要 {want} 通道，lower/upper 长度是 {len(lower)}/{len(upper)}")
-                        elif any(lo > up for lo, up in zip(lower, upper)):
-                            errors.append(f"{where}: ColorMatch lower 有分量大于 upper: {lower} vs {upper}")
+                    check_color_match(where, "", param, errors)
+                # 组合识别（Or/And）里内联的 ColorMatch 也要查
+                for path, nested in iter_color_matches(body):
+                    if nested is param:
+                        continue
+                    check_color_match(where, path, nested, errors)
 
     for w in warnings:
         print(f"[warn] {w}", file=sys.stderr)

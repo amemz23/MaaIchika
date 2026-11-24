@@ -4,9 +4,13 @@
  * 用途：调 ColorMatch 的 count/HSV 区间、验证 OCR 能不能读出某段文字、
  * 确认 TemplateMatch 的分数和位置。比反复改 pipeline 再跑任务快得多。
  *
- * 用法：
- *   node tools/probe.mjs scratch/shots/s04.png tools/probe/loading_band.json
- *   node tools/probe.mjs --ocr scratch/shots/g01.png "[860,630,200,60]" "0件"
+ * 三种模式：
+ *   node tools/probe.mjs <图> tools/probe/xxx.json    # 手写参数
+ *   node tools/probe.mjs --ocr <图> "[x,y,w,h]" "文字"
+ *   node tools/probe.mjs --node 演出_结算 <图...>      # 直接取 pipeline 里节点的**真实**参数
+ *
+ * `--node` 是最可靠的一种：参数从资源包里 dump 出来，和真跑时一模一样，
+ * 不用手抄（手抄的 probe json 很容易在 pipeline 改了之后变成过期的"假证据"）。
  */
 
 import maaModule from '@maaxyz/maa-node'
@@ -41,6 +45,18 @@ async function main() {
             type: 'OCR',
             param: { expected: expected.split('|'), roi: JSON.parse(roi) },
         })
+    } else if (argv[0] === '--node') {
+        const nodeName = argv[1]
+        const images = argv.slice(2).filter((a) => a.endsWith('.png'))
+        if (images.length === 0) throw new Error('--node 后面要给至少一张截图')
+        const dump = res.get_node_data_parsed(nodeName)
+        if (!dump) throw new Error(`资源里没有节点 ${nodeName}`)
+        const reco = dump.recognition ?? {}
+        const type = reco.type ?? 'DirectHit'
+        console.log(`[node] ${nodeName} recognition=${type} ${JSON.stringify(reco.param ?? {})}`)
+        for (const image of images) {
+            jobs.push({ label: `${nodeName} (${type})`, image, type, param: reco.param ?? {} })
+        }
     } else {
         const spec = JSON.parse(readFileSync(path.resolve(ROOT, argv[1]), 'utf8'))
         const items = Array.isArray(spec) ? spec : [spec]
