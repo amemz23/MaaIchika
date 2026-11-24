@@ -25,6 +25,9 @@ jobs:
       - name: 参数自检（ROI 越界 / 模板存在 / 阈值范围 / ColorMatch 通道）
         run: python tools/check_params.py
 
+      - name: 真机踩坑审计（max_hit 偏小 / 回跳无上限 / 候选全 miss / 空 next）
+        run: python tools/audit.py
+
       - name: 打包运行布局
         run: python tools/pack.py
 

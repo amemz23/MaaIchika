@@ -4,15 +4,8 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": [
-                    "home/nav_story.png"
-                ],
-                "roi": [
-                    740,
-                    590,
-                    180,
-                    130
-                ],
+                "template": ["home/nav_story.png"],
+                "roi": [740, 590, 180, 130],
                 "threshold": 0.88
             }
         },
@@ -21,27 +14,15 @@
         },
         "timeout": 30000,
         "max_hit": 4,
-        "next": [
-            "[JumpBack]公共_等待加载",
-            "主页_进故事",
-            "故事_续读",
-            "故事_进主线卡"
-        ]
+        "next": ["[JumpBack]公共_等待加载", "主页_进故事", "故事_续读", "故事_进主线卡"]
     },
     "故事_进主线卡": {
         "desc": "故事 TOP 的「メイン/イベント ストーリー」大卡",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": [
-                    "story/main_card.png"
-                ],
-                "roi": [
-                    20,
-                    100,
-                    840,
-                    330
-                ],
+                "template": ["story/main_card.png"],
+                "roi": [20, 100, 840, 330],
                 "threshold": 0.8
             }
         },
@@ -67,16 +48,8 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": [
-                    "決定",
-                    "决定"
-                ],
-                "roi": [
-                    1000,
-                    650,
-                    280,
-                    70
-                ]
+                "expected": ["決定", "决定"],
+                "roi": [1000, 650, 280, 70]
             }
         },
         "action": {
@@ -108,23 +81,10 @@
                         "recognition": {
                             "type": "ColorMatch",
                             "param": {
-                                "lower": [
-                                    158,
-                                    130,
-                                    170
-                                ],
-                                "upper": [
-                                    179,
-                                    255,
-                                    255
-                                ],
+                                "lower": [158, 130, 170],
+                                "upper": [179, 255, 255],
                                 "count": 60,
-                                "roi": [
-                                    1130,
-                                    140,
-                                    150,
-                                    470
-                                ]
+                                "roi": [1130, 140, 150, 470]
                             }
                         }
                     },
@@ -137,16 +97,8 @@
                                         "recognition": {
                                             "type": "OCR",
                                             "param": {
-                                                "expected": [
-                                                    "イベントストーリー",
-                                                    "サイドストーリー"
-                                                ],
-                                                "roi": [
-                                                    600,
-                                                    60,
-                                                    680,
-                                                    70
-                                                ]
+                                                "expected": ["イベントストーリー", "サイドストーリー"],
+                                                "roi": [600, 60, 680, 70]
                                             }
                                         }
                                     },
@@ -154,15 +106,8 @@
                                         "recognition": {
                                             "type": "TemplateMatch",
                                             "param": {
-                                                "template": [
-                                                    "story/story_bookmark.png"
-                                                ],
-                                                "roi": [
-                                                    700,
-                                                    0,
-                                                    580,
-                                                    110
-                                                ],
+                                                "template": ["story/story_bookmark.png"],
+                                                "roi": [700, 0, 580, 110],
                                                 "threshold": 0.9
                                             }
                                         }
@@ -197,15 +142,8 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": [
-                    "story/continue_box.png"
-                ],
-                "roi": [
-                    440,
-                    430,
-                    140,
-                    110
-                ],
+                "template": ["story/continue_box.png"],
+                "roi": [440, 430, 140, 110],
                 "threshold": 0.85
             }
         },
@@ -229,15 +167,8 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": [
-                    "ボイスなし"
-                ],
-                "roi": [
-                    340,
-                    460,
-                    600,
-                    150
-                ]
+                "expected": ["ボイスなし"],
+                "roi": [340, 460, 600, 150]
             }
         },
         "action": {
@@ -265,15 +196,8 @@
                         "recognition": {
                             "type": "TemplateMatch",
                             "param": {
-                                "template": [
-                                    "story/menu_dots.png"
-                                ],
-                                "roi": [
-                                    1180,
-                                    0,
-                                    100,
-                                    90
-                                ],
+                                "template": ["story/menu_dots.png"],
+                                "roi": [1180, 0, 100, 90],
                                 "threshold": 0.8
                             }
                         }
@@ -282,15 +206,8 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": [
-                                    "AUTO"
-                                ],
-                                "roi": [
-                                    1080,
-                                    640,
-                                    200,
-                                    70
-                                ]
+                                "expected": ["AUTO"],
+                                "roi": [1080, 640, 200, 70]
                             }
                         }
                     },
@@ -299,18 +216,9 @@
                             "type": "ColorMatch",
                             "param": {
                                 "method": 6,
-                                "lower": [
-                                    0
-                                ],
-                                "upper": [
-                                    16
-                                ],
-                                "roi": [
-                                    120,
-                                    20,
-                                    1040,
-                                    100
-                                ],
+                                "lower": [0],
+                                "upper": [16],
+                                "roi": [120, 20, 1040, 100],
                                 "count": 60000,
                                 "connected": true
                             }
@@ -322,26 +230,14 @@
         "action": {
             "type": "Click",
             "param": {
-                "target": [
-                    640,
-                    470,
-                    1,
-                    1
-                ]
+                "target": [640, 470, 1, 1]
             }
         },
         "rate_limit": 700,
         "timeout": 4000,
         "max_hit": 4000,
-        "next": [
-            "[JumpBack]公共_通信错误",
-            "[JumpBack]公共_等待加载",
-            "故事_连点",
-            "故事_本集结束"
-        ],
-        "on_error": [
-            "故事_盲点推进"
-        ]
+        "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_等待加载", "故事_连点", "故事_本集结束"],
+        "on_error": ["故事_盲点推进"]
     },
     "故事_无未读": {
         "desc": "章节列表页 + 没有未读角标 = 这一本读完了，回主页收尾。判据与 故事_本集结束 相同（And：章节号「第」+ tab 或书签图标），区别只在 next 里的先后。",
@@ -353,15 +249,8 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": [
-                                    "第"
-                                ],
-                                "roi": [
-                                    700,
-                                    110,
-                                    120,
-                                    520
-                                ]
+                                "expected": ["第"],
+                                "roi": [700, 110, 120, 520]
                             }
                         }
                     },
@@ -374,16 +263,8 @@
                                         "recognition": {
                                             "type": "OCR",
                                             "param": {
-                                                "expected": [
-                                                    "イベントストーリー",
-                                                    "サイドストーリー"
-                                                ],
-                                                "roi": [
-                                                    600,
-                                                    60,
-                                                    680,
-                                                    70
-                                                ]
+                                                "expected": ["イベントストーリー", "サイドストーリー"],
+                                                "roi": [600, 60, 680, 70]
                                             }
                                         }
                                     },
@@ -391,15 +272,8 @@
                                         "recognition": {
                                             "type": "TemplateMatch",
                                             "param": {
-                                                "template": [
-                                                    "story/story_bookmark.png"
-                                                ],
-                                                "roi": [
-                                                    700,
-                                                    0,
-                                                    580,
-                                                    110
-                                                ],
+                                                "template": ["story/story_bookmark.png"],
+                                                "roi": [700, 0, 580, 110],
                                                 "threshold": 0.9
                                             }
                                         }
@@ -414,11 +288,7 @@
         "action": {
             "type": "DoNothing"
         },
-        "next": [
-            "[JumpBack]公共_通信错误",
-            "[JumpBack]公共_回主页",
-            "公共_主页锚点"
-        ]
+        "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_回主页", "公共_主页锚点"]
     },
     "故事_本集结束": {
         "desc": "认出「章节列表」页 —— **两种版式都要认**。And 两个条件：① 章节号那一列有「第」（ROI [700,110,120,520]，两种列表都是 0.998，剧情画面 MISS）；② 顶部有 tab 文案 イベントストーリー/サイドストーリー（活动故事列表）**或** 右上角书签图标（story/story_bookmark.png，主线列表 1.000 / 活动列表 0.994 / 剧情画面 0.31）。只认 tab 会在**主线故事**的列表上失效（那种版式没有 tab），实测因此失败过一次。进来后分叉：有未读角标 → 选未读 继续读；没有 → 无未读 → 回主页。",
@@ -430,15 +300,8 @@
                         "recognition": {
                             "type": "OCR",
                             "param": {
-                                "expected": [
-                                    "第"
-                                ],
-                                "roi": [
-                                    700,
-                                    110,
-                                    120,
-                                    520
-                                ]
+                                "expected": ["第"],
+                                "roi": [700, 110, 120, 520]
                             }
                         }
                     },
@@ -451,16 +314,8 @@
                                         "recognition": {
                                             "type": "OCR",
                                             "param": {
-                                                "expected": [
-                                                    "イベントストーリー",
-                                                    "サイドストーリー"
-                                                ],
-                                                "roi": [
-                                                    600,
-                                                    60,
-                                                    680,
-                                                    70
-                                                ]
+                                                "expected": ["イベントストーリー", "サイドストーリー"],
+                                                "roi": [600, 60, 680, 70]
                                             }
                                         }
                                     },
@@ -468,15 +323,8 @@
                                         "recognition": {
                                             "type": "TemplateMatch",
                                             "param": {
-                                                "template": [
-                                                    "story/story_bookmark.png"
-                                                ],
-                                                "roi": [
-                                                    700,
-                                                    0,
-                                                    580,
-                                                    110
-                                                ],
+                                                "template": ["story/story_bookmark.png"],
+                                                "roi": [700, 0, 580, 110],
                                                 "threshold": 0.9
                                             }
                                         }
@@ -491,13 +339,7 @@
         "action": {
             "type": "DoNothing"
         },
-        "next": [
-            "[JumpBack]公共_通信错误",
-            "故事_选未读",
-            "故事_无未读",
-            "[JumpBack]公共_回主页",
-            "公共_主页锚点"
-        ],
+        "next": ["[JumpBack]公共_通信错误", "故事_选未读", "故事_无未读", "[JumpBack]公共_回主页", "公共_主页锚点"],
         "max_hit": 5
     },
     "故事_盲点推进": {
@@ -505,47 +347,26 @@
         "action": {
             "type": "Click",
             "param": {
-                "target": [
-                    640,
-                    470,
-                    1,
-                    1
-                ]
+                "target": [640, 470, 1, 1]
             }
         },
         "rate_limit": 1200,
         "max_hit": 200,
-        "next": [
-            "故事_连点",
-            "故事_盲点推进"
-        ]
+        "next": ["故事_连点", "故事_盲点推进"]
     },
     "故事_续读": {
         "desc": "剧情首页右侧推荐卡上的「続きから読む」徽章 —— 有阅读进度的故事才会带它，点它等于续读那一本。识别用 OCR（实测首页 1.000；剧情播放页 / 章节列表页都 MISS）。点开后一般回到那本的章节列表，交给 故事_本集结束 → 故事_选未读 继续读；也可能直接续播，所以 next 里也放着 故事_连点。多个徽章时取最上面那个（先读活动、再读主线），读完再跑一次会挑下一本。",
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": [
-                    "続きから読む",
-                    "続きから"
-                ],
-                "roi": [
-                    960,
-                    140,
-                    320,
-                    560
-                ]
+                "expected": ["続きから読む", "続きから"],
+                "roi": [960, 140, 320, 560]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target_offset": [
-                    -110,
-                    95,
-                    0,
-                    0
-                ]
+                "target_offset": [-110, 95, 0, 0]
             }
         },
         "timeout": 20000,
@@ -566,15 +387,8 @@
         "recognition": {
             "type": "TemplateMatch",
             "param": {
-                "template": [
-                    "home/nav_story.png"
-                ],
-                "roi": [
-                    740,
-                    590,
-                    180,
-                    130
-                ],
+                "template": ["home/nav_story.png"],
+                "roi": [740, 590, 180, 130],
                 "threshold": 0.88
             }
         },
@@ -598,15 +412,8 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": [
-                    "サイド"
-                ],
-                "roi": [
-                    40,
-                    460,
-                    460,
-                    240
-                ]
+                "expected": ["サイド"],
+                "roi": [40, 460, 460, 240]
             }
         },
         "action": {
@@ -632,26 +439,14 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": [
-                    "キャラクターを選択"
-                ],
-                "roi": [
-                    300,
-                    600,
-                    700,
-                    100
-                ]
+                "expected": ["キャラクターを選択"],
+                "roi": [300, 600, 700, 100]
             }
         },
         "action": {
             "type": "Click",
             "param": {
-                "target": [
-                    200,
-                    360,
-                    1,
-                    1
-                ]
+                "target": [200, 360, 1, 1]
             }
         },
         "timeout": 20000,
@@ -671,15 +466,8 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": [
-                    "前編"
-                ],
-                "roi": [
-                    380,
-                    120,
-                    900,
-                    560
-                ]
+                "expected": ["前編"],
+                "roi": [380, 120, 900, 560]
             }
         },
         "action": {
