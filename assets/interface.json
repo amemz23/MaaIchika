@@ -5,7 +5,7 @@
     "label": "$project.label",
     "version": "0.2.0",
     "description": "$project.description",
-    "github": "https://github.com/your-name/MaaIchika",
+    "github": "https://github.com/amemz23/MaaIchika",
     "license": "misc/LICENSE.md",
     "languages": {
         "zh_cn": "locales/interface/zh_cn.json",

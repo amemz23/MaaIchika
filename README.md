@@ -248,11 +248,23 @@ install/                 打包产物（不入库）
 - 所有操作都能在游戏界面里手动复现
 - 使用自动化可能违反游戏用户协议，**账号风险自负**
 
+## 授权与致谢
+
+- 本仓库**自己的代码与配置**（pipeline JSON、`tools/`、`agent/`、文档）采用 [MIT 协议](LICENSE)。
+- **游戏素材不适用 MIT**：`assets/resource/image/**` 的模板图和 `assets/icon.png` 来自游戏截图与角色形象，
+  版权归 **SEGA / Colorful Palette**，仅用于图像匹配；本项目非官方、非商业、与其无任何关联，
+  权利方要求即删。详见 [第三方声明](THIRD-PARTY-NOTICES.md)。
+- 依赖但**不分发**的项目：[MaaFramework](https://github.com/MaaXYZ/MaaFramework)（LGPL-3.0）、
+  [MXU](https://github.com/MaaXYZ/MXU)（AGPL-3.0，请自行下载，**不要**随本仓库再分发）、
+  [MaaCommonAssets](https://github.com/MaaXYZ/MaaCommonAssets) 的 OCR 模型（MIT）。
+- 写法上参考了 [MaaEnd](https://github.com/MaaEnd/MaaEnd)，差异见
+  [约定文档](docs/zh_cn/developers/maaend-conventions.md)。
+
 ## 参考
 
 - [MaaFramework](https://github.com/MaaXYZ/MaaFramework) —— 识别与动作框架
 - [MaaEnd](https://github.com/MaaEnd/MaaEnd) —— 同框架项目，pipeline 写法参考
-- [MXU](https://github.com/MistEO/MXU) —— 图形客户端
+- [MXU](https://github.com/MaaXYZ/MXU) —— 图形客户端
 - [从 MaaEnd 抄来的约定](docs/zh_cn/developers/maaend-conventions.md)：节点写法对齐了哪些、哪些故意不抄
 - [上下文衔接](docs/zh_cn/developers/handoff.md)：当前进度 / 下一步 / 已踩过的坑（新会话先看这个）
 - [开发手册](docs/zh_cn/developers/development.md) / [识别基线](docs/zh_cn/developers/recognition-baseline.md)
