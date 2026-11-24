@@ -128,5 +128,24 @@
             "主页_进故事"
         ],
         "on_error": ["[JumpBack]公共_回主页", "公共_失败"]
+    },
+    "任务_每日挑战": {
+        "desc": "入口：每日挑战（チャレンジライブ）。主页 → LIVE → チャレンジライブ → 切单位页 → 点可用角色 → 选曲決定 → 开 AUTO → 开演 → 等打完 → 结算 → 回主页。**不消耗 Live Bonus**",
+        "action": {
+            "type": "DoNothing"
+        },
+        "timeout": 900000,
+        "next": [
+            "[JumpBack]公共_Google登录",
+            "[JumpBack]公共_等待加载",
+            "[JumpBack]公共_下载中",
+            "[JumpBack]公共_追加数据",
+            "[JumpBack]公共_领登录奖励",
+            "[JumpBack]公共_关公告",
+            "[JumpBack]公共_回主页",
+            "标题_点击开始",
+            "主页_进演出挑战"
+        ],
+        "on_error": ["[JumpBack]公共_回主页", "公共_失败"]
     }
 }

@@ -19,5 +19,7 @@
     "task.enterlive.label": "Open live deck",
     "task.enterlive.description": "Home -> LIVE -> solo -> decide, stop at the deck screen (no play, no live bonus spent)",
     "task.story.label": "Read stories",
-    "task.story.description": "Auto-read main/event stories: no skip, no fast-forward, plain tap-through until no unread chapters remain"
+    "task.story.description": "Auto-read main/event stories: no skip, no fast-forward, plain tap-through until no unread chapters remain",
+    "task.challenge.label": "Daily challenge",
+    "task.challenge.description": "Daily challenge live: consumes no live bonus, once per day; picks the available character, plays with AUTO and settles"
 }

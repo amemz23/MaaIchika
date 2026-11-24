@@ -19,5 +19,7 @@
     "task.enterlive.label": "进演出页",
     "task.enterlive.description": "主页 → LIVE → 单人 → 决定，停在编成页（不点开演，不消耗 Live Bonus）",
     "task.story.label": "过剧情",
-    "task.story.description": "自动读主线/活动剧情：不加速不跳过，纯点击推进，读到没有未读章节为止"
+    "task.story.description": "自动读主线/活动剧情：不加速不跳过，纯点击推进，读到没有未读章节为止",
+    "task.challenge.label": "每日挑战",
+    "task.challenge.description": "每日挑战（チャレンジライブ）：不消耗 Live Bonus，每天一次；选可用角色后自动演出并结算"
 }

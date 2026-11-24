@@ -47,7 +47,7 @@
             "type": "Click"
         },
         "timeout": 40000,
-        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认", "演出_开自动设置", "演出_打开AUTO", "演出_确认AUTO"],
+        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认", "演出_打开AUTO", "演出_确认AUTO", "演出_开自动设置"],
         "max_hit": 4
     },
     "演出_打开AUTO": {
@@ -108,7 +108,7 @@
         "on_error": ["演出_点屏幕", "公共_失败"]
     },
     "演出_结算开场": {
-        "desc": "LIVE CLEAR! 大字（OCR 认）。roi 必须盖住这行字本身（大约 y 250-410）。演出刚结束的 1-2 秒内会播结束动画、期间的点击会被吞，所以这里 max_hit 8 + rate_limit 1200：点不动就多试几次，画面一变就不再命中",
+        "desc": "LIVE CLEAR! 大字（OCR 认，roi 必须盖住 y250-410 这行字）。刚结束的 1-2 秒会播结束动画、点击被吞；实测有时连点 5~8 次才过，所以 max_hit 放到 16、rate_limit 1000、timeout 45s —— 点不动就多试，画面一变就不再命中",
         "recognition": {
             "type": "OCR",
             "param": {
@@ -122,10 +122,10 @@
                 "target": [640, 400, 1, 1]
             }
         },
-        "timeout": 30000,
+        "timeout": 45000,
         "next": ["[JumpBack]公共_等待加载", "演出_结算开场", "演出_结算"],
-        "max_hit": 8,
-        "rate_limit": 1200
+        "max_hit": 16,
+        "rate_limit": 1000
     },
     "演出_点屏幕": {
         "desc": "兜底：万一 LIVE CLEAR 没被认出来，点一下画面中间也能过（演出中这一下不会暂停，不影响成绩）",
@@ -195,7 +195,7 @@
         "next": ["[JumpBack]公共_等待加载", "演出_确认AUTO"]
     },
     "演出_开自动设置": {
-        "desc": "编成页底部齿轮（AUTO 开关右侧），打开「オートライブ回数」对话框。这条路全是 Click（可靠通道）：齿轮 1 次有效、对话框決定 1 次有效，但**游戏是否因此把 AUTO 打开还不稳定**（同一操作一次 ON 一次没变），所以后面还要「确认AUTO」验证，失败了再退到拖拽路径",
+        "desc": "备用路径：编成页齿轮 →「オートライブ回数」→ 決定。主路径是拖拽（演出_打开AUTO），因为实测拖拽成功过；齿轮这条路一次能开、一次没变，只当兜底",
         "recognition": {
             "type": "TemplateMatch",
             "param": {
@@ -232,5 +232,77 @@
         "timeout": 15000,
         "max_hit": 2,
         "next": ["[JumpBack]公共_等待加载", "演出_确认AUTO"]
+    },
+    "演出_进挑战": {
+        "desc": "LIVE 菜单「チャレンジライブ」卡片（每日一次、不消耗 Live Bonus）",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["live/challenge_card.png"],
+                "roi": [600, 330, 260, 110],
+                "threshold": 0.8
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 30000,
+        "max_hit": 4,
+        "next": ["[JumpBack]公共_等待加载", "演出_进挑战", "挑战_选人"]
+    },
+    "挑战_选人": {
+        "desc": "挑战页「キャラクターを選択してください」。每个单位页里**只有一个角色可选**（其余的锁图标 = 不可选）。这里先切到 Leo/need 单位页（本账号可用的角色天馬咲希在这一页）",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["キャラクターを選択"],
+                "roi": [300, 620, 700, 90]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [75, 215, 1, 1]
+            }
+        },
+        "timeout": 20000,
+        "max_hit": 3,
+        "next": ["[JumpBack]公共_等待加载", "挑战_选角"]
+    },
+    "挑战_选角": {
+        "desc": "点可用的那个角色（本账号：Leo/need 的天馬咲希，位置实测 640,300）。**这一条是账号相关的**：换账号或换周要重新确认哪个角色没上锁、在哪个位置。点完会进选曲页，后续完全复用单人演出的链",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["キャラクターを選択"],
+                "roi": [300, 620, 700, 90]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [640, 300, 1, 1]
+            }
+        },
+        "timeout": 20000,
+        "max_hit": 3,
+        "next": ["[JumpBack]公共_等待加载", "演出_选曲确认"]
+    },
+    "主页_进演出挑战": {
+        "desc": "主页底部导航「ライブ」，专供每日挑战用（和 主页_进演出 识别相同，但 next 只走向挑战卡片，避免被单人卡片抢走）",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["home/nav_live.png"],
+                "roi": [1060, 590, 200, 130],
+                "threshold": 0.72
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 30000,
+        "max_hit": 4,
+        "next": ["[JumpBack]公共_等待加载", "主页_进演出挑战", "演出_进挑战"]
     }
 }

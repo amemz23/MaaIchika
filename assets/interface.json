@@ -91,6 +91,13 @@
             "entry": "任务_过剧情",
             "description": "\\.story.description",
             "group": ["story"]
+        },
+        {
+            "name": "每日挑战",
+            "label": "\\.challenge.label",
+            "entry": "任务_每日挑战",
+            "description": "\\.challenge.description",
+            "group": ["live"]
         }
     ]
 }
