@@ -131,6 +131,29 @@ def check_placeholders(nodes, errors):
             errors.append(f"{file.name}: 节点 {name} 是 DirectHit+DoNothing+无 next 的占位，要么补识别，要么补 desc 说明为什么这样")
 
 
+def check_blind_actions(nodes, errors, warnings):
+    """DirectHit + 会动屏幕的动作 = 盲点点击（AGENTS 第 2 条禁止）。
+
+    允许的例外要在 desc 里写 `允许盲点` 明示，否则报警告。这样"例外"永远是有理由、
+    有记录的，而不是悄悄散落在 pipeline 里。
+    """
+    action_types = ("Click", "LongPress", "Swipe", "MultiSwipe", "TouchDown", "TouchMove", "TouchUp", "ClickKey")
+    for name, (file, body) in nodes.items():
+        reco = body.get("recognition")
+        reco_type = (reco.get("type") if isinstance(reco, dict) else reco) or "DirectHit"
+        action = body.get("action")
+        act_type = (action.get("type") if isinstance(action, dict) else action) or "DoNothing"
+        if reco_type != "DirectHit" or act_type not in action_types:
+            continue
+        desc = body.get("desc") or ""
+        if "允许盲点" in desc:
+            continue
+        warnings.append(
+            f"{file.name}: 节点 {name} 是 DirectHit + {act_type}（盲点动作）；"
+            f"要么加识别依据，要么在 desc 里写明「允许盲点」的理由"
+        )
+
+
 def check_loops(nodes, errors, warnings):
     """找"能绕回自己且没有任何 max_hit 兜底"的环。"""
     def successors(name):
@@ -238,6 +261,7 @@ def main():
         check_interface(interface, nodes, errors)
         check_refs(nodes, errors, warnings)
         check_placeholders(nodes, errors)
+        check_blind_actions(nodes, errors, warnings)
         check_loops(nodes, errors, warnings)
         languages = check_locales(interface, errors)
     else:
