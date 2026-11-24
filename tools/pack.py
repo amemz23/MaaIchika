@@ -68,13 +68,20 @@ def main():
         print(f"install/ 与 assets/ 有 {total} 处差异")
         sys.exit(1 if total else 0)
 
+    locked = []
     for item in TOP_ITEMS:
         src = SRC / item
         if not src.exists():
             continue
         dst = DST / item
         if src.is_file():
-            shutil.copy2(src, dst)
+            try:
+                shutil.copy2(src, dst)
+            except PermissionError:
+                # MXU 正开着并把文件占用住（实测 icon.png 会被它周期性读锁），
+                # 这里只告警、继续同步后面的 resource/locales —— 否则中途退出会让 install 变成半新半旧。
+                locked.append(item)
+                print(f"[warn] {item} 被占用，跳过（关掉 MXU 再跑一次即可）", file=sys.stderr)
             continue
         if dst.exists():
             shutil.rmtree(dst)
