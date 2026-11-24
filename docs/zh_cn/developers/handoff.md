@@ -104,8 +104,9 @@ npx maa-tools check                     # 需要联网下运行时
 python tools/pack.py                    # assets -> install
 ```
 
-- Python：`C:\Users\Hokrikus\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`（有 PIL/numpy，无 cv2）
-- Node：同目录 `node\bin\node.exe`
+- Python：本机 DSH 运行时自带的那个（有 PIL/numpy、**没有 cv2**）；装过 Pillow 的普通 Python 也行
+- Node：`node` 在 PATH 里即可；`tools/run.mjs` 找 adb 的顺序是 `--adb` > `$env:ADB_PATH` >
+  `%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe` > PATH 里的 `adb`
 - **批量改 JSON 一律用 Python 文件**（`python -c` 遇到中文/引号必坏，这条已经坑过十几次）
 
 ## 交付物布局

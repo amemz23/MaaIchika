@@ -27,10 +27,15 @@ import { registerCustoms } from '../agent/custom.mjs'
 
 const maa = maaModule ?? globalThis.maa
 const ROOT = process.cwd()
+
+// adb 查找顺序：--adb 显式指定 > 环境变量 ADB_PATH > Android SDK 的标准位置 > PATH 里的 adb。
+// 不写死绝对路径：别人的用户名和 SDK 安装位置都不一样（写死过一次 C:/Users/<用户名>/...）
 const ADB_CANDIDATES = [
-    'C:/Users/Hokrikus/AppData/Local/Android/Sdk/platform-tools/adb.exe',
+    process.env.ADB_PATH,
+    process.env.LOCALAPPDATA && path.join(process.env.LOCALAPPDATA, 'Android/Sdk/platform-tools/adb.exe'),
+    'C:/Program Files/Netease/MuMuPlayer-12.0/shell/adb.exe',
     'adb',
-]
+].filter(Boolean)
 
 function parseArgs(argv) {
     const out = { entries: [], draw: true, timeout: 0, list: false, quiet: false, repeat: 1 }
