@@ -28,7 +28,7 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 15000,
+        "timeout": 6000,
         "max_hit": 5,
         "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_等待加载", "任务_奖励_确认"]
     },
@@ -44,8 +44,8 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 15000,
-        "max_hit": 3,
+        "timeout": 8000,
+        "max_hit": 5,
         "next": [
             "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
@@ -65,8 +65,8 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 15000,
-        "max_hit": 3,
+        "timeout": 8000,
+        "max_hit": 5,
         "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_等待加载", "任务_奖励_一括_定常", "任务_奖励_切定常"]
     },
     "任务_奖励_切アチーブ": {
@@ -81,8 +81,8 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 15000,
-        "max_hit": 3,
+        "timeout": 8000,
+        "max_hit": 5,
         "next": [
             "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
@@ -102,12 +102,15 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 20000,
+        "timeout": 8000,
         "max_hit": 3,
         "next": [
             "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "[JumpBack]任务_奖励_确认",
+            "任务_奖励_切ボーナス",
+            "任务_奖励_切定常",
+            "任务_奖励_切アチーブ",
             "[JumpBack]公共_回主页",
             "公共_主页锚点"
         ]
@@ -124,13 +127,16 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 20000,
+        "timeout": 8000,
         "max_hit": 3,
         "next": [
             "[JumpBack]公共_通信错误",
             "[JumpBack]公共_等待加载",
             "[JumpBack]任务_奖励_确认",
-            "任务_奖励_切ボーナス"
+            "任务_奖励_切定常",
+            "任务_奖励_切アチーブ",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
         ]
     },
     "任务_奖励_一括_定常": {
@@ -145,9 +151,16 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 20000,
+        "timeout": 8000,
         "max_hit": 3,
-        "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_等待加载", "[JumpBack]任务_奖励_确认", "任务_奖励_切定常"]
+        "next": [
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "[JumpBack]任务_奖励_确认",
+            "任务_奖励_切アチーブ",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ]
     },
     "任务_奖励_一括_アチーブ": {
         "desc": "任务页「アチーブメント」tab 右下角的「一括受け取り」（四个 tab 都有，OCR 实测 1.000）。最后一个 tab，领完回主页。",
@@ -161,7 +174,7 @@
         "action": {
             "type": "Click"
         },
-        "timeout": 20000,
+        "timeout": 8000,
         "max_hit": 3,
         "next": [
             "[JumpBack]公共_通信错误",
