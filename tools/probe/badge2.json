@@ -1,0 +1,22 @@
+[
+    {
+        "label": "narrow-1130",
+        "type": "ColorMatch",
+        "param": {
+            "lower": [158, 130, 170],
+            "upper": [179, 255, 255],
+            "count": 40,
+            "roi": [1130, 140, 150, 470]
+        }
+    },
+    {
+        "label": "narrow-1140",
+        "type": "ColorMatch",
+        "param": {
+            "lower": [158, 130, 170],
+            "upper": [179, 255, 255],
+            "count": 40,
+            "roi": [1140, 150, 140, 450]
+        }
+    }
+]
