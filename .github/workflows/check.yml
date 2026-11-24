@@ -16,24 +16,31 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 缁撴瀯鑷锛圝SON / 寮曠敤 / 鍗犱綅 / 鐜棤鍑哄彛 / i18n锛?        run: |
-          pip install pillow
-          python tools/check_json.py
+      - name: 安装 Python 依赖
+        run: pip install pillow
 
-      - name: 鎵撳寘杩愯甯冨眬
+      - name: 结构自检（JSON / 引用 / 占位 / 盲点动作 / 环无出口 / i18n）
+        run: python tools/check_json.py
+
+      - name: 参数自检（ROI 越界 / 模板存在 / 阈值范围 / ColorMatch 通道）
+        run: python tools/check_params.py
+
+      - name: 打包运行布局
         run: python tools/pack.py
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: 瀹夎渚濊禆
+      - name: 安装依赖
         run: npm install --no-audit --no-fund
 
-      - name: 鏍煎紡妫€鏌?        run: npx prettier --check "**/*.{json,md,yml,yaml}"
+      - name: 格式检查
+        run: npx prettier --check "**/*.{json,md,yml,yaml}"
 
-      - name: MaaFramework 鐪熷疄鍔犺浇鏍￠獙锛坕nterface + 璧勬簮鍖咃級
+      - name: MaaFramework 真实加载校验（interface + 资源包）
         run: node tools/check_interface.mjs
 
-      - name: maa-tools 瀹樻柟鏍￠獙锛堝彲閫夛紝闇€瑕佽仈缃戜笅杞?MaaFramework锛?        run: npx maa-tools check
+      - name: maa-tools 官方校验（可选，需要联网下载 MaaFramework）
+        run: npx maa-tools check
         continue-on-error: true
