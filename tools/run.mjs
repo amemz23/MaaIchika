@@ -25,7 +25,7 @@ const ADB_CANDIDATES = [
 ]
 
 function parseArgs(argv) {
-    const out = { entries: [], draw: true, timeout: 0, list: false, quiet: false }
+    const out = { entries: [], draw: true, timeout: 0, list: false, quiet: false, repeat: 1 }
     for (let i = 0; i < argv.length; i++) {
         const a = argv[i]
         if (a === '--list') out.list = true
@@ -34,6 +34,7 @@ function parseArgs(argv) {
         else if (a === '--address') out.address = argv[++i]
         else if (a === '--adb') out.adb = argv[++i]
         else if (a === '--timeout') out.timeout = Number(argv[++i])
+        else if (a === '--repeat') out.repeat = Math.max(1, Number(argv[++i]) || 1)
         else if (a.startsWith('--')) throw new Error(`未知参数 ${a}`)
         else out.entries.push(a)
     }
@@ -140,13 +141,21 @@ async function main() {
     tasker.resource = res
 
     let failures = 0
+    // --repeat N：把每个入口重复跑 N 次（循环清火就是靠这个驱动 ——
+    // 实测游戏自己的「オートライブ回数」不会真的循环，只打一场就回主页）
+    const plan = []
     for (const entry of args.entries) {
+        for (let i = 0; i < args.repeat; i++) plan.push({ entry, i })
+    }
+
+    for (const { entry, i } of plan) {
         if (!nodes.includes(entry)) {
             console.error(`[error] 节点不存在：${entry}`)
             failures++
             continue
         }
-        console.log(`\n===== 运行 ${entry} =====`)
+        const round = args.repeat > 1 ? ` (${i + 1}/${args.repeat})` : ''
+        console.log(`\n===== 运行 ${entry}${round} =====`)
         const t0 = Date.now()
 
         const taskSinkId = tasker.add_context_sink((context, msg) => {
