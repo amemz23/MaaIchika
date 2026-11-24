@@ -298,3 +298,12 @@ node tools/run.mjs <改动涉及的入口>   # 真机，必须"完成（已验�
 喂给 MaaFramework），区别是前者用 `node_modules/@maaxyz/maa-node` 里已经装好的那份
 MaaFramework、**不联网也不写工作目录外**；后者会把运行时下载到用户缓存目录。
 CI 里两个都跑，但 `maa-tools` 那条是 `continue-on-error`。
+
+> **重复路由**（官方报 `重复路由 X`）有两种：同一个节点同时出现在 `next` 和 `on_error`；
+> 或同一个列表里写了两次。修法是保留正常路径、删掉 `on_error` 里的重复项，列表内去重。
+> 这一轮就是靠 `maa-tools check` 才发现 —— 之前 5 个任务入口都带着这个错。
+> 现在 `check_json.py` 也有同样的离线检查（`check_dup_routes`），不联网也拦得住。
+
+> 另一个从 `maa-tools check` 学到的点：**验证型节点要放在 `next` 里，补救动作放 `on_error`**。
+> `演出_确认AUTO` 原来 `next` 里直接放着 `演出_开演`，等于「AUTO 没确认成功也照样开演」，
+> 验证形同虚设。改成 `next = [演出_开演]` / `on_error = [演出_打开AUTO]` 之后才真的"验证通过才开演"。
