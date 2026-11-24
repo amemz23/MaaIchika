@@ -2,14 +2,14 @@
 
 ## 现在有什么
 
-| 东西                          | 位置                                                  | 状态                                                   |
-| ----------------------------- | ----------------------------------------------------- | ------------------------------------------------------ |
-| `ScreenFrozen`（Custom 识别） | `agent/custom.mjs`                                    | ✅ 真机验证过                                          |
-| `ScreenMoved`（Custom 动作）  | `agent/custom.mjs`                                    | 注册了但**没有节点引用**（命中后自己会清零，留着备用） |
-| agent 子进程入口              | `agent/main.mjs`                                      | `maa.Server` 启动，订阅 socket id；**MXU 侧待验**      |
-| 进程内注册                    | `tools/run.mjs`                                       | ✅ 无头跑时自动注册，`Custom` 节点照样能命中           |
-| 用它的节点                    | `标题_画面卡死`、`演出_画面卡死`、`清火_循环画面卡死` | ✅ 各挂在对应等待节点的 `on_error` 上                  |
-| 补救链                        | `公共_卡死_重启游戏` → `公共_卡死_启动游戏`           | ✅ 真机走通（force-stop → StartApp → 标题 → 主页锚点） |
+| 东西                          | 位置                                                  | 状态                                                          |
+| ----------------------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
+| `ScreenFrozen`（Custom 识别） | `agent/custom.mjs`                                    | ✅ 真机验证过                                                 |
+| `ScreenMoved`（Custom 动作）  | `agent/custom.mjs`                                    | 注册了但**没有节点引用**（命中后自己会清零，留着备用）        |
+| agent 子进程入口              | `agent/main.mjs`                                      | ✅ **MXU 侧已验**（2026-11-24 人工确认 agent 子进程能被拉起） |
+| 进程内注册                    | `tools/run.mjs`                                       | ✅ 无头跑时自动注册，`Custom` 节点照样能命中                  |
+| 用它的节点                    | `标题_画面卡死`、`演出_画面卡死`、`清火_循环画面卡死` | ✅ 各挂在对应等待节点的 `on_error` 上                         |
+| 补救链                        | `公共_卡死_重启游戏` → `公共_卡死_启动游戏`           | ✅ 真机走通（force-stop → StartApp → 标题 → 主页锚点）        |
 
 为什么要有它：卡在标题页点不动、演出 420 秒都没结束信号 —— 这类「画面死了」以前只能靠长
 timeout 硬等，等到超时还只能盲点一下屏幕然后判失败。现在能当场认出来，改成冷启动重来。
@@ -47,13 +47,20 @@ timeout 硬等，等到超时还只能盲点一下屏幕然后判失败。现在
 
 ## 待办
 
-1. **MXU 侧验 agent 子进程**：`python tools/bundle_runtime.py` + `python tools/pack.py` 之后
-   用 `install/mxu.exe` 真跑一次，确认 `ScreenFrozen` 在 MXU 里也能命中（runner 只能验进程内注册）。
-   看 `install/` 下有没有 `node/node.exe`、`agent/main.mjs`、`agent/custom.mjs`、
-   `agent/node_modules/@maaxyz/maa-node`。agent 起不来时 MXU 日志里会有一行 `[agent] ...`。
+1. ~~MXU 侧验 agent 子进程~~ —— ✅ 2026-11-24 人工在 MXU 里跑过一次，agent 子进程能被正常拉起。
+   至此两条路都通了：MXU 走 `maa.Server`（子进程）、`tools/run.mjs` 走进程内注册。
 2. **`BonusAtLeast`**（Custom 识别，收益不明）：裁顶部 `n/25` 那块，用 0-9 模板自己拼数字 →
    命中条件 = `n >= min`，省掉枚举 25 个 OCR 节点。现在 `公共_体力为0` 的 `And(首位数字, OCR)`
    只判「是不是 0」，够用了，所以优先级低。
+
+## 排错：agent 起不来时看哪里
+
+- `install/` 下应该有：`node/node.exe`、`agent/main.mjs`、`agent/custom.mjs`、
+  `agent/node_modules/@maaxyz/maa-node`（`python tools/bundle_runtime.py --check` 能查）
+- MXU / MaaFramework 的子进程日志里会有一行 `[agent] started=true`；
+  缺 socket id 时会打 `[agent] 缺少 socket id`
+- 节点侧的表现：`Custom` 识别**永远 MISS**、且 Maa 日志里没有报错（名字对不上就是这样）。
+  先用 `python tools/check_json.py` 确认名字在 `agent/*.mjs` 里注册过
 
 ## 验证方法（不用真的把游戏弄卡死）
 

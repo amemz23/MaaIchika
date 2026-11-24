@@ -87,7 +87,7 @@ assets/
 ├── interface.json              控制器 / 资源包 / 任务入口 / 多语言
 ├── resource/
 │   ├── default_pipeline.json   全局默认：rate_limit=300, pre/post_delay=0, timeout=15s
-│   ├── pipeline/               一界面一文件（00_公共 / 01_标题 / 02_礼物 / 03_任务 / 04_演出）
+│   ├── pipeline/               一界面一文件（00_公共 / 01_标题 / 02_礼物 / 03_任务 / 04_演出 / 05_剧情 / 06_任务奖励 / 07_工具 / 08_按钮）
 │   ├── image/<界面>/            模板图，1280×720 基准
 │   └── model/ocr/              PPOCR 模型（不入库）
 └── locales/interface/          中英文案（扁平点号键）
@@ -330,6 +330,19 @@ timeout 然后盲点一下屏幕判失败；`ScreenFrozen`（`agent/custom.mjs` 
   它只是不出现在结算上下文里，所以不影响。
 - `tools/check_params.py` 现在连 Or/And 里内联的 `ColorMatch` 也查通道数和 `lower <= upper`
   （写错就是静默永不命中，和模板路径写错一样难查）。
+
+**参数只写一份：识别片段节点。** 上面三种按钮态各对应 `08_按钮.json` 里的一个节点
+（`公共_按钮_青绿主按钮` / `公共_按钮_白底可点` / `公共_按钮_灰底已领完`），它们动作是
+`DoNothing`、`next` 为空，**只被 `Or`/`And` 用节点名引用**（MaaFramework v5.7+）：
+
+```jsonc
+{ "recognition": { "type": "Or",  "param": { "any_of": ["公共_按钮_青绿主按钮", { /* 内联 OCR */ }] } } }
+{ "recognition": { "type": "And", "param": { "all_of": ["公共_按钮_白底可点",   { /* 内联 OCR */ }] } } }
+```
+
+已在 5.16 上实测可用（`Or` 单引用、`And` 片段+内联混写都验过），`tools/audit.py` 也认这种节点：
+被 `any_of`/`all_of`/`color_filter` 按名字引用过的节点算「识别片段」，不套用「next 为空必须是
+验证型终止节点」那条规则。改颜色只需要改一个地方。
 
 ## 7. 调试
 

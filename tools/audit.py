@@ -57,6 +57,27 @@ def main():
                 if isinstance(ref, str):
                     parents.setdefault(strip_attr(ref), set()).add(name)
 
+    # 被 And/Or 的 any_of / all_of 用**节点名**引用过的节点 = 「识别片段」：
+    # 它只负责提供识别参数（例如按钮颜色），本来就不该有 next/动作，[空 next] 那条要豁免。
+    fragments = set()
+
+    def walk_recognition(obj):
+        if isinstance(obj, dict):
+            for key in ("any_of", "all_of"):
+                for item in obj.get(key) or []:
+                    if isinstance(item, str):
+                        fragments.add(strip_attr(item))
+            if isinstance(obj.get("color_filter"), str) and obj["color_filter"]:
+                fragments.add(strip_attr(obj["color_filter"]))
+            for val in obj.values():
+                walk_recognition(val)
+        elif isinstance(obj, list):
+            for val in obj:
+                walk_recognition(val)
+
+    for _, (_, body) in nodes.items():
+        walk_recognition(body)
+
     problems = []
 
     for name, (file, body) in nodes.items():
@@ -135,7 +156,13 @@ def main():
             for f in ("next", "on_error")
             for r in (body2[1].get(f) or [])
         )
-        if not nxt and name not in TERMINALS and not name.startswith(TERMINAL_PREFIXES) and not is_jumpback_helper:
+        if (
+            not nxt
+            and name not in TERMINALS
+            and not name.startswith(TERMINAL_PREFIXES)
+            and not is_jumpback_helper
+            and name not in fragments
+        ):
             action = (body.get("action") or {}).get("type")
             if action not in ("StopTask",):
                 problems.append(f"[空 next] {where}: next 为空且不是验证型终止节点（{action}）")

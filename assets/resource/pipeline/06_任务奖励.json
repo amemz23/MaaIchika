@@ -110,18 +110,7 @@
             "type": "And",
             "param": {
                 "all_of": [
-                    {
-                        "recognition": {
-                            "type": "ColorMatch",
-                            "param": {
-                                "roi": [1040, 640, 200, 52],
-                                "method": 4,
-                                "lower": [245, 245, 245],
-                                "upper": [255, 255, 255],
-                                "count": 3000
-                            }
-                        }
-                    },
+                    "公共_按钮_白底可点",
                     {
                         "recognition": {
                             "type": "OCR",
@@ -153,18 +142,7 @@
             "type": "And",
             "param": {
                 "all_of": [
-                    {
-                        "recognition": {
-                            "type": "ColorMatch",
-                            "param": {
-                                "roi": [1040, 640, 200, 52],
-                                "method": 4,
-                                "lower": [245, 245, 245],
-                                "upper": [255, 255, 255],
-                                "count": 3000
-                            }
-                        }
-                    },
+                    "公共_按钮_白底可点",
                     {
                         "recognition": {
                             "type": "OCR",
@@ -196,18 +174,7 @@
             "type": "And",
             "param": {
                 "all_of": [
-                    {
-                        "recognition": {
-                            "type": "ColorMatch",
-                            "param": {
-                                "roi": [1040, 640, 200, 52],
-                                "method": 4,
-                                "lower": [245, 245, 245],
-                                "upper": [255, 255, 255],
-                                "count": 3000
-                            }
-                        }
-                    },
+                    "公共_按钮_白底可点",
                     {
                         "recognition": {
                             "type": "OCR",
@@ -239,18 +206,7 @@
             "type": "And",
             "param": {
                 "all_of": [
-                    {
-                        "recognition": {
-                            "type": "ColorMatch",
-                            "param": {
-                                "roi": [1040, 640, 200, 52],
-                                "method": 4,
-                                "lower": [245, 245, 245],
-                                "upper": [255, 255, 255],
-                                "count": 3000
-                            }
-                        }
-                    },
+                    "公共_按钮_白底可点",
                     {
                         "recognition": {
                             "type": "OCR",
@@ -279,13 +235,9 @@
     "任务_奖励_ライブ已领完": {
         "desc": "「一括受け取り」变灰 = 这个 tab 没有可领奖励（白 4975 → 灰 5491，实测两态互斥）。识别到就切下一个 tab —— 这就是「灰按钮照样被 OCR 认出来、点了没反应、把 max_hit 空转耗光」那个老问题的解。四个 tab 各一份（下一步不同），识别参数相同。",
         "recognition": {
-            "type": "ColorMatch",
+            "type": "Or",
             "param": {
-                "roi": [1040, 640, 200, 52],
-                "method": 4,
-                "lower": [118, 118, 134],
-                "upper": [140, 140, 158],
-                "count": 3000
+                "any_of": ["公共_按钮_灰底已领完"]
             }
         },
         "action": {
@@ -299,13 +251,9 @@
     "任务_奖励_ボーナス已领完": {
         "desc": "同 ライブ已领完：ボーナス tab 的按钮已经是灰的，切「定常」。",
         "recognition": {
-            "type": "ColorMatch",
+            "type": "Or",
             "param": {
-                "roi": [1040, 640, 200, 52],
-                "method": 4,
-                "lower": [118, 118, 134],
-                "upper": [140, 140, 158],
-                "count": 3000
+                "any_of": ["公共_按钮_灰底已领完"]
             }
         },
         "action": {
@@ -319,13 +267,9 @@
     "任务_奖励_定常已领完": {
         "desc": "同 ライブ已领完：定常 tab 的按钮已经是灰的，切「アチーブメント」。",
         "recognition": {
-            "type": "ColorMatch",
+            "type": "Or",
             "param": {
-                "roi": [1040, 640, 200, 52],
-                "method": 4,
-                "lower": [118, 118, 134],
-                "upper": [140, 140, 158],
-                "count": 3000
+                "any_of": ["公共_按钮_灰底已领完"]
             }
         },
         "action": {
@@ -339,13 +283,9 @@
     "任务_奖励_アチーブ已领完": {
         "desc": "同 ライブ已领完：アチーブメント 是最后一个 tab，按钮也灰了 → 四个 tab 都清完，回主页收工（落 公共_主页锚点，验证型终止）。",
         "recognition": {
-            "type": "ColorMatch",
+            "type": "Or",
             "param": {
-                "roi": [1040, 640, 200, 52],
-                "method": 4,
-                "lower": [118, 118, 134],
-                "upper": [140, 140, 158],
-                "count": 3000
+                "any_of": ["公共_按钮_灰底已领完"]
             }
         },
         "action": {

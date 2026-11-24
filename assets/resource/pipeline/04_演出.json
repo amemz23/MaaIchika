@@ -178,18 +178,7 @@
             "type": "Or",
             "param": {
                 "any_of": [
-                    {
-                        "recognition": {
-                            "type": "ColorMatch",
-                            "param": {
-                                "roi": [1040, 640, 200, 52],
-                                "method": 4,
-                                "lower": [95, 215, 195],
-                                "upper": [145, 255, 240],
-                                "count": 3000
-                            }
-                        }
-                    },
+                    "公共_按钮_青绿主按钮",
                     {
                         "recognition": {
                             "type": "OCR",
@@ -616,18 +605,7 @@
             "type": "Or",
             "param": {
                 "any_of": [
-                    {
-                        "recognition": {
-                            "type": "ColorMatch",
-                            "param": {
-                                "roi": [1040, 640, 200, 52],
-                                "method": 4,
-                                "lower": [95, 215, 195],
-                                "upper": [145, 255, 240],
-                                "count": 3000
-                            }
-                        }
-                    },
+                    "公共_按钮_青绿主按钮",
                     {
                         "recognition": {
                             "type": "OCR",

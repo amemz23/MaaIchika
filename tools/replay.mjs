@@ -13,6 +13,8 @@
  *   node tools/replay.mjs 演出_结算 scratch/shots/r02.png
  *   node tools/replay.mjs 任务_奖励_一括_ボーナス scratch/shots/btn_mission.png scratch/shots/btn_tab_bonus.png
  *   node tools/replay.mjs --expect miss 任务_奖励_一括_ボーナス scratch/shots/btn_tab_bonus.png
+ *   node tools/replay.mjs --inject scratch/新节点.json 测试_节点 scratch/shots/r02.png
+ *     （`--inject` 会先把文件里的节点 override 进资源包 —— 试新写法不用改 pipeline）
  *
  * 退出码：全部符合预期 0；有不符合 1（可以进 CI，喂真实截图当回归）。
  */
@@ -26,15 +28,22 @@ const ROOT = process.cwd()
 const MAX_STEPS = 6
 
 const argv = process.argv.slice(2)
-const expectIdx = argv.indexOf('--expect')
-const expect = expectIdx >= 0 ? argv[expectIdx + 1] : 'hit'
-const rest = [...argv]
-// 只摘掉 --expect 和它的值，别顺手把别的参数当成值删掉（踩过：没有 --expect 时把节点名删了）
-if (expectIdx >= 0) rest.splice(expectIdx, 2)
+// 先摘掉「--flag 值」这种成对参数，剩下的才是「节点名 + 图」
+const opts = {}
+const rest = []
+for (let i = 0; i < argv.length; i++) {
+    if (argv[i].startsWith('--')) {
+        opts[argv[i].slice(2)] = argv[++i]
+        continue
+    }
+    rest.push(argv[i])
+}
+const expect = opts.expect ?? 'hit'
+const injectFile = opts.inject ?? null
 const node = rest[0]
 const images = rest.slice(1).filter((a) => a.endsWith('.png'))
 if (!node || images.length === 0 || !['hit', 'miss'].includes(expect)) {
-    console.error('用法：node tools/replay.mjs [--expect hit|miss] <节点名> <图.png...>')
+    console.error('用法：node tools/replay.mjs [--expect hit|miss] [--inject 节点.json] <节点名> <图.png...>')
     process.exit(2)
 }
 
@@ -143,6 +152,11 @@ async function main() {
     const res = new maa.Resource()
     const loaded = await res.post_bundle(path.join(ROOT, 'assets', 'resource')).wait()
     if (!loaded.succeeded) throw new Error('资源加载失败')
+    if (injectFile) {
+        const nodes = JSON.parse(readFileSync(path.resolve(ROOT, injectFile), 'utf8'))
+        res.override_pipeline(nodes)
+        console.log(`[inject] ${injectFile} -> ${Object.keys(nodes).join(', ')}`)
+    }
 
     let bad = 0
     for (const img of images) {
@@ -155,8 +169,11 @@ async function main() {
             : '(没跑到这个节点)'
         console.log(`${ok ? '[ok]  ' : '[FAIL]'} ${(r.hit ? 'HIT ' : 'MISS').padEnd(5)} ${r.image.padEnd(24)} ${node}  ${detail}`)
         if (r.chain.length) console.log(`       节点链: ${r.chain.slice(0, MAX_STEPS).join(' -> ')}`)
-        if (r.clicks.length) console.log(`       点击: ${r.clicks.join(' ')}`)
-        if (r.actions.length) console.log(`       动作: ${r.actions.join(' | ')}`)
+        // 静态图上同一个节点会反复命中（真实场景里画面会变），这里只展示前几次免得刷屏
+        if (r.clicks.length) console.log(`       点击: ${r.clicks.slice(0, 6).join(' ')}${r.clicks.length > 6 ? ' …' : ''}`)
+        if (r.actions.length) {
+            console.log(`       动作: ${r.actions.slice(0, 6).join(' | ')}${r.actions.length > 6 ? ' …' : ''}`)
+        }
     }
     res.destroy()
     console.log(`\n${images.length} 张图，${bad} 张不符合 expect=${expect}`)
