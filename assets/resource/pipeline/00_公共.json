@@ -30,7 +30,7 @@
             "type": "Click"
         },
         "rate_limit": 400,
-        "max_hit": 3
+        "max_hit": 30
     },
     "公共_Google登录": {
         "desc": "Google Play 重新登录弹窗（com.google.android.gms 的 ConsentActivity，独立系统 Activity、受保护窗口）。**它会在启动过程中第二次出现**，而且垂直位置会上下偏（实测同一弹窗的标题在 y≈57 和 y≈114 都出现过），所以 ROI 放宽到 [180,16,920,240]。收不到注入按键 → 用 Shell 跑 adb input keyevent 4",
@@ -124,7 +124,7 @@
             }
         },
         "timeout": 30000,
-        "max_hit": 2,
+        "max_hit": 10,
         "next": []
     },
     "公共_下载中": {
@@ -168,7 +168,7 @@
         },
         "timeout": 15000,
         "next": ["[JumpBack]公共_回主页", "公共_主页锚点"],
-        "max_hit": 3
+        "max_hit": 10
     },
     "公共_通信错误": {
         "desc": "「通信エラーが発生しました。」居中白框 + OK 按钮。实测在剧情读到一半时出现。识别文案 + 点那个 OK（Action 用识别框中心）。⚠️ 这里的 OK 是**网络错误提示的确认**，不是 AGENTS 禁掉的「通信開始」（上传成绩）。用 [JumpBack] 引用：点掉后对话框消失，自然不再命中；max_hit 3 兜底。",
@@ -186,7 +186,7 @@
             }
         },
         "timeout": 12000,
-        "max_hit": 3,
+        "max_hit": 20,
         "next": []
     }
 }

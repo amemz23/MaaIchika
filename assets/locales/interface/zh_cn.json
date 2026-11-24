@@ -23,5 +23,7 @@
     "task.challenge.label": "每日挑战",
     "task.challenge.description": "每日挑战（チャレンジライブ）：不消耗 Live Bonus，每天一次；选可用角色后自动演出并结算",
     "task.farm.label": "清火",
-    "task.farm.description": "清体力：设成「オートライブ → 体力用完为止」后连续自动演出，逐页结算后回主页"
+    "task.farm.description": "清体力：设成「オートライブ → 体力用完为止」后连续自动演出，逐页结算后回主页",
+    "task.sidestory.label": "读支线",
+    "task.sidestory.description": "把支线故事（サイドストーリー）读到没有未读为止"
 }

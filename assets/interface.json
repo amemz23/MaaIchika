@@ -105,6 +105,13 @@
             "entry": "任务_清火",
             "description": "$task.farm.description",
             "group": ["live"]
+        },
+        {
+            "name": "读支线",
+            "label": "$task.sidestory.label",
+            "entry": "任务_读支线",
+            "description": "$task.sidestory.description",
+            "group": ["story"]
         }
     ]
 }

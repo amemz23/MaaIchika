@@ -23,5 +23,7 @@
     "task.challenge.label": "Daily challenge",
     "task.challenge.description": "Daily challenge live: consumes no live bonus, once per day; picks the available character, plays with AUTO and settles",
     "task.farm.label": "Spend live bonus",
-    "task.farm.description": "Auto-live until no live bonus remains, settling every result and returning home"
+    "task.farm.description": "Auto-live until no live bonus remains, settling every result and returning home",
+    "task.sidestory.label": "Read side stories",
+    "task.sidestory.description": "Read side stories until nothing is unread"
 }
