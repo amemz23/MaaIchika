@@ -257,14 +257,14 @@ install/                 打包产物（不入库）
 - 依赖但**不分发**的项目：[MaaFramework](https://github.com/MaaXYZ/MaaFramework)（LGPL-3.0）、
   [MXU](https://github.com/MaaXYZ/MXU)（AGPL-3.0，请自行下载，**不要**随本仓库再分发）、
   [MaaCommonAssets](https://github.com/MaaXYZ/MaaCommonAssets) 的 OCR 模型（MIT）。
-- 写法上参考了 [MaaEnd](https://github.com/MaaEnd/MaaEnd)，差异见
-  [约定文档](docs/zh_cn/developers/maaend-conventions.md)。
+- 写法上参考了 [MaaEnd](https://github.com/MaaEnd/MaaEnd)（**AGPL-3.0**，本仓库只对齐写法、
+  未包含其任何代码或 JSON），差异见 [约定文档](docs/zh_cn/developers/maaend-conventions.md)。
 
 ## 参考
 
 - [MaaFramework](https://github.com/MaaXYZ/MaaFramework) —— 识别与动作框架
-- [MaaEnd](https://github.com/MaaEnd/MaaEnd) —— 同框架项目，pipeline 写法参考
+- [MaaEnd](https://github.com/MaaEnd/MaaEnd) —— 同框架项目，pipeline 写法参考（AGPL-3.0，只学写法不拷文件）
 - [MXU](https://github.com/MaaXYZ/MXU) —— 图形客户端
-- [从 MaaEnd 抄来的约定](docs/zh_cn/developers/maaend-conventions.md)：节点写法对齐了哪些、哪些故意不抄
+- [从 MaaEnd 对齐来的约定](docs/zh_cn/developers/maaend-conventions.md)：节点写法对齐了哪些、哪些故意不跟、以及授权边界
 - [上下文衔接](docs/zh_cn/developers/handoff.md)：当前进度 / 下一步 / 已踩过的坑（新会话先看这个）
 - [开发手册](docs/zh_cn/developers/development.md) / [识别基线](docs/zh_cn/developers/recognition-baseline.md)

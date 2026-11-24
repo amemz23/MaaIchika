@@ -1,8 +1,16 @@
-# 从 MaaEnd 抄来的约定（以及我们不抄的地方）
+# 和 MaaEnd 的写法对齐（以及故意不跟的地方）
 
 蓝本：[MaaEnd/MaaEnd](https://github.com/MaaEnd/MaaEnd) 的
 [`.agents/skills/pipeline-guide/SKILL.md`](https://raw.githubusercontent.com/MaaEnd/MaaEnd/7c7274d435600522acdce597fcd677da7cd19189/.agents/skills/pipeline-guide/SKILL.md)。
 它跟我们一样是纯 Pipeline JSON 的 MaaFramework 项目，踩过的坑高度重合，所以直接对齐它的写法。
+
+> **授权边界（重要）**：MaaEnd 是 **AGPL-3.0**，本仓库是 **MIT**。
+> 本仓库**不包含 MaaEnd 的任何代码 / JSON / 模板图**，这里只记录"读了它的写法说明、用自己的话
+> 重写同一套约定"—— 方法、约定、思路本身不受版权保护，受保护的是具体表达。下文引用它的原话都
+> 明确标注了出处；引文不构成本项目的衍生部分。
+>
+> **红线**：一旦把 MaaEnd 的文件（pipeline JSON、go-service 代码、它的模板图）复制进本仓库，
+> 本仓库就必须整体改成 AGPL-3.0。想保持 MIT 就只学写法、自己重写；两者的分界是"文件"而不是"相似度"。
 
 ## 采纳的
 

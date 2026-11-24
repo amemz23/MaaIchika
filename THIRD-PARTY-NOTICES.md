@@ -37,9 +37,9 @@
 「Project SEKAI COLORFUL STAGE! feat. Hatsune Miku」及其中各角色名称、形象，
 是 SEGA / Colorful Palette 的商标或注册商标。
 
-## 只借了写法/思路的项目
+## 只借了写法/思路的项目（**没有**包含它们的任何文件）
 
-| 项目                                       | 借了什么                                                                                                                                        |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [MaaEnd](https://github.com/MaaEnd/MaaEnd) | pipeline 组织方式、`[JumpBack]` + `max_hit`、`post_wait_freezes` 等待画面静止等约定，见 [对比文档](docs/zh_cn/developers/maaend-conventions.md) |
-| MaaFramework 官方文档 / sample             | ProjectInterface V2、Pipeline 5.x 协议写法、`Custom` 识别的回调签名                                                                             |
+| 项目                                       | 授权                 | 借了什么                                                                                                                                                                                                                                                               |
+| ------------------------------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [MaaEnd](https://github.com/MaaEnd/MaaEnd) | **AGPL-3.0**         | 只读了它的 pipeline 写法说明，用自己的话重写了同一套约定（`[JumpBack]` + `max_hit`、`post_wait_freezes`、组合识别等），见 [对比文档](docs/zh_cn/developers/maaend-conventions.md)。**本仓库不含它的代码 / JSON / 模板图** —— 一旦复制进来，本仓库整体就得改成 AGPL-3.0 |
+| MaaFramework 官方文档 / sample             | LGPL-3.0（框架本体） | ProjectInterface V2、Pipeline 5.x 协议写法、`Custom` 识别的回调签名                                                                                                                                                                                                    |
