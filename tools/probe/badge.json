@@ -1,0 +1,32 @@
+[
+    {
+        "label": "badge-mid",
+        "type": "ColorMatch",
+        "param": {
+            "lower": [158, 130, 170],
+            "upper": [179, 255, 255],
+            "count": 60,
+            "roi": [640, 150, 640, 450]
+        }
+    },
+    {
+        "label": "badge-right",
+        "type": "ColorMatch",
+        "param": {
+            "lower": [158, 130, 170],
+            "upper": [179, 255, 255],
+            "count": 40,
+            "roi": [1140, 150, 140, 500]
+        }
+    },
+    {
+        "label": "badge-full",
+        "type": "ColorMatch",
+        "param": {
+            "lower": [158, 130, 170],
+            "upper": [179, 255, 255],
+            "count": 60,
+            "roi": [640, 40, 640, 640]
+        }
+    }
+]
