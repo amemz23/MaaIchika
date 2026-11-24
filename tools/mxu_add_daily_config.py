@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "install" / "config" / "mxu-MaaIchika.json"
 
 DAILY_NAME = "清日常"
-DAILY_TASKS = ["启动", "领礼包", "任务奖励", "每日挑战", "清火"]
+DAILY_TASKS = ["设置分辨率", "启动", "领礼包", "任务奖励", "每日挑战", "清火"]
 
 
 def rid(n=7):
