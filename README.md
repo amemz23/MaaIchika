@@ -247,4 +247,5 @@ install/                 打包产物（不入库）
 - [MaaEnd](https://github.com/MaaEnd/MaaEnd) —— 同框架项目，pipeline 写法参考
 - [MXU](https://github.com/MistEO/MXU) —— 图形客户端
 - [从 MaaEnd 抄来的约定](docs/zh_cn/developers/maaend-conventions.md)：节点写法对齐了哪些、哪些故意不抄
+- [上下文衔接](docs/zh_cn/developers/handoff.md)：当前进度 / 下一步 / 已踩过的坑（新会话先看这个）
 - [开发手册](docs/zh_cn/developers/development.md) / [识别基线](docs/zh_cn/developers/recognition-baseline.md)
