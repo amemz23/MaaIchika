@@ -1,0 +1,22 @@
+[
+    {
+        "label": "旧模板(店铺背景)",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["home/gift_icon.png"],
+            "threshold": 0,
+            "roi": [1150, 80, 130, 160],
+            "order_by": "Score"
+        }
+    },
+    {
+        "label": "新模板(街道背景)",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["home/gift_icon_school.png"],
+            "threshold": 0,
+            "roi": [1150, 80, 130, 160],
+            "order_by": "Score"
+        }
+    }
+]

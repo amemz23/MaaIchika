@@ -135,6 +135,14 @@
             "out": "live/auto_on.png",
             "note": "编成页 AUTO 开关的 ON 态（粉底白钮 + ON），用来**验证**开关真的打开了",
             "roi": [480, 620, 220, 90]
+        },
+        {
+            "name": "home_gift_school",
+            "src": "scratch/r6_00.png",
+            "box": [1215, 123, 50, 48],
+            "out": "home/gift_icon_school.png",
+            "note": "主页漂到「セカイ/スクランブル交差点」时的礼物盒（白盒红丝带、深蓝背景），只裁图标本体",
+            "roi": [1150, 80, 130, 160]
         }
     ]
 }
