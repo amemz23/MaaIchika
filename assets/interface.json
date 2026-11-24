@@ -98,6 +98,13 @@
             "entry": "任务_每日挑战",
             "description": "\\.challenge.description",
             "group": ["live"]
+        },
+        {
+            "name": "清火",
+            "label": "\\.farm.label",
+            "entry": "任务_清火",
+            "description": "\\.farm.description",
+            "group": ["live"]
         }
     ]
 }

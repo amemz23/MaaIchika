@@ -21,5 +21,7 @@
     "task.story.label": "过剧情",
     "task.story.description": "自动读主线/活动剧情：不加速不跳过，纯点击推进，读到没有未读章节为止",
     "task.challenge.label": "每日挑战",
-    "task.challenge.description": "每日挑战（チャレンジライブ）：不消耗 Live Bonus，每天一次；选可用角色后自动演出并结算"
+    "task.challenge.description": "每日挑战（チャレンジライブ）：不消耗 Live Bonus，每天一次；选可用角色后自动演出并结算",
+    "task.farm.label": "清火",
+    "task.farm.description": "清体力：设成「オートライブ → 体力用完为止」后连续自动演出，逐页结算后回主页"
 }

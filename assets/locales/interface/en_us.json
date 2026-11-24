@@ -21,5 +21,7 @@
     "task.story.label": "Read stories",
     "task.story.description": "Auto-read main/event stories: no skip, no fast-forward, plain tap-through until no unread chapters remain",
     "task.challenge.label": "Daily challenge",
-    "task.challenge.description": "Daily challenge live: consumes no live bonus, once per day; picks the available character, plays with AUTO and settles"
+    "task.challenge.description": "Daily challenge live: consumes no live bonus, once per day; picks the available character, plays with AUTO and settles",
+    "task.farm.label": "Spend live bonus",
+    "task.farm.description": "Auto-live until no live bonus remains, settling every result and returning home"
 }
