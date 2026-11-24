@@ -1,0 +1,67 @@
+{
+    "主页_进任务": {
+        "desc": "主页右上角的「ミッション」剪贴板图标（礼物盒下方、☰ 左边，带红点数字）。模板 home/mission_icon.png：主页实测 1.000，剧情画面 0.229（不会误命中）。",
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["home/mission_icon.png"],
+                "roi": [1150, 170, 130, 140],
+                "threshold": 0.9
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 30000,
+        "max_hit": 4,
+        "next": ["[JumpBack]公共_通信错误", "[JumpBack]公共_等待加载", "主页_进任务", "任务_奖励_一括"]
+    },
+    "任务_奖励_一括": {
+        "desc": "任务页右下角的「一括受け取り」（一键领取）。OCR 实测 1.000 @ [1075,649,131,26]。页面锚点：标题「今月のライブミッション」OCR 0.976。点完可能出现确认弹窗或「報酬を獲得しました」结算页，都挂在 next 里。",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["一括受け取り", "一括受け取"],
+                "roi": [1000, 600, 280, 120]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 20000,
+        "max_hit": 5,
+        "next": [
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "任务_奖励_确认",
+            "任务_奖励_一括",
+            "[JumpBack]公共_领登录奖励",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ]
+    },
+    "任务_奖励_确认": {
+        "desc": "领取确认弹窗的确认键（はい / 受け取る / OK）。只在 一括受け取り 之后被扫到。",
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "expected": ["はい", "受け取る", "OK"],
+                "roi": [300, 380, 680, 200]
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "timeout": 15000,
+        "max_hit": 5,
+        "next": [
+            "[JumpBack]公共_通信错误",
+            "[JumpBack]公共_等待加载",
+            "任务_奖励_确认",
+            "任务_奖励_一括",
+            "[JumpBack]公共_领登录奖励",
+            "[JumpBack]公共_回主页",
+            "公共_主页锚点"
+        ]
+    }
+}

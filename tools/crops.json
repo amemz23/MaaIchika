@@ -159,6 +159,14 @@
             "out": "story/story_bookmark.png",
             "note": "章节列表右上角的书签图标（白圆 + 深色书签）。主线列表和活动列表的 x 位置不同（1145 / 824），所以只用模板在宽 ROI 里找，不写死坐标",
             "roi": [700, 0, 580, 110]
+        },
+        {
+            "name": "home_mission",
+            "src": "scratch/ask_home.png",
+            "box": [1214, 208, 44, 56],
+            "out": "home/mission_icon.png",
+            "note": "主页右侧的「ミッション」剪贴板图标（带红点数字）。在礼物盒下方、☰ 左边",
+            "roi": [1150, 170, 130, 140]
         }
     ]
 }

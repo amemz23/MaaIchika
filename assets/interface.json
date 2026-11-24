@@ -112,6 +112,13 @@
             "entry": "任务_读支线",
             "description": "$task.sidestory.description",
             "group": ["story"]
+        },
+        {
+            "name": "任务奖励",
+            "label": "$task.mission.label",
+            "entry": "任务_任务奖励",
+            "description": "$task.mission.description",
+            "group": ["daily"]
         }
     ]
 }

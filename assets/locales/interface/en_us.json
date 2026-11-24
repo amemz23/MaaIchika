@@ -25,5 +25,7 @@
     "task.farm.label": "Spend live bonus",
     "task.farm.description": "Auto-live until no live bonus remains, settling every result and returning home",
     "task.sidestory.label": "Read side stories (WIP)",
-    "task.sidestory.description": "Side stories: reaches the character select, but the list is a 前編/後編 card grid with level locks — picking an unlocked card is not implemented"
+    "task.sidestory.description": "Side stories: reaches the character select, but the list is a 前編/後編 card grid with level locks — picking an unlocked card is not implemented",
+    "task.mission.label": "Claim missions",
+    "task.mission.description": "Home -> mission icon -> claim all -> confirm -> home"
 }

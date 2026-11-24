@@ -1,0 +1,12 @@
+[
+    {
+        "label": "mission",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["home/mission_icon.png"],
+            "threshold": 0,
+            "roi": [1150, 170, 130, 140],
+            "order_by": "Score"
+        }
+    }
+]
