@@ -1,0 +1,47 @@
+[
+    {
+        "label": "chap-list",
+        "type": "And",
+        "param": {
+            "all_of": [
+                {
+                    "recognition": {
+                        "type": "OCR",
+                        "param": {
+                            "expected": ["第"],
+                            "roi": [700, 110, 120, 520]
+                        }
+                    }
+                },
+                {
+                    "recognition": {
+                        "type": "Or",
+                        "param": {
+                            "any_of": [
+                                {
+                                    "recognition": {
+                                        "type": "OCR",
+                                        "param": {
+                                            "expected": ["イベントストーリー", "サイドストーリー"],
+                                            "roi": [600, 60, 680, 70]
+                                        }
+                                    }
+                                },
+                                {
+                                    "recognition": {
+                                        "type": "TemplateMatch",
+                                        "param": {
+                                            "template": ["story/story_bookmark.png"],
+                                            "roi": [700, 0, 580, 110],
+                                            "threshold": 0.9
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+]

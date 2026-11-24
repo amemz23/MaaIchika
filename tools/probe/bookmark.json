@@ -1,0 +1,12 @@
+[
+    {
+        "label": "bookmark",
+        "type": "TemplateMatch",
+        "param": {
+            "template": ["story/story_bookmark.png"],
+            "threshold": 0,
+            "roi": [700, 0, 580, 110],
+            "order_by": "Score"
+        }
+    }
+]
