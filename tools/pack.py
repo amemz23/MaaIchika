@@ -20,7 +20,7 @@ SRC = ROOT / "assets"
 DST = ROOT / "install"
 
 # assets/ 下要同步到 install/ 顶层的东西
-TOP_ITEMS = ["interface.json", "resource", "locales", "misc"]
+TOP_ITEMS = ["interface.json", "icon.png", "resource", "locales", "misc"]
 # 运行时不缺、但会拖慢拷贝的（OCR 模型约有 30MB，还是需要同步，否则 OCR 节点静默失效）
 EXTRA_IGNORE = {"__pycache__", ".DS_Store"}
 
