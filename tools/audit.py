@@ -29,6 +29,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PIPE = ROOT / "assets" / "resource" / "pipeline"
 TERMINALS = {"公共_主页锚点", "公共_失败"}
+# 这些节点的识别一旦被 DirectHit 抢走，整条链就会空转到超时，所以盲点节点必须排在它们后面
+VERIFY_NODES = {"公共_主页锚点", "公共_回主页"}
 # `tools/run.mjs` 也把「完成_*」当验证型终止节点（用于不落在主页上的收尾，比如恢复分辨率），审计口径保持一致
 TERMINAL_PREFIXES = ("完成_",)
 # 每轮循环都会重复使用的"工具型"节点：max_hit 必须够大
@@ -170,6 +172,31 @@ def main():
         # 5. （已移除）"短词 OCR + ROI 覆盖对白带"这条没法通用判断：
         #    按钮文字确实会落在 y 640-720，而剧情对白在 y 480-660，两者必然相邻。
         #    真正的做法是**按界面实测**（见开发手册 6.9「短词 OCR 的 ROI 要避开对白带」）。
+
+        # 6. 盲点兜底排在真识别前面 —— DirectHit 每轮都会命中，把它后面那个真识别永远饿死。
+        #    真机踩过两次：① 公共_点一下 排在 公共_回主页 前面 → 在挑战选人页盲点 39 次，
+        #                回主页明明认得出（box [30,32,44,24]）却一次都没轮到；
+        #                ② 公共_点一下 排在 结算 前面（更早的一次，见 README 的历史记录）。
+        for field in ("next", "on_error"):
+            refs = body.get(field) or []
+            for i, ref in enumerate(refs):
+                if not isinstance(ref, str):
+                    continue
+                target_body = nodes.get(strip_attr(ref), (None, {}))[1]
+                is_blind_click = (
+                    not target_body.get("recognition")
+                    and (target_body.get("action") or {}).get("type") == "Click"
+                    and (target_body.get("action") or {}).get("param", {}).get("target") is not True
+                )
+                if not is_blind_click:
+                    continue
+                later = [strip_attr(x) for x in refs[i + 1 :] if isinstance(x, str)]
+                starved = [x for x in later if x in VERIFY_NODES]
+                if starved:
+                    problems.append(
+                        f"[盲点抢位] {where}.{field}: 盲点节点 {strip_attr(ref)} 排在 {starved[0]} 前面"
+                        f" —— 它是 DirectHit，每轮都命中，后面的真识别永远轮不上（把它挪到最后）"
+                    )
 
     for p in problems:
         print(p)
