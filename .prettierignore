@@ -1,0 +1,13 @@
+# 打包产物 / 中间产物：里面是复制过去的文件，不参与格式检查
+# （否则 `npm run format:check` 会去扫 dist/ 里 100MB 的 release 包，又慢又容易误报）
+install/
+dist/
+debug/
+scratch/
+
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 拉下来的模型（二进制）
+assets/resource/model/

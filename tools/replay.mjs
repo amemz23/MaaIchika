@@ -71,9 +71,13 @@ async function replay(res, imageRel) {
             touch = `(${x},${y})`
             return true
         },
-        touch_move: () => true,
+        // 记录 TouchMove 的落点：验「拖拽终点是不是跟着识别框走」必须看这个
+        touch_move: (contact, x, y) => {
+            if (touch) touch += ` -> (${x},${y})`
+            return true
+        },
         touch_up: () => {
-            if (touch) clicks.push(`touch${touch}`)
+            if (touch) clicks.push(`drag${touch}`)
             touch = null
             return true
         },
