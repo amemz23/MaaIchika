@@ -231,6 +231,12 @@ async function main() {
         if (nodeChain.some((n) => n.startsWith('公共_卡死_') || n.endsWith('_卡死'))) {
             console.log('      [warn] 本次运行检测到画面卡死并走过冷启动恢复（原目标可能未达成，看节点链）')
         }
+        // 「清火循环」的成功判据是**体力真的打光**（链里出现过 公共_体力为0），
+        // 不是"回到了主页"：结算半路失败时链路会降级退回主页，链尾同样是主页锚点，
+        // 光看结论会以为清完了。真机踩过一次（只打了 2 场、boost 还剩 11 却报"完成"）。
+        if (entry === '任务_清火循环' && !nodeChain.includes('公共_体力为0')) {
+            console.log('      [warn] 清火循环结束，但链里没有命中 公共_体力为0 —— 体力很可能没打光，看节点链')
+        }
         if (verdict !== '完成（已验证）') failures++
         writeFileSync(
             path.join(debugDir, `run_${entry.replace(/[\\/:*?"<>|]/g, '_')}.json`),
