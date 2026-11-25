@@ -1,6 +1,6 @@
 {
     "name": "MaaIchika",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "private": true,
     "type": "module",
     "description": "基于 MaaFramework 的 Project SEKAI 自动化项目",

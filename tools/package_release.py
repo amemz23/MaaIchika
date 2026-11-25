@@ -267,7 +267,8 @@ def write_release_notes(version, node_ver, mxu_ver, with_mxu, size_mb):
 ## 已知问题
 
 - AUTO LIVE 每天有次数上限，用完后编成页的 AUTO 开关拨不动，任务会**干净收工不开演**（不白耗体力）
-- 每日挑战「当天未打」的完整一场、`清火循环` 整链仍在等时机验证
+- 每日挑战「当天未打」的完整一场仍在等时机验证（其余任务入口都已真机跑通）
+- 结算半路失败时链路会降级回主页；判断"体力是否真的打光"要看节点链里有没有 `公共_体力为0`
 """
     path = DIST / "RELEASE-NOTES.md"
     path.write_text(text, encoding="utf-8", newline="\n")
